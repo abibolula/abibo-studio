@@ -470,15 +470,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 <nav class="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <img src="https://drive.google.com/thumbnail?id=1xUsB8zQzV072vqsfi-DnNcojZW_eySaI&sz=w200" alt="Logo" onerror="this.style.display='none'">
-      <span class="nav-logo-text">Abibo Studio</span>
+      <img src="" alt="Logo" onerror="this.style.display='none'">
+      <span class="nav-logo-text"></span>
     </a>
     <div class="nav-actions">
       <button class="nav-icon-btn wishlist-btn" id="wishlistNavBtn" title="Wishlist" onclick="openWishlist()">
         🤍 <span class="wishlist-count" id="wishlistCount">0</span>
       </button>
       <button class="nav-icon-btn" id="themeToggle" title="Ganti tema" onclick="toggleTheme()">🌙</button>
-      <a href="https://wa.me/62895637290295" target="_blank" class="nav-wa-btn">💬 Hubungi</a>
+      <a href="#" target="_blank" class="nav-wa-btn"></a>
     </div>
   </div>
 </nav>
@@ -490,16 +490,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
-  <div class="hero-badge"><span></span> Produk Digital Premium · Abibo Studio</div>
-  <h1 class="hero-title">Solusi Digital<br><span class="gradient-text">Kreatif & Inovatif</span></h1>
-  <p class="hero-sub">Kami menghadirkan produk digital berkualitas tinggi di bidang IT, desain, dan otomasi — untuk mendorong produktivitas dan kreativitasmu.</p>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Produk Digital</div></div>
-    <div class="hero-divider"></div>
-    <div class="hero-stat"><div class="hero-stat-num">200+</div><div class="hero-stat-label">Pelanggan Puas</div></div>
-    <div class="hero-divider"></div>
-    <div class="hero-stat"><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Rating Rata-rata</div></div>
-  </div>
+  <div class="hero-badge"><span></span></div>
+  <h1 class="hero-title"></h1>
+  <p class="hero-sub"></p>
+  <div class="hero-stats"></div>
 </section>
 
 <!-- SEARCH & FILTER -->
@@ -510,10 +504,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
       <input class="search-input" id="searchInput" type="text" placeholder="Cari produk..." oninput="filterProducts()">
     </div>
     <div class="filter-chips">
-      <!-- Edit kategori di sini -->
-      <button class="filter-chip active" data-cat="all" onclick="setFilter('all',this)">Semua</button>
-      <button class="filter-chip" data-cat="tools" onclick="setFilter('tools',this)">Tools</button>
-      <button class="filter-chip" data-cat="pro" onclick="setFilter('pro',this)">Pro</button>
+      <!-- Di-render otomatis dari SITE_CONFIG.filterChips -->
     </div>
     <select class="sort-select" id="sortSelect" onchange="filterProducts()">
       <option value="default">Urutan Default</option>
@@ -536,112 +527,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
       <p class="section-desc">Klik kartu produk untuk menambah ke keranjang, lalu langsung pesan via WhatsApp!</p>
     </div>
 
-    <!-- ======================================================
-         PRODUCTS GRID
-         Cara tambah produk: copy satu .product-card, increment id card-X,
-         update semua data-* sesuai produk baru.
-         ====================================================== -->
+    <!-- ═══════════════════════════════════════════════════════
+         PRODUK di-render otomatis dari array PRODUCTS di JS.
+         Untuk tambah/edit produk → cari "const PRODUCTS" di <script>
+         ═══════════════════════════════════════════════════════ -->
     <div class="products-grid" id="productsGrid">
-
-      <!-- CARD 1 — Link Shortcut -->
-      <div class="product-card reveal" id="card-1"
-        data-id="1"
-        data-name="Link Shortcut"
-        data-category="tools"
-        data-price="29000"
-        data-original-price="50000"
-        data-desc="Tool canggih untuk mempersingkat URL panjang menjadi link yang rapi, mudah dibagikan, dan mudah diingat. Dilengkapi fitur tracking klik, QR code generator, dan dashboard analitik sederhana."
-        data-desc-full="Link Shortcut adalah solusi lengkap untuk manajemen URL Anda. Fitur utama: pemendek URL instan, QR Code otomatis, statistik klik real-time, custom alias URL, dan ekspor data. Dibangun dengan teknologi modern yang memastikan kecepatan dan keandalan tinggi."
-        data-rating="5"
-        data-youtube="qeIWJkN76e0"
-        data-flyer="14aV_BMzo0rT19YQV4ymf81tL_sveiWFw"
-        data-images="13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu,157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg"
-        data-features="Pemendek URL|QR Code Generator|Analitik Klik|Custom Alias|Ekspor Data">
-
-        <div class="card-gallery">
-          <div class="gallery-slides" id="slides-1"></div>
-          <button class="gallery-nav gallery-prev" onclick="changeSlide('1',-1)">‹</button>
-          <button class="gallery-nav gallery-next" onclick="changeSlide('1',1)">›</button>
-          <div class="gallery-dots" id="dots-1"></div>
-          <div class="gallery-badge">
-            <span class="badge badge-new">✦ New</span>
-            <span class="badge badge-sale">🔥 Sale</span>
-          </div>
-        </div>
-        <div class="card-select-indicator" onclick="toggleSelect('1')">✓</div>
-        <div class="card-body">
-          <div class="card-header-row">
-            <div class="card-name">Link Shortcut</div>
-            <div class="star-rating" id="stars-1"></div>
-          </div>
-          <p class="card-desc">Tool canggih untuk mempersingkat URL panjang menjadi link yang rapi, mudah dibagikan, dan mudah diingat. Dilengkapi fitur tracking klik, QR code generator, dan dashboard analitik sederhana.</p>
-          <div class="card-price-row">
-            <div class="price-current">Rp 29.000</div>
-            <div class="price-original">Rp 50.000</div>
-            <div class="price-discount">-42%</div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-detail" onclick="openDetail('1')">Lihat Detail Produk <span class="btn-icon">→</span></button>
-            <div class="btn-row">
-              <button class="btn-select" id="btn-select-1" onclick="toggleSelect('1')">☐ Pilih Produk</button>
-              <button class="btn-wishlist" id="btn-wish-1" title="Wishlist" onclick="toggleWishlist('1')">🤍</button>
-              <button class="btn-compare-card" title="Bandingkan" onclick="toggleCompare('1')">⚖</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 2 — Link Shortcut Pro -->
-      <div class="product-card reveal" id="card-2"
-        data-id="2"
-        data-name="Link Shortcut Pro"
-        data-category="pro"
-        data-price="49000"
-        data-original-price="75000"
-        data-desc="Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar."
-        data-desc-full="Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun."
-        data-rating="5"
-        data-youtube="qeIWJkN76e0"
-        data-flyer="14aV_BMzo0rT19YQV4ymf81tL_sveiWFw"
-        data-images="157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg,13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu"
-        data-features="Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics">
-
-        <div class="card-gallery">
-          <div class="gallery-slides" id="slides-2"></div>
-          <button class="gallery-nav gallery-prev" onclick="changeSlide('2',-1)">‹</button>
-          <button class="gallery-nav gallery-next" onclick="changeSlide('2',1)">›</button>
-          <div class="gallery-dots" id="dots-2"></div>
-          <div class="gallery-badge">
-            <span class="badge badge-new">⚡ Pro</span>
-            <span class="badge badge-sale">🔥 Sale</span>
-          </div>
-        </div>
-        <div class="card-select-indicator" onclick="toggleSelect('2')">✓</div>
-        <div class="card-body">
-          <div class="card-header-row">
-            <div class="card-name">Link Shortcut Pro</div>
-            <div class="star-rating" id="stars-2"></div>
-          </div>
-          <p class="card-desc">Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.</p>
-          <div class="card-price-row">
-            <div class="price-current">Rp 49.000</div>
-            <div class="price-original">Rp 75.000</div>
-            <div class="price-discount">-35%</div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-detail" onclick="openDetail('2')">Lihat Detail Produk <span class="btn-icon">→</span></button>
-            <div class="btn-row">
-              <button class="btn-select" id="btn-select-2" onclick="toggleSelect('2')">☐ Pilih Produk</button>
-              <button class="btn-wishlist" id="btn-wish-2" title="Wishlist" onclick="toggleWishlist('2')">🤍</button>
-              <button class="btn-compare-card" title="Bandingkan" onclick="toggleCompare('2')">⚖</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAMBAH PRODUK BARU DI SINI -->
-      <!-- Copy salah satu card di atas, ganti id="card-3", update data-* -->
-
+      <!-- diisi oleh renderPage() -->
     </div>
     <div class="no-results" id="noResults">😕 Produk tidak ditemukan. Coba kata kunci lain.</div>
   </div>
@@ -655,26 +546,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
       <h2 class="section-title">Pertanyaan Umum</h2>
     </div>
     <div class="faq-list reveal">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Bagaimana cara memesan produk?<span class="faq-chevron">▼</span></button>
-        <div class="faq-a">Pilih produk, klik "Pilih Produk", lalu "Pesan Sekarang". Isi nama kamu dan kami langsung merespons!</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Apakah ada garansi produk?<span class="faq-chevron">▼</span></button>
-        <div class="faq-a">Ya! Semua produk digital dilengkapi garansi kepuasan 7 hari. Tim kami siap membantu via WhatsApp.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Metode pembayaran apa saja?<span class="faq-chevron">▼</span></button>
-        <div class="faq-a">Transfer bank (BCA, Mandiri, BNI, BRI), e-wallet (GoPay, OVO, DANA, ShopeePay), dan QRIS.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Berapa lama pengiriman?<span class="faq-chevron">▼</span></button>
-        <div class="faq-a">Produk digital dikirim instan via email/WhatsApp setelah pembayaran terkonfirmasi (5–15 menit).</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Bisa request produk custom?<span class="faq-chevron">▼</span></button>
-        <div class="faq-a">Tentu! Kami membuka layanan custom development untuk kebutuhan IT dan otomasi. Hubungi kami di WhatsApp.</div>
-      </div>
+      <!-- Di-render otomatis dari SITE_CONFIG.faqs -->
     </div>
   </div>
 </section>
@@ -688,19 +560,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
       <p class="section-desc">Hubungi kami di platform favorit kamu</p>
     </div>
     <div class="social-grid reveal">
-      <a href="https://wa.me/62895637290295" target="_blank" class="social-link"><span class="social-icon">💬</span> WhatsApp</a>
-      <a href="https://instagram.com/abibostudio" target="_blank" class="social-link"><span class="social-icon">📷</span> Instagram</a>
-      <a href="https://tiktok.com/@abibostudio" target="_blank" class="social-link"><span class="social-icon">🎵</span> TikTok</a>
-      <a href="https://youtube.com/@abibostudio" target="_blank" class="social-link"><span class="social-icon">▶️</span> YouTube</a>
-      <a href="mailto:abibostudio@gmail.com" class="social-link"><span class="social-icon">✉️</span> Email</a>
+      <!-- Di-render otomatis dari SITE_CONFIG.socials -->
     </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">Abibo Studio</div>
-    <p class="footer-copy">© 2025 Abibo Studio · Digital Creator, IT & Services · All Rights Reserved</p>
+    <div class="footer-logo"></div>
+    <p class="footer-copy"></p>
   </div>
 </footer>
 
@@ -785,20 +653,300 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 /* ============================================================
    CONFIG — edit sesuai kebutuhan
    ============================================================ */
-const WA_NUMBER = '62895637290295';
+/* ════════════════════════════════════════════════════════════
+   ██████████████████████████████████████████████████████████
+   ███                                                      ███
+   ███          ZONA KONFIGURASI — EDIT DI SINI             ███
+   ███   Semua pengaturan website ada di bagian ini.        ███
+   ███   Jangan ubah bagian lain kecuali kamu tahu CSS/JS.  ███
+   ███                                                      ███
+   ██████████████████████████████████████████████████████████
+   ════════════════════════════════════════════════════════════ */
 
-const TICKER_ITEMS = ['✦ Abibo Studio','💻 Digital Creator','🛠 IT Solutions','⚡ Otomasi & RPA','🎨 Desain Kreatif','🚀 Produk Digital Premium','💡 Inovasi Tanpa Batas','📦 Pengiriman Instan','✅ Garansi 7 Hari'];
+/* ── 1. INFO BISNIS ─────────────────────────────────────────
+   Ubah nama, tagline, dan kontak utama di sini.
+   ─────────────────────────────────────────────────────────── */
+const SITE_CONFIG = {
+
+  /* Nama brand yang muncul di navbar, loading screen, dan footer */
+  brandName: 'Abibo Studio',
+
+  /* Tagline singkat di navbar WA button */
+  navWaLabel: '💬 Hubungi',
+
+  /* Nomor WhatsApp tujuan pesanan (format: kode negara + nomor, tanpa +/spasi) */
+  waNumber: '62895637290295',
+
+  /* ── 2. HERO SECTION ──────────────────────────────────────
+     Teks besar yang pertama kali dilihat pengunjung.
+     ────────────────────────────────────────────────────────── */
+  heroBadgeText: 'Produk Digital Premium · Abibo Studio',
+  heroTitle: 'Solusi Digital',           /* Baris pertama judul */
+  heroTitleAccent: 'Kreatif & Inovatif', /* Baris kedua (warna gradient) */
+  heroSubtitle: 'Kami menghadirkan produk digital berkualitas tinggi di bidang IT, desain, dan otomasi — untuk mendorong produktivitas dan kreativitasmu.',
+
+  /* Statistik 3 angka di hero — isi sesuai pencapaian bisnis */
+  heroStats: [
+    { num: '50+',  label: 'Produk Digital'  },
+    { num: '200+', label: 'Pelanggan Puas'  },
+    { num: '4.9★', label: 'Rating Rata-rata' },
+  ],
+
+  /* ── 3. LOGO ──────────────────────────────────────────────
+     File ID Google Drive foto logo.
+     Cara dapat ID: buka link sharing Drive → ambil bagian
+     setelah /d/ dan sebelum /view  (contoh: 1xUsB8z...eySaI)
+     ────────────────────────────────────────────────────────── */
+  logoGdriveId: '1xUsB8zQzV072vqsfi-DnNcojZW_eySaI',
+
+  /* ── 4. RUNNING TEXT (TICKER) ─────────────────────────────
+     Teks yang berjalan di bawah hero.
+     Tambah/hapus item sesuai kebutuhan.
+     ────────────────────────────────────────────────────────── */
+  tickerItems: [
+    '✦ Abibo Studio',
+    '💻 Digital Creator',
+    '🛠 IT Solutions',
+    '🎨 Desain Kreatif',
+    '🚀 Produk Digital Premium',
+    '💡 Inovasi Tanpa Batas',
+    '✅ Garansi 7 Hari',
+  ],
+
+  /* ── 5. FILTER KATEGORI ───────────────────────────────────
+     Chip filter di atas grid produk.
+     value harus sama persis dengan data-category di PRODUCTS.
+     ────────────────────────────────────────────────────────── */
+  filterChips: [
+    { label: 'Semua', value: 'all'   },
+    { label: 'Tools', value: 'tools' },
+    { label: 'Pro',   value: 'pro'   },
+    /* Tambah kategori baru: { label: 'Bundle', value: 'bundle' } */
+  ],
+
+  /* ── 6. FAQ ───────────────────────────────────────────────
+     Pertanyaan & jawaban yang tampil di bagian bawah.
+     Tambah/hapus objek { q, a } sesuai kebutuhan.
+     ────────────────────────────────────────────────────────── */
+  faqs: [
+    { q: 'Bagaimana cara memesan produk?',      a: 'Pilih produk, klik "Pilih Produk", lalu "Pesan Sekarang". Isi nama kamu dan kami langsung merespons!' },
+    { q: 'Apakah ada garansi produk?',          a: 'Ya! Semua produk digital dilengkapi garansi kepuasan 7 hari. Tim kami siap membantu via WhatsApp.' },
+    { q: 'Metode pembayaran apa saja?',         a: 'Transfer bank (BCA, Mandiri, BNI, BRI), e-wallet (GoPay, OVO, DANA, ShopeePay), dan QRIS.' },
+    { q: 'Berapa lama pengiriman?',             a: 'Produk digital dikirim instan via email/WhatsApp setelah pembayaran terkonfirmasi (5–15 menit).' },
+    { q: 'Bisa request produk custom?',         a: 'Tentu! Kami membuka layanan custom development untuk IT dan otomasi. Hubungi kami di WhatsApp.' },
+    /* Tambah FAQ baru: { q: 'Pertanyaan?', a: 'Jawaban.' } */
+  ],
+
+  /* ── 7. SOSIAL MEDIA & KONTAK ─────────────────────────────
+     Ikon dan link sosmed yang tampil di bagian kontak.
+     Hapus baris yang tidak dipakai, tambah sesuai kebutuhan.
+     ────────────────────────────────────────────────────────── */
+  socials: [
+    { icon: '💬', label: 'WhatsApp',  url: 'https://wa.me/62895637290295'          },
+    { icon: '📷', label: 'Instagram', url: 'https://instagram.com/abibostudio'      },
+    { icon: '🎵', label: 'TikTok',    url: 'https://tiktok.com/@abibostudio'        },
+    { icon: '▶️', label: 'YouTube',   url: 'https://youtube.com/@abibostudio'       },
+    { icon: '✉️', label: 'Email',     url: 'mailto:abibostudio@gmail.com'           },
+    /* Tambah sosmed: { icon: '💼', label: 'LinkedIn', url: 'https://linkedin.com/in/...' } */
+  ],
+
+  /* ── 8. FOOTER ────────────────────────────────────────────
+     Teks hak cipta di bagian paling bawah halaman.
+     ────────────────────────────────────────────────────────── */
+  footerCopy: '© 2026 Abibo Studio · Digital Creator, IT & Services · All Rights Reserved',
+
+  /* ── 9. LOADING SCREEN ────────────────────────────────────
+     Berapa lama (ms) loading screen ditampilkan saat pertama buka.
+     Minimal 1500, disarankan 2000-2500.
+     ────────────────────────────────────────────────────────── */
+  loadingDuration: 2200,
+};
+
+/* ════════════════════════════════════════════════════════════
+   ██████████████████████████████████████████████████████████
+   ███                                                      ███
+   ███         DATA PRODUK — TAMBAH/EDIT PRODUK DI SINI     ███
+   ███                                                      ███
+   ███  Cara tambah produk baru:                            ███
+   ███  1. Copy satu objek { } di bawah                     ███
+   ███  2. Paste setelah koma terakhir sebelum ];           ███
+   ███  3. Ganti semua nilai sesuai produk baru             ███
+   ███  4. Pastikan id unik (tidak ada yang sama)           ███
+   ███                                                      ███
+   ██████████████████████████████████████████████████████████
+   ════════════════════════════════════════════════════════════ */
+const PRODUCTS = [
+
+  /* ── PRODUK 1 ───────────────────────────────────────────── */
+  {
+    id: '1',                    /* ⚠ Unik, jangan duplikat                        */
+    name: 'Link Shortcut',      /* Nama produk yang tampil di kartu               */
+    category: 'tools',          /* Harus cocok dengan filterChips di SITE_CONFIG  */
+
+    /* HARGA — diskon % dihitung otomatis dari selisih harga */
+    priceNormal: 50000,         /* Harga sebelum diskon (coret)                   */
+    priceSale:   29000,         /* Harga setelah diskon (tampil besar)            */
+    /* Jika tidak ada diskon, isi priceNormal = priceSale   */
+
+    rating: 5,                  /* Bintang 1–5                                    */
+
+    /* Deskripsi singkat (muncul di kartu, max ~3 baris)    */
+    descShort: 'Tool canggih untuk mempersingkat URL panjang menjadi link yang rapi, mudah dibagikan, dan mudah diingat. Dilengkapi fitur tracking klik, QR code generator, dan dashboard analitik sederhana.',
+
+    /* Deskripsi lengkap (muncul di modal detail)           */
+    descFull: 'Link Shortcut adalah solusi lengkap untuk manajemen URL Anda. Fitur utama: pemendek URL instan, QR Code otomatis, statistik klik real-time, custom alias URL, dan ekspor data. Dibangun dengan teknologi modern yang memastikan kecepatan dan keandalan tinggi.',
+
+    /* Fitur untuk tabel perbandingan — pisahkan dengan |   */
+    features: 'Pemendek URL|QR Code Generator|Analitik Klik|Custom Alias|Ekspor Data',
+
+    /* Badge di pojok kiri foto kartu — kosongkan jika tidak perlu */
+    badge1: '✦ New',            /* Badge atas (warna ungu)                        */
+    badge2: '🔥 Sale',          /* Badge bawah (warna merah) — hapus '' jika tidak ada */
+
+    /* FOTO PRODUK — File ID Google Drive, pisahkan dengan koma
+       Cara dapat ID: buka link sharing → ambil ID dari URL  */
+    imageIds: [
+      '13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu',   /* Foto 1 */
+      '157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg',   /* Foto 2 */
+      /* Tambah foto: 'FILE_ID_FOTO_3',       */
+    ],
+
+    /* FLYER detail produk — 1 gambar, File ID Google Drive
+       Kosongkan string '' jika tidak ada flyer             */
+    flyerId: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',
+
+    /* VIDEO demo — ID YouTube saja (bukan full URL)
+       Contoh: dari https://youtube.com/watch?v=qeIWJkN76e0 → ambil 'qeIWJkN76e0'
+       Kosongkan string '' jika tidak ada video             */
+    youtubeId: 'qeIWJkN76e0',
+  },
+
+  /* ── PRODUK 2 ───────────────────────────────────────────── */
+  {
+    id: '2',
+    name: 'Link Shortcut Pro',
+    category: 'pro',
+    priceNormal: 75000,
+    priceSale:   49000,
+    rating: 5,
+    descShort: 'Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.',
+    descFull: 'Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun.',
+    features: 'Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics',
+    badge1: '⚡ Pro',
+    badge2: '🔥 Sale',
+    imageIds: [
+      '157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg',
+      '13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu',
+    ],
+    flyerId: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',
+    youtubeId: 'qeIWJkN76e0',
+  },
+
+ /* ── PRODUK 3 ───────────────────────────────────────────── */
+  {
+    id: '3',
+    name: 'Kasir',
+    category: 'pro',
+    priceNormal: 100000,
+    priceSale:   79000,
+    rating: 5,
+    descShort: 'Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.',
+    descFull: 'Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun.',
+    features: 'Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics',
+    badge1: '⚡ Pro',
+    badge2: '🔥 Sale',
+    imageIds: [
+      '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
+      '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
+    ],
+    flyerId: '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
+    youtubeId: 'qeIWJkN76e0',
+  },
+
+/* ── PRODUK 4 ───────────────────────────────────────────── */
+  {
+    id: '4',
+    name: 'Laundry',
+    category: 'pro',
+    priceNormal: 100000,
+    priceSale:   79000,
+    rating: 4,
+    descShort: 'Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.',
+    descFull: 'Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun.',
+    features: 'Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics',
+    badge1: '⚡ Pro',
+    badge2: '🔥 Sale',
+    imageIds: [
+      '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
+      '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
+    ],
+    flyerId: '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
+    youtubeId: 'qeIWJkN76e0',
+  },
+
+/* ── PRODUK 5 ───────────────────────────────────────────── */
+  {
+    id: '5',
+    name: 'Landing Page',
+    category: 'pro',
+    priceNormal: 100000,
+    priceSale:   79000,
+    rating: 4,
+    descShort: 'Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.',
+    descFull: 'Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun.',
+    features: 'Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics',
+    badge1: '⚡ Pro',
+    badge2: '🔥 Sale',
+    imageIds: [
+      '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
+      '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
+    ],
+    flyerId: '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
+    youtubeId: 'qeIWJkN76e0',
+  },
+
+/* ── PRODUK 6 ───────────────────────────────────────────── */
+  {
+    id: '6',
+    name: 'Money Manager',
+    category: 'pro',
+    priceNormal: 75000,
+    priceSale:   39000,
+    rating: 5,
+    descShort: 'Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.',
+    descFull: 'Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun.',
+    features: 'Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics',
+    badge1: '⚡ Pro',
+    badge2: '🔥 Sale',
+    imageIds: [
+      '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
+      '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
+    ],
+    flyerId: '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
+    youtubeId: 'qeIWJkN76e0',
+  }
+
+  /* ── TAMBAH PRODUK BARU DI BAWAH INI ───────────────────────
+     Copy salah satu blok { } di atas, paste di sini, lalu edit.
+     ─────────────────────────────────────────────────────────── */
+
+];
+
+/* shortcut agar kode lama tetap jalan */
+const WA_NUMBER = SITE_CONFIG.waNumber;
 
 /* ============================================================
    LOADING SCREEN
    ============================================================ */
 window.addEventListener('load', () => {
+  // Render loading logo dari config
+  document.querySelector('.loading-logo').textContent = SITE_CONFIG.brandName;
   setTimeout(() => {
     document.getElementById('loading-screen').classList.add('hidden');
     initParticles();
     initGalleries();
     revealOnScroll();
-  }, 2200);
+  }, SITE_CONFIG.loadingDuration);
 });
 
 /* ============================================================
@@ -870,9 +1018,141 @@ function initParticles() {
    ============================================================ */
 (function(){
   const track = document.getElementById('tickerTrack');
-  const html = TICKER_ITEMS.map(t=>`<span class="ticker-item">${t}</span>`).join('');
+  const html = SITE_CONFIG.tickerItems.map(t=>`<span class="ticker-item">${t}</span>`).join('');
   track.innerHTML = html+html;
 })();
+
+/* ============================================================
+   RENDER PAGE — semua elemen di-generate dari SITE_CONFIG & PRODUCTS
+   ============================================================ */
+function renderPage() {
+
+  /* ── NAV ── */
+  document.querySelectorAll('.nav-logo-text').forEach(el => el.textContent = SITE_CONFIG.brandName);
+  const navLogo = document.querySelector('.nav-logo img');
+  if (navLogo) navLogo.src = `https://drive.google.com/thumbnail?id=${SITE_CONFIG.logoGdriveId}&sz=w200`;
+  const navWa = document.querySelector('.nav-wa-btn');
+  if (navWa) { navWa.textContent = SITE_CONFIG.navWaLabel; navWa.href = `https://wa.me/${SITE_CONFIG.waNumber}`; }
+
+  /* ── LOADING LOGO ── */
+  const ll = document.querySelector('.loading-logo');
+  if (ll) ll.textContent = SITE_CONFIG.brandName;
+
+  /* ── HERO ── */
+  const badge = document.querySelector('.hero-badge');
+  if (badge) badge.innerHTML = `<span></span> ${SITE_CONFIG.heroBadgeText}`;
+  const title = document.querySelector('.hero-title');
+  if (title) title.innerHTML = `${SITE_CONFIG.heroTitle}<br><span class="gradient-text">${SITE_CONFIG.heroTitleAccent}</span>`;
+  const sub = document.querySelector('.hero-sub');
+  if (sub) sub.textContent = SITE_CONFIG.heroSubtitle;
+  const statsWrap = document.querySelector('.hero-stats');
+  if (statsWrap) {
+    statsWrap.innerHTML = SITE_CONFIG.heroStats.map((s,i) =>
+      (i>0 ? '<div class="hero-divider"></div>' : '') +
+      `<div class="hero-stat"><div class="hero-stat-num">${s.num}</div><div class="hero-stat-label">${s.label}</div></div>`
+    ).join('');
+  }
+
+  /* ── FILTER CHIPS ── */
+  const chipsWrap = document.querySelector('.filter-chips');
+  if (chipsWrap) {
+    chipsWrap.innerHTML = SITE_CONFIG.filterChips.map((c,i) =>
+      `<button class="filter-chip${i===0?' active':''}" data-cat="${c.value}" onclick="setFilter('${c.value}',this)">${c.label}</button>`
+    ).join('');
+  }
+
+  /* ── PRODUCTS GRID ── */
+  const grid = document.getElementById('productsGrid');
+  if (grid) {
+    grid.innerHTML = PRODUCTS.map(p => {
+      /* Hitung diskon otomatis */
+      const hasDiscount = p.priceNormal > p.priceSale;
+      const discountPct = hasDiscount ? Math.round((1 - p.priceSale / p.priceNormal) * 100) : 0;
+      const fmtPrice = n => 'Rp ' + n.toLocaleString('id-ID');
+
+      const priceHtml = `
+        <div class="card-price-row">
+          <div class="price-current">${fmtPrice(p.priceSale)}</div>
+          ${hasDiscount ? `<div class="price-original">${fmtPrice(p.priceNormal)}</div>` : ''}
+          ${hasDiscount ? `<div class="price-discount">-${discountPct}%</div>` : ''}
+        </div>`;
+
+      const badgeHtml = `<div class="gallery-badge">
+        ${p.badge1 ? `<span class="badge badge-new">${p.badge1}</span>` : ''}
+        ${p.badge2 ? `<span class="badge badge-sale">${p.badge2}</span>` : ''}
+      </div>`;
+
+      return `
+      <div class="product-card reveal" id="card-${p.id}"
+        data-id="${p.id}"
+        data-name="${p.name}"
+        data-category="${p.category}"
+        data-price="${p.priceSale}"
+        data-original-price="${p.priceNormal}"
+        data-desc="${p.descShort}"
+        data-desc-full="${p.descFull}"
+        data-rating="${p.rating}"
+        data-youtube="${p.youtubeId || ''}"
+        data-flyer="${p.flyerId || ''}"
+        data-images="${(p.imageIds||[]).join(',')}"
+        data-features="${p.features || ''}">
+
+        <div class="card-gallery">
+          <div class="gallery-slides" id="slides-${p.id}"></div>
+          <button class="gallery-nav gallery-prev" onclick="changeSlide('${p.id}',-1)">‹</button>
+          <button class="gallery-nav gallery-next" onclick="changeSlide('${p.id}',1)">›</button>
+          <div class="gallery-dots" id="dots-${p.id}"></div>
+          ${badgeHtml}
+        </div>
+        <div class="card-select-indicator" onclick="toggleSelect('${p.id}')">✓</div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div class="card-name">${p.name}</div>
+            <div class="star-rating" id="stars-${p.id}"></div>
+          </div>
+          <p class="card-desc">${p.descShort}</p>
+          ${priceHtml}
+          <div class="card-actions">
+            <button class="btn-detail" onclick="openDetail('${p.id}')">Lihat Detail Produk <span class="btn-icon">→</span></button>
+            <div class="btn-row">
+              <button class="btn-select" id="btn-select-${p.id}" onclick="toggleSelect('${p.id}')">☐ Pilih Produk</button>
+              <button class="btn-wishlist" id="btn-wish-${p.id}" title="Wishlist" onclick="toggleWishlist('${p.id}')">🤍</button>
+              <button class="btn-compare-card" title="Bandingkan" onclick="toggleCompare('${p.id}')">⚖</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + `
+      <!-- ═══════════════════════════════════════════════════════
+           TAMBAH PRODUK BARU: edit array PRODUCTS di atas ↑
+           Cukup copy satu objek { } dan isi datanya. Selesai!
+           ═══════════════════════════════════════════════════════ -->`;
+  }
+
+  /* ── FAQ ── */
+  const faqList = document.querySelector('.faq-list');
+  if (faqList) {
+    faqList.innerHTML = SITE_CONFIG.faqs.map(f => `
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">${f.q}<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">${f.a}</div>
+      </div>`).join('');
+  }
+
+  /* ── SOCIALS ── */
+  const socialGrid = document.querySelector('.social-grid');
+  if (socialGrid) {
+    socialGrid.innerHTML = SITE_CONFIG.socials.map(s =>
+      `<a href="${s.url}" target="_blank" class="social-link"><span class="social-icon">${s.icon}</span> ${s.label}</a>`
+    ).join('');
+  }
+
+  /* ── FOOTER ── */
+  const footerCopy = document.querySelector('.footer-copy');
+  if (footerCopy) footerCopy.textContent = SITE_CONFIG.footerCopy;
+  const footerLogo = document.querySelector('.footer-logo');
+  if (footerLogo) footerLogo.textContent = SITE_CONFIG.brandName;
+}
 
 /* ============================================================
    THEME
@@ -1419,6 +1699,7 @@ function shareProduct(id) {
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
+  renderPage();   // render semua konten dari SITE_CONFIG & PRODUCTS
   revealOnScroll();
 });
 </script>
