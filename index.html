@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -422,8 +422,150 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 .modal-h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:20px}
 
 /* ============================================================
-   SCROLL REVEAL
+   RIGHT NAV PANEL
    ============================================================ */
+/* ============================================================
+   RIGHT NAV — wrapper approach (toggle + panel dalam 1 container)
+   ============================================================ */
+
+/* Wrapper: fixed di kanan tengah layar */
+.side-nav-wrap {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* Toggle — selalu terlihat di paling atas */
+.side-nav-toggle {
+  width: 44px;
+  height: 36px;
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: -3px 0 14px var(--shadow-color);
+  flex-shrink: 0;
+  transition: height var(--transition), box-shadow var(--transition);
+}
+.side-nav-toggle:hover {
+  height: 42px;
+  box-shadow: -5px 0 18px var(--shadow-color);
+}
+.side-nav-toggle .toggle-icon {
+  transition: transform 0.4s ease;
+  display: block;
+  line-height: 1;
+}
+/* Saat panel hidden, panah berbalik */
+.side-nav-wrap.hidden .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Panel — slide out saat hidden, toggle TETAP di tempat */
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  transition: transform var(--transition-slow), opacity var(--transition-slow);
+  transform: translateX(0);
+  opacity: 1;
+}
+.side-nav-wrap.hidden .side-nav {
+  transform: translateX(calc(100% + 8px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+.side-nav-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.side-nav-label {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 10px 0 0 10px;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  transition: max-width 0.35s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.25s ease,
+              padding 0.35s ease;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+}
+.side-nav-item:hover .side-nav-label,
+.side-nav-item.active .side-nav-label {
+  max-width: 160px;
+  opacity: 1;
+  padding: 0 14px;
+}
+
+.side-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  flex-shrink: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: -2px 2px 10px rgba(0,0,0,0.07);
+}
+/* Karena toggle ada di atas, semua btn tidak perlu radius atas */
+.side-nav-item:first-child .side-nav-btn { border-radius: 0; }
+.side-nav-item:last-child  .side-nav-btn { border-radius: 0 0 0 10px; }
+
+.side-nav-item:hover .side-nav-btn,
+.side-nav-item.active .side-nav-btn {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+  box-shadow: -4px 4px 18px var(--shadow-color);
+}
+.side-nav-item.active .side-nav-btn {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border-color: transparent;
+}
+
+@media(max-width: 600px) {
+  .side-nav-wrap { display: none; }
+}
+
+
 .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
@@ -477,7 +619,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
       <button class="nav-icon-btn wishlist-btn" id="wishlistNavBtn" title="Wishlist" onclick="openWishlist()">
         🤍 <span class="wishlist-count" id="wishlistCount">0</span>
       </button>
-      <button class="nav-icon-btn" id="themeToggle" title="Ganti tema" onclick="toggleTheme()">🌙</button>
+      <button class="nav-icon-btn" id="themeToggle" title="Ganti tema" onclick="toggleTheme()">☀️</button>
       <a href="#" target="_blank" class="nav-wa-btn"></a>
     </div>
   </div>
@@ -646,6 +788,18 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
   <button class="cart-clear" title="Hapus semua" onclick="clearCart()">✕</button>
 </div>
 
+<!-- RIGHT NAV PANEL — toggle + panel dalam 1 wrapper -->
+<div class="side-nav-wrap" id="sideNavWrap">
+  <!-- Toggle selalu di kiri -->
+  <button class="side-nav-toggle" id="sideNavToggle" onclick="toggleSideNav()" title="Tampilkan / Sembunyikan navigasi">
+    <span class="toggle-icon">‹</span>
+  </button>
+  <!-- Panel item di kanan toggle -->
+  <div class="side-nav" id="sideNav">
+    <!-- diisi oleh renderPage() dari SITE_CONFIG.sideNav -->
+  </div>
+</div>
+
 <!-- SCROLL TOP -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
@@ -707,9 +861,11 @@ const SITE_CONFIG = {
     '✦ Abibo Studio',
     '💻 Digital Creator',
     '🛠 IT Solutions',
+    '⚡ Otomasi & RPA',
     '🎨 Desain Kreatif',
     '🚀 Produk Digital Premium',
     '💡 Inovasi Tanpa Batas',
+    '📦 Pengiriman Instan',
     '✅ Garansi 7 Hari',
   ],
 
@@ -753,7 +909,20 @@ const SITE_CONFIG = {
   /* ── 8. FOOTER ────────────────────────────────────────────
      Teks hak cipta di bagian paling bawah halaman.
      ────────────────────────────────────────────────────────── */
-  footerCopy: '© 2026 Abibo Studio · Digital Creator, IT & Services · All Rights Reserved',
+  /* ── 10. PANEL NAVIGASI KANAN ────────────────────────────────
+     Tombol navigasi yang muncul di sisi kanan halaman.
+     href = id section yang dituju (harus ada id="..." di HTML).
+     Hapus / tambah item sesuai kebutuhan.
+     ────────────────────────────────────────────────────────── */
+  sideNav: [
+    { icon: '🏠', label: 'Beranda',  href: '#'        },
+    { icon: '🛍', label: 'Produk',   href: '#products' },
+    { icon: '❓', label: 'FAQ',      href: '#faq'      },
+    { icon: '📲', label: 'Kontak',   href: '#contact'  },
+    /* Tambah navigasi: { icon: '📦', label: 'Bundle', href: '#bundle' } */
+  ],
+
+  footerCopy: '© 2025 Abibo Studio · Digital Creator, IT & Services · All Rights Reserved',
 
   /* ── 9. LOADING SCREEN ────────────────────────────────────
      Berapa lama (ms) loading screen ditampilkan saat pertama buka.
@@ -842,7 +1011,11 @@ const PRODUCTS = [
     youtubeId: 'qeIWJkN76e0',
   },
 
- /* ── PRODUK 3 ───────────────────────────────────────────── */
+  /* ── TAMBAH PRODUK BARU DI BAWAH INI ───────────────────────
+     Copy salah satu blok { } di atas, paste di sini, lalu edit.
+     ─────────────────────────────────────────────────────────── */
+
+  /* ── PRODUK 3 ───────────────────────────────────────────── */
   {
     id: '3',
     name: 'Kasir',
@@ -863,7 +1036,7 @@ const PRODUCTS = [
     youtubeId: 'qeIWJkN76e0',
   },
 
-/* ── PRODUK 4 ───────────────────────────────────────────── */
+  /* ── PRODUK 4 ───────────────────────────────────────────── */
   {
     id: '4',
     name: 'Laundry',
@@ -884,7 +1057,7 @@ const PRODUCTS = [
     youtubeId: 'qeIWJkN76e0',
   },
 
-/* ── PRODUK 5 ───────────────────────────────────────────── */
+  /* ── PRODUK 5 ───────────────────────────────────────────── */
   {
     id: '5',
     name: 'Landing Page',
@@ -905,7 +1078,7 @@ const PRODUCTS = [
     youtubeId: 'qeIWJkN76e0',
   },
 
-/* ── PRODUK 6 ───────────────────────────────────────────── */
+  /* ── PRODUK 6 ───────────────────────────────────────────── */
   {
     id: '6',
     name: 'Money Manager',
@@ -924,11 +1097,7 @@ const PRODUCTS = [
     ],
     flyerId: '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
     youtubeId: 'qeIWJkN76e0',
-  }
-
-  /* ── TAMBAH PRODUK BARU DI BAWAH INI ───────────────────────
-     Copy salah satu blok { } di atas, paste di sini, lalu edit.
-     ─────────────────────────────────────────────────────────── */
+  },
 
 ];
 
@@ -1147,6 +1316,16 @@ function renderPage() {
     ).join('');
   }
 
+  /* ── SIDE NAV ── */
+  const sideNav = document.getElementById('sideNav');
+  if (sideNav && SITE_CONFIG.sideNav) {
+    sideNav.innerHTML = SITE_CONFIG.sideNav.map((item, i) => `
+      <div class="side-nav-item" id="sidenav-${i}" onclick="sideNavClick('${item.href}')">
+        <div class="side-nav-label">${item.label}</div>
+        <button class="side-nav-btn" title="${item.label}">${item.icon}</button>
+      </div>`).join('');
+  }
+
   /* ── FOOTER ── */
   const footerCopy = document.querySelector('.footer-copy');
   if (footerCopy) footerCopy.textContent = SITE_CONFIG.footerCopy;
@@ -1157,7 +1336,7 @@ function renderPage() {
 /* ============================================================
    THEME
    ============================================================ */
-let isDark = true;
+let isDark = false;
 function toggleTheme() {
   isDark = !isDark;
   document.documentElement.setAttribute('data-theme', isDark?'dark':'light');
@@ -1168,8 +1347,62 @@ function toggleTheme() {
 
 
 /* ============================================================
-   SCROLL
+   SIDE NAV — klik & active tracking
    ============================================================ */
+let sideNavVisible = true;
+
+function toggleSideNav() {
+  sideNavVisible = !sideNavVisible;
+  document.getElementById('sideNavWrap').classList.toggle('hidden', !sideNavVisible);
+  try { localStorage.setItem('abibo_sidenav', sideNavVisible ? '1' : '0'); } catch(e) {}
+}
+
+// Restore preferensi saat load
+(function() {
+  try {
+    const saved = localStorage.getItem('abibo_sidenav');
+    if (saved === '0') {
+      sideNavVisible = false;
+      // will be applied after DOM ready via renderPage init
+      document.addEventListener('DOMContentLoaded', () => {
+        const wrap = document.getElementById('sideNavWrap');
+        if (wrap) wrap.classList.add('hidden');
+      });
+    }
+  } catch(e) {}
+})();
+
+
+function sideNavClick(href) {
+  if (href === '#') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    const target = document.querySelector(href);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function updateSideNav() {
+  if (!SITE_CONFIG.sideNav) return;
+
+  /* Active section highlight */
+  const sections = ['', 'products', 'faq', 'contact']; // same order as sideNav
+  let activeIdx = 0;
+  sections.forEach((id, i) => {
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) activeIdx = i;
+  });
+
+  SITE_CONFIG.sideNav.forEach((_, i) => {
+    const item = document.getElementById(`sidenav-${i}`);
+    if (item) item.classList.toggle('active', i === activeIdx);
+  });
+}
+
+window.addEventListener('scroll', updateSideNav, { passive: true });
+
+
 const scrollTopBtn = document.getElementById('scrollTop');
 window.addEventListener('scroll', () => {
   scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
