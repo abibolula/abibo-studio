@@ -57,23 +57,19 @@ ul{list-style:none}
   position: fixed; top:0; left:0; z-index:99999;
   width:10px; height:10px; border-radius:50%;
   background: var(--brand-primary);
-  pointer-events:none; transform:translate(-50%,-50%);
-  transition: transform 0.1s, background 0.2s, width 0.2s, height 0.2s;
+  pointer-events:none;
+  will-change: transform;
   mix-blend-mode: screen;
+  transition: scale 0.15s;
 }
 .cursor-ring {
   position:fixed; top:0; left:0; z-index:99998;
   width:36px; height:36px; border-radius:50%;
   border:2px solid rgba(124,58,237,0.55);
-  pointer-events:none; transform:translate(-50%,-50%);
-  transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  pointer-events:none;
+  will-change: transform;
+  transition: scale 0.3s;
 }
-.cursor-trail {
-  position:fixed; z-index:99997; border-radius:50%;
-  pointer-events:none; transform:translate(-50%,-50%);
-  opacity:0; animation:trailFade 0.6s ease forwards;
-}
-@keyframes trailFade{0%{opacity:0.5;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.2)}}
 body:not([data-theme]) .cursor-dot,.cursor-dot{display:block}
 
 /* ============================================================
@@ -108,15 +104,15 @@ body:not([data-theme]) .cursor-dot,.cursor-dot{display:block}
    MORPHING BLOB
    ============================================================ */
 .blob-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);animation:blobMorph 12s ease-in-out infinite alternate}
-.blob-1{width:500px;height:500px;background:rgba(124,58,237,0.15);top:-150px;left:-150px;animation-delay:0s}
-.blob-2{width:380px;height:380px;background:rgba(6,182,212,0.12);bottom:-100px;right:-100px;animation-delay:-4s}
-.blob-3{width:250px;height:250px;background:rgba(245,158,11,0.1);top:40%;left:40%;animation-delay:-8s}
+.blob{position:absolute;border-radius:50%;filter:blur(50px);animation:blobMorph 14s ease-in-out infinite alternate;will-change:transform;contain:strict}
+.blob-1{width:420px;height:420px;background:rgba(124,58,237,0.12);top:-150px;left:-150px;animation-delay:0s}
+.blob-2{width:320px;height:320px;background:rgba(6,182,212,0.09);bottom:-100px;right:-100px;animation-delay:-5s}
+.blob-3{width:220px;height:220px;background:rgba(245,158,11,0.08);top:40%;left:40%;animation-delay:-9s}
 @keyframes blobMorph{
-  0%{transform:translate(0,0) scale(1) rotate(0deg);border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
-  33%{transform:translate(30px,-20px) scale(1.08) rotate(60deg);border-radius:30% 60% 70% 40%/50% 60% 30% 60%}
-  66%{transform:translate(-20px,30px) scale(0.95) rotate(120deg);border-radius:70% 30% 50% 50%/30% 50% 70% 50%}
-  100%{transform:translate(10px,10px) scale(1.05) rotate(180deg);border-radius:50% 50% 30% 70%/60% 40% 60% 40%}
+  0%  {transform:translate(0,0) scale(1)}
+  33% {transform:translate(25px,-18px) scale(1.07)}
+  66% {transform:translate(-18px,25px) scale(0.96)}
+  100%{transform:translate(10px,10px) scale(1.04)}
 }
 
 /* ============================================================
@@ -249,8 +245,8 @@ body:not([data-theme]) .cursor-dot,.cursor-dot{display:block}
 .btn-detail::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);opacity:0;transition:var(--transition)}
 .btn-detail:hover::before{opacity:1}
 .btn-detail:hover{transform:translateY(-2px);box-shadow:0 10px 25px var(--shadow-color)}
-.btn-detail .btn-icon{font-size:18px;animation:bounceRight 1.5s ease infinite}
-@keyframes bounceRight{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.btn-detail .btn-icon{font-size:18px;display:inline-block;will-change:transform;animation:bounceRight 2s ease infinite}
+@keyframes bounceRight{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
 .btn-row{display:flex;gap:8px}
 .btn-select{flex:1;padding:11px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:13px;font-weight:600;transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:6px}
 .btn-select:hover{border-color:var(--brand-success);color:var(--brand-success)}
@@ -778,6 +774,13 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
   .side-nav-wrap { display: none; }
 }
 
+
+/* Performance hints — GPU compositor layers */
+#particle-canvas{will-change:contents}
+.product-card{will-change:transform,box-shadow}
+.side-nav-wrap{will-change:transform}
+.side-nav{will-change:transform,opacity}
+.cart-bar{will-change:bottom}
 
 .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -1347,33 +1350,28 @@ window.addEventListener('load', () => {
 const cursorDot = document.getElementById('cursorDot');
 const cursorRing = document.getElementById('cursorRing');
 let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-const trailColors = ['rgba(124,58,237,0.6)','rgba(6,182,212,0.6)','rgba(245,158,11,0.5)'];
-let trailIdx = 0;
 
+// Gunakan CSS transform (GPU) bukan left/top (layout trigger)
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX; mouseY = e.clientY;
-  cursorDot.style.left = mouseX + 'px';
-  cursorDot.style.top = mouseY + 'px';
-  // Trail particle
-  if (Math.random() > 0.65) {
-    const t = document.createElement('div');
-    t.className = 'cursor-trail';
-    const sz = Math.random() * 8 + 4;
-    t.style.cssText = `left:${mouseX}px;top:${mouseY}px;width:${sz}px;height:${sz}px;background:${trailColors[trailIdx % 3]}`;
-    trailIdx++;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 600);
-  }
-});
+  cursorDot.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
+}, { passive: true });
+
 (function animRing() {
   ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) *.12;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top = ringY + 'px';
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.transform = `translate(calc(${ringX}px - 50%), calc(${ringY}px - 50%))`;
   requestAnimationFrame(animRing);
 })();
-document.addEventListener('mousedown', () => { cursorDot.style.transform = 'translate(-50%,-50%) scale(1.8)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
-document.addEventListener('mouseup', () => { cursorDot.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; });
+
+document.addEventListener('mousedown', () => {
+  cursorDot.style.scale = '1.8';
+  cursorRing.style.scale = '0.7';
+}, { passive: true });
+document.addEventListener('mouseup', () => {
+  cursorDot.style.scale = '1';
+  cursorRing.style.scale = '1';
+}, { passive: true });
 
 /* ============================================================
    PARTICLES
@@ -1383,26 +1381,75 @@ function initParticles() {
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
   const COLORS = ['rgba(124,58,237,','rgba(6,182,212,','rgba(245,158,11,'];
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize(); window.addEventListener('resize', resize);
-  function P() { this.x=Math.random()*W; this.y=Math.random()*H; this.r=Math.random()*2.5+0.5; this.dx=(Math.random()-.5)*.5; this.dy=(Math.random()-.5)*.5; this.color=COLORS[Math.floor(Math.random()*3)]; this.alpha=Math.random()*.5+.1; }
-  for(let i=0;i<80;i++) particles.push(new P());
-  function draw() {
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+
+  // Debounce resize agar tidak hammer-call setiap pixel
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
+  });
+
+  function P() {
+    this.x=Math.random()*W; this.y=Math.random()*H;
+    this.r=Math.random()*2+0.5;
+    this.dx=(Math.random()-.5)*.4; this.dy=(Math.random()-.5)*.4;
+    this.color=COLORS[Math.floor(Math.random()*3)];
+    this.alpha=Math.random()*.4+.1;
+  }
+
+  // ↓ Kurangi partikel dari 80 → 35 (drastis kurangi beban render)
+  const COUNT = window.innerWidth < 768 ? 15 : 35;
+  for(let i=0;i<COUNT;i++) particles.push(new P());
+
+  // Precompute neighbor pairs sekali, update posisi saja setiap frame
+  let lastTime = 0;
+  function draw(ts) {
+    // Throttle ke ~30fps untuk partikel (tidak perlu 60fps)
+    if (ts - lastTime < 33) { requestAnimationFrame(draw); return; }
+    lastTime = ts;
+
     ctx.clearRect(0,0,W,H);
-    particles.forEach(p => {
+
+    // Update posisi
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i];
       p.x+=p.dx; p.y+=p.dy;
       if(p.x<0||p.x>W) p.dx*=-1;
       if(p.y<0||p.y>H) p.dy*=-1;
+    }
+
+    // Gambar titik
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i];
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fillStyle=p.color+p.alpha+')'; ctx.fill();
-      particles.forEach(q => {
-        const d=Math.hypot(p.x-q.x,p.y-q.y);
-        if(d<100){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.strokeStyle=p.color+(0.08*(1-d/100))+')'; ctx.lineWidth=.5; ctx.stroke(); }
-      });
-    });
+    }
+
+    // Gambar garis — hanya cek separuh kombinasi (i<j), skip setiap 2 frame
+    ctx.lineWidth=.5;
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x;
+        const dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<90){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=particles[i].color+(0.06*(1-d/90))+')';
+          ctx.stroke();
+        }
+      }
+    }
     requestAnimationFrame(draw);
   }
-  draw();
+  requestAnimationFrame(draw);
 }
 
 /* ============================================================
@@ -1630,7 +1677,7 @@ const scrollTopBtn = document.getElementById('scrollTop');
 window.addEventListener('scroll', () => {
   scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
   revealOnScroll();
-});
+}, { passive: true });
 function revealOnScroll() {
   document.querySelectorAll('.reveal').forEach(el => {
     if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('visible');
