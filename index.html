@@ -5,1260 +5,1341 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abibo Studio — Digital Creator & IT Solutions</title>
 <style>
-/* ===================================================
-   ROOT VARIABLES — DARK & LIGHT THEME
-=================================================== */
+/* ============================================================
+   CSS VARIABLES — EASY TO CUSTOMIZE
+   ============================================================ */
 :root {
-  --bg:#080c14; --bg2:#0d1220; --card:#111827; --card2:#151d2e;
-  --accent:#00d4ff; --accent2:#7c3aed; --accent3:#f59e0b;
-  --text:#f0f4ff; --text2:#94a3b8; --text3:#64748b;
-  --border:rgba(0,212,255,0.15); --border2:rgba(124,58,237,0.2);
-  --glow:0 0 40px rgba(0,212,255,0.15); --glow2:0 0 60px rgba(124,58,237,0.2);
-  --radius:16px; --radius2:24px;
-  --shadow:0 20px 60px rgba(0,0,0,0.5);
-  --nav-bg:rgba(8,12,20,0.88);
-  --skeleton1:#1a2236; --skeleton2:#222e45;
+  --brand-primary: #7C3AED;
+  --brand-secondary: #06B6D4;
+  --brand-accent: #F59E0B;
+  --brand-danger: #EF4444;
+  --brand-success: #10B981;
+  --bg-base: #0A0A0F;
+  --bg-surface: #12121A;
+  --bg-card: #1A1A26;
+  --bg-card-hover: #1E1E30;
+  --bg-glass: rgba(26,26,38,0.85);
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #475569;
+  --border-color: rgba(124,58,237,0.22);
+  --shadow-color: rgba(124,58,237,0.18);
+  --overlay: rgba(0,0,0,0.75);
+  --font-display: 'Georgia','Times New Roman',serif;
+  --font-body: 'Trebuchet MS','Segoe UI',sans-serif;
+  --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-xl: 32px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 [data-theme="light"] {
-  --bg:#f0f4ff; --bg2:#e8edf8; --card:#ffffff; --card2:#f8faff;
-  --text:#0f172a; --text2:#475569; --text3:#94a3b8;
-  --border:rgba(0,180,220,0.2); --border2:rgba(100,50,200,0.15);
-  --nav-bg:rgba(240,244,255,0.92);
-  --shadow:0 20px 60px rgba(0,0,0,0.12);
-  --skeleton1:#e2e8f0; --skeleton2:#cbd5e1;
+  --bg-base: #F0F4FF; --bg-surface: #FFFFFF; --bg-card: #FFFFFF;
+  --bg-card-hover: #F5F3FF; --bg-glass: rgba(255,255,255,0.88);
+  --text-primary: #0F0A1E; --text-secondary: #4B5563; --text-muted: #9CA3AF;
+  --border-color: rgba(124,58,237,0.18); --shadow-color: rgba(124,58,237,0.12);
+  --overlay: rgba(0,0,0,0.55);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none;transition:background 0.4s,color 0.4s}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:2px}
+body{font-family:var(--font-body);background:var(--bg-base);color:var(--text-primary);overflow-x:hidden;transition:background var(--transition-slow),color var(--transition-slow)}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg-base)}
+::-webkit-scrollbar-thumb{background:var(--brand-primary);border-radius:3px}
 
-/* ===================================================
+/* ============================================================
    CUSTOM CURSOR
-=================================================== */
-.cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;z-index:99999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:screen}
-.cursor-ring{width:36px;height:36px;border:1.5px solid rgba(0,212,255,0.5);border-radius:50%;position:fixed;z-index:99998;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
-.cursor.hover{width:20px;height:20px;background:var(--accent3)}
-.cursor-ring.hover{width:56px;height:56px;border-color:var(--accent3)}
-[data-theme="light"] .cursor{mix-blend-mode:multiply}
-
-/* ===================================================
-   BG EFFECTS
-=================================================== */
-.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;transition:opacity 0.4s}
-[data-theme="light"] .bg-grid{opacity:0.4}
-.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px)}
-.bg-orb-1{width:600px;height:600px;background:var(--accent2);top:-200px;right:-200px;opacity:0.2}
-.bg-orb-2{width:400px;height:400px;background:var(--accent);bottom:-100px;left:-150px;opacity:0.15}
-#particleCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* ===================================================
-   STICKY PROMO BAR
-=================================================== */
-.promo-bar{
-  background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3),var(--accent),var(--accent2));
-  background-size:300% 100%;
-  animation:promoBg 6s linear infinite;
-  color:#fff;text-align:center;padding:9px 40px;
-  font-size:0.82rem;font-weight:700;letter-spacing:0.05em;
-  position:relative;z-index:200;
+   ============================================================ */
+.cursor-dot {
+  position: fixed; top:0; left:0; z-index:99999;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--brand-primary);
+  pointer-events:none; transform:translate(-50%,-50%);
+  transition: transform 0.1s, background 0.2s, width 0.2s, height 0.2s;
+  mix-blend-mode: screen;
 }
-@keyframes promoBg{0%{background-position:0% 50%}100%{background-position:100% 50%}}
-.promo-bar-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.25);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
-.promo-bar-close:hover{background:rgba(255,255,255,0.45)}
-.promo-bar.hidden{display:none}
+.cursor-ring {
+  position:fixed; top:0; left:0; z-index:99998;
+  width:36px; height:36px; border-radius:50%;
+  border:2px solid rgba(124,58,237,0.55);
+  pointer-events:none; transform:translate(-50%,-50%);
+  transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
+}
+.cursor-trail {
+  position:fixed; z-index:99997; border-radius:50%;
+  pointer-events:none; transform:translate(-50%,-50%);
+  opacity:0; animation:trailFade 0.6s ease forwards;
+}
+@keyframes trailFade{0%{opacity:0.5;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.2)}}
+body:not([data-theme]) .cursor-dot,.cursor-dot{display:block}
 
-/* ===================================================
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+#loading-screen {
+  position:fixed; inset:0; z-index:99990;
+  background:var(--bg-base);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loading-logo {
+  font-family:var(--font-display); font-size:36px; font-weight:700;
+  background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary),var(--brand-accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:300% 300%; animation:gradientShift 2s ease infinite;
+  letter-spacing:-0.02em;
+}
+.loading-bar-wrap{width:200px;height:4px;background:var(--bg-surface);border-radius:2px;overflow:hidden}
+.loading-bar{height:100%;background:linear-gradient(90deg,var(--brand-primary),var(--brand-secondary));border-radius:2px;animation:loadBar 2s cubic-bezier(0.4,0,0.2,1) forwards}
+@keyframes loadBar{0%{width:0}60%{width:75%}100%{width:100%}}
+.loading-text{font-size:13px;color:var(--text-muted);letter-spacing:0.1em;animation:loadingDots 1.2s ease infinite}
+@keyframes loadingDots{0%{opacity:0.4}50%{opacity:1}100%{opacity:0.4}}
+
+/* ============================================================
+   PARTICLE CANVAS
+   ============================================================ */
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45}
+
+/* ============================================================
+   MORPHING BLOB
+   ============================================================ */
+.blob-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);animation:blobMorph 12s ease-in-out infinite alternate}
+.blob-1{width:500px;height:500px;background:rgba(124,58,237,0.15);top:-150px;left:-150px;animation-delay:0s}
+.blob-2{width:380px;height:380px;background:rgba(6,182,212,0.12);bottom:-100px;right:-100px;animation-delay:-4s}
+.blob-3{width:250px;height:250px;background:rgba(245,158,11,0.1);top:40%;left:40%;animation-delay:-8s}
+@keyframes blobMorph{
+  0%{transform:translate(0,0) scale(1) rotate(0deg);border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
+  33%{transform:translate(30px,-20px) scale(1.08) rotate(60deg);border-radius:30% 60% 70% 40%/50% 60% 30% 60%}
+  66%{transform:translate(-20px,30px) scale(0.95) rotate(120deg);border-radius:70% 30% 50% 50%/30% 50% 70% 50%}
+  100%{transform:translate(10px,10px) scale(1.05) rotate(180deg);border-radius:50% 50% 30% 70%/60% 40% 60% 40%}
+}
+
+/* ============================================================
    TICKER
-=================================================== */
-.ticker-wrap{background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent2));padding:10px 0;overflow:hidden;position:relative;z-index:10}
-.ticker-track{display:flex;width:max-content;animation:ticker 30s linear infinite}
-.ticker-track:hover{animation-play-state:paused}
-.ticker-item{white-space:nowrap;padding:0 40px;font-size:.8rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:12px}
-.ticker-item::after{content:'◆';color:rgba(255,255,255,0.5)}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+   ============================================================ */
+.ticker-wrap{position:relative;z-index:10;background:linear-gradient(90deg,var(--brand-primary),var(--brand-secondary));padding:10px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-block;animation:ticker 30s linear infinite}
+.ticker-wrap:hover .ticker-track{animation-play-state:paused}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.05em;color:#fff;padding:0 40px;text-transform:uppercase}
+.ticker-item::after{content:'✦';margin-left:40px;opacity:0.5}
 
-/* ===================================================
+/* ============================================================
    NAV
-=================================================== */
-nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;transition:background 0.4s}
-.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.nav-logo img{height:38px;width:auto;object-fit:contain}
-.nav-logo-fallback{height:38px;width:38px;background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;color:#fff}
-.nav-brand{font-size:1.2rem;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.02em}
-.nav-links{display:flex;align-items:center;gap:8px}
-.nav-links a{color:var(--text2);text-decoration:none;font-size:.88rem;font-weight:500;padding:8px 16px;border-radius:8px;transition:all .2s}
-.nav-links a:hover{color:var(--accent);background:rgba(0,212,255,0.08)}
-.nav-cta{background:linear-gradient(135deg,var(--accent2),var(--accent))!important;color:#fff!important;padding:8px 20px!important;font-weight:700!important;border-radius:8px}
-.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,212,255,0.3)!important}
+   ============================================================ */
+.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:var(--bg-glass);border-bottom:1px solid var(--border-color);padding:0 24px;transition:background var(--transition-slow)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:12px}
+.nav-logo img{width:44px;height:44px;border-radius:10px;object-fit:contain}
+.nav-logo-text{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.02em;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.nav-icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-color);background:var(--bg-card);font-size:16px;transition:var(--transition);color:var(--text-primary)}
+.nav-icon-btn:hover{background:var(--brand-primary);color:#fff;transform:scale(1.08)}
 
-/* Theme Toggle */
-.theme-toggle{background:var(--card2);border:1px solid var(--border);border-radius:50px;width:52px;height:28px;cursor:pointer;position:relative;transition:all .3s;flex-shrink:0}
-.theme-toggle-knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));transition:transform .3s;display:flex;align-items:center;justify-content:center;font-size:.7rem}
-[data-theme="light"] .theme-toggle-knob{transform:translateX(24px)}
+.nav-icon-btn.wishlist-btn{position:relative}
+.wishlist-count{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--brand-danger);color:#fff;font-size:10px;font-weight:700;display:none;align-items:center;justify-content:center}
+.wishlist-count.show{display:flex}
+.nav-wa-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:700;transition:var(--transition);letter-spacing:0.03em}
+.nav-wa-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,211,102,0.35)}
 
-/* ===================================================
+/* ============================================================
    HERO
-=================================================== */
-.hero{position:relative;z-index:1;padding:100px 5% 80px;text-align:center;overflow:hidden}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.1);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:.78rem;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .6s ease both}
-.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;animation:fadeUp .6s .1s ease both}
-.hero h1 .gradient{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{max-width:600px;margin:20px auto 0;color:var(--text2);font-size:1.1rem;line-height:1.7;animation:fadeUp .6s .2s ease both}
-.hero-stats{display:flex;justify-content:center;gap:40px;margin:48px auto;animation:fadeUp .6s .3s ease both}
-.stat{text-align:center}
-.stat-num{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat-label{font-size:.78rem;color:var(--text3);font-weight:500;letter-spacing:.05em;margin-top:2px}
-.hero-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:2px;margin:0 auto 60px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+   ============================================================ */
+.hero{position:relative;z-index:1;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:100px;padding:8px 20px;font-size:13px;font-weight:600;color:var(--brand-secondary);margin-bottom:28px;backdrop-filter:blur(10px);animation:fadeDown 0.8s ease both}
+.hero-badge span{width:8px;height:8px;border-radius:50%;background:var(--brand-success);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.3)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero-title{font-family:var(--font-display);font-size:clamp(40px,7vw,88px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;animation:fadeUp 0.9s 0.1s ease both}
+.gradient-text{background:linear-gradient(135deg,var(--brand-primary) 0%,var(--brand-secondary) 50%,var(--brand-accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradientShift 4s ease infinite}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--text-secondary);max-width:560px;line-height:1.65;margin-bottom:40px;animation:fadeUp 0.9s 0.2s ease both}
+.hero-stats{display:flex;align-items:center;gap:40px;animation:fadeUp 0.9s 0.3s ease both;flex-wrap:wrap;justify-content:center}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:var(--font-display);font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat-label{font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+.hero-divider{width:1px;height:40px;background:var(--border-color)}
 
-/* ===================================================
+/* ============================================================
+   SEARCH & FILTER BAR
+   ============================================================ */
+.search-bar-wrap{position:relative;z-index:2;padding:0 24px;margin-top:-20px;margin-bottom:40px}
+.search-bar-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.search-input-wrap{position:relative;flex:1;min-width:220px}
+.search-input-wrap .search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-muted);pointer-events:none}
+.search-input{width:100%;padding:14px 16px 14px 44px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);color:var(--text-primary);font-size:15px;font-family:var(--font-body);transition:var(--transition)}
+.search-input:focus{outline:none;border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(124,58,237,0.15)}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap}
+.filter-chip{padding:10px 18px;border:1.5px solid var(--border-color);border-radius:100px;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--bg-card);transition:var(--transition);cursor:pointer}
+.filter-chip:hover,.filter-chip.active{background:var(--brand-primary);border-color:var(--brand-primary);color:#fff}
+.sort-select{padding:12px 16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);color:var(--text-primary);font-size:14px;font-family:var(--font-body);cursor:pointer;transition:var(--transition)}
+.sort-select:focus{outline:none;border-color:var(--brand-primary)}
+.compare-btn{display:flex;align-items:center;gap:8px;padding:12px 18px;border:1.5px solid var(--border-color);border-radius:var(--radius-md);font-size:13px;font-weight:700;color:var(--text-secondary);background:var(--bg-card);transition:var(--transition)}
+.compare-btn:hover,.compare-btn.ready{border-color:var(--brand-accent);color:var(--brand-accent)}
+.compare-btn .compare-count{background:var(--brand-accent);color:#0A0A0F;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+/* ============================================================
    SECTION
-=================================================== */
-.section{position:relative;z-index:1;padding:40px 5% 80px;max-width:1400px;margin:0 auto}
-.section-header{text-align:center;margin-bottom:48px}
-.section-label{font-size:.75rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-.02em;line-height:1.1}
-.section-desc{color:var(--text2);margin-top:12px;font-size:1rem}
+   ============================================================ */
+.section{position:relative;z-index:1;padding:80px 24px}
+.section-inner{max-width:1280px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--brand-primary);margin-bottom:12px}
+.section-title{font-family:var(--font-display);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-0.02em;margin-bottom:12px}
+.section-desc{color:var(--text-secondary);font-size:16px;max-width:480px;margin:0 auto;line-height:1.65}
+.no-results{text-align:center;padding:60px 24px;color:var(--text-muted);font-size:16px;display:none}
+.no-results.show{display:block}
 
-/* ===================================================
-   RATING STARS
-=================================================== */
-.card-rating{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.stars{display:flex;gap:2px}
-.star{font-size:.9rem;color:#d1d5db}
-.star.filled{color:var(--accent3)}
-.star.half{position:relative;color:#d1d5db}
-.star.half::before{content:'★';position:absolute;left:0;top:0;width:50%;overflow:hidden;color:var(--accent3)}
-.rating-count{font-size:.75rem;color:var(--text3)}
-
-/* ===================================================
-   PRODUCT GRID
-=================================================== */
+/* ============================================================
+   PRODUCTS GRID
+   ============================================================ */
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:28px}
+.product-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);overflow:hidden;transition:var(--transition);position:relative;transform-style:preserve-3d;will-change:transform}
+.product-card.hidden{display:none}
+.product-card:hover{border-color:var(--brand-primary);box-shadow:0 20px 60px var(--shadow-color);background:var(--bg-card-hover)}
+.product-card.selected{border-color:var(--brand-success);box-shadow:0 0 0 3px rgba(16,185,129,0.25),0 20px 60px rgba(16,185,129,0.1)}
+.product-card.wishlisted .btn-wishlist{color:var(--brand-danger)!important;background:rgba(239,68,68,0.1)!important;border-color:var(--brand-danger)!important}
+.product-card.compare-marked{outline:3px solid var(--brand-accent);outline-offset:2px}
 
-/* ===================================================
-   PRODUCT CARD
-=================================================== */
-.product-card{
-  background:var(--card);border:1px solid var(--border2);border-radius:var(--radius2);
-  overflow:visible;position:relative;cursor:pointer;
-  transition:border-color .3s,box-shadow .3s;
-  transform-style:preserve-3d;
-  will-change:transform;
-}
-.product-card-inner{border-radius:var(--radius2);overflow:hidden;background:var(--card);transition:background .4s}
-.product-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.04),rgba(124,58,237,0.04));opacity:0;transition:opacity .3s;pointer-events:none;z-index:0;border-radius:var(--radius2)}
-.product-card:hover{box-shadow:0 32px 80px rgba(0,0,0,0.5),var(--glow2);border-color:rgba(124,58,237,0.5)}
-.product-card:hover::before{opacity:1}
-.product-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 32px 80px rgba(0,0,0,0.4),0 0 40px rgba(0,212,255,0.2)}
-
-/* Checkbox */
-.card-checkbox{position:absolute;top:14px;right:14px;z-index:10;width:28px;height:28px;background:rgba(0,0,0,0.5);border:2px solid rgba(255,255,255,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
-.product-card.selected .card-checkbox{background:var(--accent);border-color:var(--accent)}
-.card-checkbox svg{opacity:0;transition:opacity .2s}
-.product-card.selected .card-checkbox svg{opacity:1}
+.card-select-indicator{position:absolute;top:16px;right:16px;z-index:10;width:28px;height:28px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:14px;transition:var(--transition);cursor:pointer}
+.product-card.selected .card-select-indicator{background:var(--brand-success);border-color:var(--brand-success);color:#fff}
 
 /* Gallery */
-.card-gallery{position:relative;height:240px;overflow:hidden;background:var(--bg2)}
-.gallery-slides{display:flex;height:100%;transition:transform .4s cubic-bezier(.25,.46,.45,.94)}
+.card-gallery{position:relative;height:220px;overflow:hidden;background:var(--bg-surface)}
+.gallery-slides{display:flex;height:100%;transition:transform 0.5s ease}
 .gallery-slide{min-width:100%;height:100%;position:relative;overflow:hidden}
-.gallery-slide img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;cursor:zoom-in}
-.product-card:hover .gallery-slide img{transform:scale(1.05)}
-
-/* Skeleton */
-.skeleton-slide{min-width:100%;height:100%;background:var(--skeleton1);position:relative;overflow:hidden}
-.skeleton-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--skeleton2),transparent);animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-
-/* Gallery Nav */
-.gallery-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .2s;backdrop-filter:blur(8px);opacity:0;pointer-events:none}
-.card-gallery:hover .gallery-btn{opacity:1;pointer-events:all}
-.gallery-btn:hover{background:var(--accent2);border-color:var(--accent2)}
-.gallery-prev{left:10px}
-.gallery-next{right:10px}
+.gallery-slide img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;cursor:zoom-in}
+.gallery-slide img:hover{transform:scale(1.05)}
+.skeleton-img{width:100%;height:100%;background:linear-gradient(90deg,var(--bg-surface) 25%,var(--bg-card-hover) 50%,var(--bg-surface) 75%);background-size:200% 100%;animation:skeleton 1.5s ease infinite;position:absolute;top:0;left:0}
+@keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.gallery-slide img.loaded+.skeleton-img{display:none}
+.gallery-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.55);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;transition:var(--transition);backdrop-filter:blur(4px)}
+.gallery-nav:hover{background:var(--brand-primary)}
+.gallery-prev{left:10px}.gallery-next{right:10px}
 .gallery-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5}
-.gallery-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all .2s}
-.gallery-dot.active{background:var(--accent);width:18px;border-radius:3px}
-
-/* Badges */
-.card-badges{position:absolute;top:14px;left:14px;z-index:5;display:flex;flex-direction:column;gap:5px}
-.badge{background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:3px 10px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-.badge-new{color:var(--accent);border-color:rgba(0,212,255,0.3)}
-.badge-hot{color:var(--accent3);border-color:rgba(245,158,11,0.3)}
+.gallery-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);transition:var(--transition);cursor:pointer}
+.gallery-dot.active{background:#fff;width:18px;border-radius:3px}
+.gallery-badge{position:absolute;top:12px;left:12px;z-index:5;display:flex;flex-direction:column;gap:5px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:0.04em;backdrop-filter:blur(6px)}
+.badge-new{background:rgba(124,58,237,0.85);color:#fff}
+.badge-sale{background:rgba(239,68,68,0.85);color:#fff}
 
 /* Card Body */
-.card-body{padding:22px 22px 0;position:relative;z-index:1}
-.card-tag{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:6px}
-.card-name{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px;color:var(--text)}
-.card-desc{font-size:.88rem;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.card-body{padding:22px}
+.card-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.card-name{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-0.01em;line-height:1.3}
+.star-rating{display:flex;gap:2px;flex-shrink:0;margin-top:2px}
+.star{font-size:14px}.star.filled{color:var(--brand-accent)}.star.empty{color:var(--text-muted)}
+.card-desc{font-size:13.5px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-price-row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.price-current{font-family:var(--font-display);font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.price-original{font-size:15px;color:var(--text-muted);text-decoration:line-through}
+.price-discount{background:rgba(239,68,68,0.15);color:var(--brand-danger);padding:3px 8px;border-radius:6px;font-size:12px;font-weight:700}
+.card-actions{display:flex;flex-direction:column;gap:10px}
+.btn-detail{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-md);font-size:14px;font-weight:700;letter-spacing:0.03em;transition:var(--transition);position:relative;overflow:hidden}
+.btn-detail::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);opacity:0;transition:var(--transition)}
+.btn-detail:hover::before{opacity:1}
+.btn-detail:hover{transform:translateY(-2px);box-shadow:0 10px 25px var(--shadow-color)}
+.btn-detail .btn-icon{font-size:18px;animation:bounceRight 1.5s ease infinite}
+@keyframes bounceRight{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.btn-row{display:flex;gap:8px}
+.btn-select{flex:1;padding:11px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:13px;font-weight:600;transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-select:hover{border-color:var(--brand-success);color:var(--brand-success)}
+.product-card.selected .btn-select{background:rgba(16,185,129,0.1);border-color:var(--brand-success);color:var(--brand-success)}
+.btn-wishlist{width:42px;height:42px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-secondary);transition:var(--transition)}
+.btn-wishlist:hover{border-color:var(--brand-danger);color:var(--brand-danger)}
+.btn-compare-card{width:42px;height:42px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-secondary);transition:var(--transition)}
+.btn-compare-card:hover{border-color:var(--brand-accent);color:var(--brand-accent)}
 
-/* Price */
-.card-price{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:10px 14px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.12);border-radius:10px}
-.price-sale{font-size:1.35rem;font-weight:900;letter-spacing:-.02em;background:linear-gradient(135deg,#00d4ff,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.price-original{font-size:.85rem;color:var(--text3);text-decoration:line-through}
-.price-discount{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;margin-left:auto;white-space:nowrap}
-.modal-price{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;padding:14px 18px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:12px}
-.modal-price .price-sale{font-size:1.7rem}
-.modal-price .price-original{font-size:.95rem}
+/* ============================================================
+   WISHLIST MODAL
+   ============================================================ */
+.wishlist-overlay{display:none;position:fixed;inset:0;background:var(--overlay);z-index:800;backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px}
+.wishlist-overlay.active{display:flex}
+.wishlist-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);padding:36px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;position:relative}
+@keyframes modalIn{from{opacity:0;transform:scale(0.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
-/* Card Actions */
-.card-actions{padding:14px 22px 20px;display:flex;gap:8px;border-top:1px solid rgba(255,255,255,0.05);position:relative;z-index:1;flex-wrap:wrap}
-.btn{border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:.83rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2);padding:9px 12px;flex:1}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,0.06)}
-.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;padding:9px 14px;flex:1.5}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,0.4)}
-.btn-share{background:transparent;border:1px solid var(--border);color:var(--text3);padding:9px 10px}
-.btn-share:hover{border-color:var(--accent3);color:var(--accent3)}
+/* ============================================================
+   COMPARE MODAL
+   ============================================================ */
+.compare-overlay{display:none;position:fixed;inset:0;background:var(--overlay);z-index:810;backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px}
+.compare-overlay.active{display:flex}
+.compare-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);padding:36px;width:100%;max-width:860px;max-height:90vh;overflow-y:auto;overflow-x:auto;animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;position:relative}
+.compare-table{width:100%;border-collapse:collapse;min-width:500px}
+.compare-table th,.compare-table td{padding:14px 18px;border-bottom:1px solid var(--border-color);text-align:left;font-size:14px;vertical-align:top}
+.compare-table th{color:var(--text-muted);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;width:140px;font-weight:600}
+.compare-table td{font-size:14px;color:var(--text-primary)}
+.compare-table tr:last-child th,.compare-table tr:last-child td{border-bottom:none}
+.compare-col-header{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--brand-primary)}
 
-/* ===================================================
-   ORDER PANEL (floating)
-=================================================== */
-.order-panel{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
-.order-panel-inner{pointer-events:all;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px 20px;min-width:280px;box-shadow:var(--shadow),var(--glow);opacity:0;display:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
-.order-panel-inner.visible{display:block;opacity:1}
-.order-panel-title{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.order-panel-items{margin-bottom:14px;max-height:140px;overflow-y:auto}
-.order-panel-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--text2);padding:4px 0}
-.order-panel-item::before{content:'✓';color:var(--accent);font-weight:700}
-.btn-wa{width:100%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
-.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.4)}
-.wa-float-wrap{position:relative;pointer-events:all}
-.wa-float{width:56px;height:56px;background:linear-gradient(135deg,#25D366,#128C7E);border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.6rem;box-shadow:0 8px 30px rgba(37,211,102,0.5);transition:all .2s;color:#fff;animation:floatBounce 3s ease-in-out infinite}
-.wa-float:hover{transform:scale(1.1)!important;animation:none}
-@keyframes floatBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.selected-count{background:var(--accent3);color:#000;border-radius:50%;width:20px;height:20px;font-size:.7rem;font-weight:900;display:none;align-items:center;justify-content:center;position:absolute;top:-4px;right:-4px}
+/* ============================================================
+   ORDER MODAL with PROGRESS BAR
+   ============================================================ */
+.modal-overlay{display:none;position:fixed;inset:0;background:var(--overlay);z-index:1000;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px}
+.modal-overlay.active{display:flex}
+.modal-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);padding:40px;width:100%;max-width:480px;animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-surface);color:var(--text-secondary);font-size:18px;transition:var(--transition)}
+.modal-close:hover{background:var(--brand-danger);color:#fff}
+.modal-title{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:6px}
+.modal-subtitle{font-size:14px;color:var(--text-secondary);margin-bottom:24px}
 
-/* Scroll To Top */
-.scroll-top{position:fixed;bottom:24px;left:24px;z-index:200;width:46px;height:46px;background:var(--card2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--text2);transition:all .3s;opacity:0;transform:translateY(20px);pointer-events:none;box-shadow:var(--shadow)}
-.scroll-top.visible{opacity:1;transform:translateY(0);pointer-events:all}
-.scroll-top:hover{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+/* Progress Steps */
+.progress-steps{display:flex;align-items:center;margin-bottom:28px;gap:0}
+.progress-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative}
+.progress-step:not(:last-child)::after{content:'';position:absolute;top:17px;left:50%;width:100%;height:2px;background:var(--border-color);z-index:0;transition:background 0.4s ease}
+.progress-step.done:not(:last-child)::after{background:var(--brand-primary)}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:2px solid var(--border-color);background:var(--bg-surface);color:var(--text-muted);transition:var(--transition);z-index:1;position:relative}
+.progress-step.active .step-circle{border-color:var(--brand-primary);background:var(--brand-primary);color:#fff}
+.progress-step.done .step-circle{border-color:var(--brand-primary);background:var(--brand-primary);color:#fff}
+.step-label{font-size:10px;font-weight:600;color:var(--text-muted);text-align:center;letter-spacing:0.04em;white-space:nowrap}
+.progress-step.active .step-label,.progress-step.done .step-label{color:var(--brand-primary)}
 
-/* ===================================================
-   TOAST NOTIFICATION
-=================================================== */
-.toast-container{position:fixed;top:84px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px 18px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:10px;min-width:220px;pointer-events:all;box-shadow:var(--shadow);transform:translateX(120%);opacity:0;transition:transform .35s cubic-bezier(.34,1.2,.64,1),opacity .35s}
-.toast.show{transform:translateX(0);opacity:1}
-.toast-icon{font-size:1.1rem}
-.toast-text{flex:1;color:var(--text)}
-.toast-add{border-left:3px solid var(--accent)}
-.toast-remove{border-left:3px solid #ef4444}
-.toast-info{border-left:3px solid var(--accent3)}
-.toast-success{border-left:3px solid #22c55e}
+.modal-order-list{margin-bottom:20px}
+.modal-order-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg-surface);border-radius:var(--radius-sm);margin-bottom:8px;font-size:14px}
+.modal-order-item strong{color:var(--brand-primary)}
+.modal-label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;letter-spacing:0.03em}
+.modal-input{width:100%;padding:14px 18px;background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:15px;font-family:var(--font-body);transition:var(--transition);margin-bottom:20px}
+.modal-input:focus{outline:none;border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(124,58,237,0.15)}
+.modal-wa-btn{width:100%;padding:16px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:var(--radius-md);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--transition)}
+.modal-wa-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,0.4)}
 
-/* ===================================================
-   PHOTO ZOOM OVERLAY
-=================================================== */
-.zoom-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
-.zoom-overlay.open{opacity:1;pointer-events:all}
-.zoom-img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:12px;transform:scale(0.9);transition:transform .35s cubic-bezier(.34,1.2,.64,1);user-select:none}
-.zoom-overlay.open .zoom-img{transform:scale(1)}
-.zoom-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.zoom-close:hover{background:rgba(255,0,0,0.3)}
-.zoom-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.4rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.zoom-nav:hover{background:var(--accent2)}
-.zoom-nav-prev{left:16px}
-.zoom-nav-next{right:16px}
-.zoom-counter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);font-size:.8rem;background:rgba(0,0,0,0.5);padding:4px 12px;border-radius:20px}
+/* ============================================================
+   DETAIL MODAL
+   ============================================================ */
+.detail-overlay{display:none;position:fixed;inset:0;background:var(--overlay);z-index:900;backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px}
+.detail-overlay.active{display:flex}
+.detail-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);width:100%;max-width:860px;max-height:90vh;overflow-y:auto;animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;position:relative}
+.detail-box::-webkit-scrollbar{width:4px}
+.detail-box::-webkit-scrollbar-thumb{background:var(--brand-primary)}
+.detail-close{position:sticky;top:16px;float:right;width:36px;height:36px;border-radius:50%;background:var(--bg-surface);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:18px;transition:var(--transition);z-index:10;margin:16px 16px 0 0;flex-shrink:0}
+.detail-close:hover{background:var(--brand-danger);color:#fff}
+.detail-inner{padding:32px;padding-top:8px}
+.detail-name{font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:12px}
+.detail-desc{color:var(--text-secondary);line-height:1.75;font-size:15px;margin-bottom:24px}
+.detail-section-title{font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:var(--brand-primary);margin-bottom:14px}
+.detail-flyer{width:100%;border-radius:var(--radius-md);overflow:hidden;margin-bottom:28px;border:1px solid var(--border-color)}
+.detail-flyer img{width:100%}
+.detail-video{width:100%;aspect-ratio:16/9;border-radius:var(--radius-md);overflow:hidden;margin-bottom:28px;border:1px solid var(--border-color)}
+.detail-video iframe{width:100%;height:100%;border:none}
+.detail-footer{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.detail-price-row{display:flex;align-items:center;gap:10px}
+.detail-btn-order{flex:1;padding:14px 24px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:var(--radius-md);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--transition);min-width:180px}
+.detail-btn-order:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(37,211,102,0.35)}
 
-/* ===================================================
-   MODAL (Product Detail)
-=================================================== */
-.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius2);max-width:860px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.92) translateY(20px);transition:transform .35s cubic-bezier(.34,1.2,.64,1)}
-.modal-overlay.open .modal{transform:scale(1) translateY(0)}
-.modal-header{padding:24px 28px 0;display:flex;justify-content:space-between;align-items:flex-start}
-.modal-close{background:rgba(255,255,255,0.08);border:none;color:var(--text2);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-.modal-close:hover{background:rgba(255,0,0,0.2);color:#fff}
-.modal-body{padding:20px 28px 28px}
-.modal-gallery{border-radius:var(--radius);overflow:hidden;margin-bottom:24px;height:320px;position:relative}
-.modal-gallery .gallery-btn{opacity:.8;pointer-events:all;width:40px;height:40px;font-size:1.1rem}
-.modal-name{font-size:1.8rem;font-weight:900;letter-spacing:-.03em;color:var(--text);margin-bottom:8px}
-.modal-tag{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:14px}
-.modal-desc{color:var(--text2);font-size:.95rem;line-height:1.75;margin-bottom:24px}
-.modal-section-title{font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.modal-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.flyer-img{width:100%;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
-.flyer-img img{width:100%;height:auto;display:block}
-.flyer-img-placeholder{width:100%;height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg2);gap:10px;color:var(--text3);font-size:.85rem}
-.flyer-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:rgba(0,212,255,0.08);border:1px solid var(--border);color:var(--accent);text-decoration:none;font-size:.85rem;font-weight:600;margin-top:10px;transition:all .2s}
-.flyer-link:hover{background:rgba(0,212,255,0.15);transform:translateY(-1px)}
-.modal-flyer-section{margin-bottom:24px}
-.yt-embed-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:var(--radius);overflow:hidden;background:#000;border:1px solid var(--border)}
-.yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-.modal-actions{display:flex;gap:10px;margin-top:24px}
-.btn-wa-modal{flex:1;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
-.btn-wa-modal:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,0.4)}
-.btn-select-modal{flex:1;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
-.btn-select-modal:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,0.4)}
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2000;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+.lightbox.active{display:flex}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:var(--radius-md);animation:lightboxIn 0.3s ease both;cursor:default}
+@keyframes lightboxIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+.lightbox-close{position:fixed;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;transition:var(--transition);backdrop-filter:blur(6px)}
+.lightbox-close:hover{background:var(--brand-danger)}
 
-/* ===================================================
-   PROMO POPUP
-=================================================== */
-.promo-popup-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s}
-.promo-popup-overlay.open{opacity:1;pointer-events:all}
-.promo-popup{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius2);max-width:460px;width:100%;padding:40px 36px;text-align:center;position:relative;transform:scale(.9) translateY(20px);transition:transform .4s cubic-bezier(.34,1.2,.64,1)}
-.promo-popup-overlay.open .promo-popup{transform:scale(1) translateY(0)}
-.promo-popup-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.08);border:none;color:var(--text2);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.promo-popup-close:hover{background:rgba(255,0,0,0.2);color:#fff}
-.promo-popup-emoji{font-size:3rem;margin-bottom:16px}
-.promo-popup-title{font-size:1.6rem;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.promo-popup-desc{color:var(--text2);font-size:.95rem;line-height:1.6;margin-bottom:24px}
-.promo-popup-code{background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(124,58,237,0.1));border:2px dashed var(--accent);border-radius:12px;padding:14px 20px;font-size:1.3rem;font-weight:900;letter-spacing:.15em;color:var(--accent);margin-bottom:20px;cursor:pointer;transition:all .2s}
-.promo-popup-code:hover{background:rgba(0,212,255,0.15)}
-.promo-popup-hint{font-size:.75rem;color:var(--text3);margin-bottom:20px}
+/* ============================================================
+   CART BAR
+   ============================================================ */
+.cart-bar{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);z-index:200;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-xl);padding:16px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);backdrop-filter:blur(20px);transition:bottom 0.5s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;flex-wrap:wrap}
+.cart-bar.visible{bottom:24px}
+.cart-count{width:28px;height:28px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.cart-label{font-size:14px;font-weight:600}
+.cart-total{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--brand-success)}
+.cart-order-btn{padding:11px 22px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:100px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;transition:var(--transition)}
+.cart-order-btn:hover{transform:scale(1.04);box-shadow:0 8px 20px rgba(37,211,102,0.35)}
+.cart-clear{width:36px;height:36px;border-radius:50%;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-muted);transition:var(--transition)}
+.cart-clear:hover{background:rgba(239,68,68,0.15);color:var(--brand-danger)}
 
-/* ===================================================
-   ORDER FORM MODAL
-=================================================== */
-.order-form-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-.order-form-overlay.open{opacity:1;pointer-events:all}
-.order-form-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius2);max-width:420px;width:100%;padding:32px;transform:scale(.92) translateY(16px);transition:transform .35s cubic-bezier(.34,1.2,.64,1)}
-.order-form-overlay.open .order-form-box{transform:scale(1) translateY(0)}
-.order-form-title{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin-bottom:6px;color:var(--text)}
-.order-form-sub{font-size:.85rem;color:var(--text2);margin-bottom:20px;line-height:1.5}
-.form-group{margin-bottom:14px}
-.form-label{font-size:.78rem;font-weight:600;color:var(--text2);letter-spacing:.05em;margin-bottom:6px;display:block}
-.form-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit}
-.form-input:focus{border-color:var(--accent)}
-.form-input::placeholder{color:var(--text3)}
-.form-order-list{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.85rem;color:var(--text2);margin-bottom:16px;max-height:120px;overflow-y:auto;line-height:1.8}
-.btn-form-wa{width:100%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:12px;padding:14px;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-bottom:8px}
-.btn-form-wa:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,211,102,0.4)}
-.btn-form-cancel{width:100%;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:12px;padding:11px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-form-cancel:hover{border-color:var(--accent);color:var(--accent)}
+/* ============================================================
+   SCROLL TOP
+   ============================================================ */
+.scroll-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 8px 20px var(--shadow-color);transition:var(--transition);opacity:0;pointer-events:none;z-index:150}
+.scroll-top.visible{opacity:1;pointer-events:auto}
+.scroll-top:hover{transform:translateY(-4px) scale(1.1)}
 
-/* ===================================================
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast-container{position:fixed;top:80px;right:24px;z-index:500;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px 18px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,0.2);animation:toastIn 0.4s ease both;pointer-events:auto;backdrop-filter:blur(10px);min-width:220px}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.toast.out{animation:toastOut 0.3s ease both}
+@keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
+.toast.success{border-color:var(--brand-success)}
+.toast.error{border-color:var(--brand-danger)}
+.toast.info{border-color:var(--brand-secondary)}
+
+/* ============================================================
+   CONFETTI CANVAS
+   ============================================================ */
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99000;display:none}
+
+
+
+/* ============================================================
    FAQ
-=================================================== */
-.faq-section{position:relative;z-index:1;padding:0 5% 80px;max-width:860px;margin:0 auto}
-.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color .2s}
-.faq-item.open{border-color:var(--accent)}
-.faq-question{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--text);gap:12px;transition:background .2s;background:var(--card)}
-.faq-question:hover{background:var(--card2)}
-.faq-icon{font-size:1.1rem;color:var(--text3);transition:transform .3s,color .2s;flex-shrink:0}
-.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--accent)}
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),padding .3s}
-.faq-answer-inner{padding:0 20px;color:var(--text2);font-size:.9rem;line-height:1.75}
-.faq-item.open .faq-answer{max-height:300px}
-.faq-item.open .faq-answer-inner{padding:4px 20px 18px}
+   ============================================================ */
+.faq-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);overflow:hidden;transition:var(--transition)}
+.faq-item:hover{border-color:var(--brand-primary)}
+.faq-q{width:100%;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;font-size:15px;font-weight:600;color:var(--text-primary);transition:var(--transition)}
+.faq-q:hover{color:var(--brand-primary)}
+.faq-chevron{font-size:12px;transition:transform 0.3s ease;flex-shrink:0}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;font-size:14px;color:var(--text-secondary);line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 18px}
 
-/* ===================================================
-   CONTACT / SOCMED
-=================================================== */
-.contact-section{position:relative;z-index:1;padding:0 5% 80px;max-width:1400px;margin:0 auto}
-.socmed-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:28px}
-.socmed-btn{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:12px;text-decoration:none;font-size:.88rem;font-weight:700;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .25s;min-width:150px;justify-content:center}
-.socmed-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
-.socmed-btn.wa{border-color:rgba(37,211,102,0.3);background:rgba(37,211,102,0.06)}
-.socmed-btn.wa:hover{background:rgba(37,211,102,0.15);border-color:#25D366;color:#25D366}
-.socmed-btn.ig{border-color:rgba(225,48,108,0.3);background:rgba(225,48,108,0.05)}
-.socmed-btn.ig:hover{background:rgba(225,48,108,0.15);border-color:#e1306c;color:#e1306c}
-.socmed-btn.yt{border-color:rgba(255,0,0,0.3);background:rgba(255,0,0,0.05)}
-.socmed-btn.yt:hover{background:rgba(255,0,0,0.15);border-color:#ff0000;color:#ff0000}
-.socmed-btn.tt{border-color:rgba(0,242,234,0.3);background:rgba(0,242,234,0.05)}
-.socmed-btn.tt:hover{background:rgba(0,242,234,0.15);border-color:#00f2ea;color:#00f2ea}
-.socmed-btn.fb{border-color:rgba(24,119,242,0.3);background:rgba(24,119,242,0.05)}
-.socmed-btn.fb:hover{background:rgba(24,119,242,0.15);border-color:#1877f2;color:#1877f2}
-.socmed-btn.tw{border-color:rgba(29,161,242,0.3);background:rgba(29,161,242,0.05)}
-.socmed-btn.tw:hover{background:rgba(29,161,242,0.15);border-color:#1da1f2;color:#1da1f2}
-.socmed-icon{font-size:1.3rem}
-.contact-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius2);padding:48px;text-align:center;margin-bottom:40px}
+/* ============================================================
+   SOCIAL
+   ============================================================ */
+.contact-section{text-align:center}
+.social-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:32px}
+.social-link{display:flex;align-items:center;gap:10px;padding:12px 22px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:100px;font-size:14px;font-weight:600;color:var(--text-secondary);transition:var(--transition)}
+.social-link:hover{border-color:var(--brand-primary);color:var(--text-primary);transform:translateY(-3px);box-shadow:0 8px 20px var(--shadow-color)}
+.social-icon{font-size:20px}
 
-/* ===================================================
+/* ============================================================
    FOOTER
-=================================================== */
-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40px 5%;text-align:center}
-.footer-logo{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-.footer-sub{color:var(--text3);font-size:.83rem;margin-bottom:20px}
-.footer-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.footer-tag{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:.75rem;color:var(--text3)}
-.footer-copy{color:var(--text3);font-size:.78rem}
+   ============================================================ */
+footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padding:40px 24px;text-align:center}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-logo{font-family:var(--font-display);font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.footer-copy{font-size:13px;color:var(--text-muted)}
 
-/* ===================================================
+/* ============================================================
+   MODAL SHARED CLOSE BTN
+   ============================================================ */
+.modal-close-top{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-surface);color:var(--text-secondary);font-size:18px;transition:var(--transition)}
+.modal-close-top:hover{background:var(--brand-danger);color:#fff}
+.modal-h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:20px}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ============================================================
    RESPONSIVE
-=================================================== */
+   ============================================================ */
 @media(max-width:768px){
   .products-grid{grid-template-columns:1fr}
   .hero-stats{gap:24px}
-  .nav-links{display:none}
-  .modal{max-height:95vh}
-  .modal-body{padding:16px 20px 24px}
-  .modal-header{padding:20px 20px 0}
-  .order-panel-inner{min-width:220px}
-  .socmed-grid{gap:10px}
-  .socmed-btn{min-width:130px;padding:10px 14px;font-size:.82rem}
+  .hero-divider{display:none}
+  .cart-bar{padding:12px 16px;gap:10px}
+  .detail-inner{padding:16px}
+  .compare-table th,.compare-table td{padding:10px 12px}
+  .search-bar-inner{gap:8px}
+  .cursor-dot,.cursor-ring{display:none}
 }
-
-/* ===================================================
-   FADE-IN & MISC
-=================================================== */
-.fade-in{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
-.fade-in.visible{opacity:1;transform:translateY(0)}
-.img-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--card2));color:var(--text3);gap:8px;font-size:.8rem}
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cursor"></div>
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- Particle Canvas -->
-<canvas id="particleCanvas"></canvas>
-
-<!-- BG -->
-<div class="bg-grid"></div>
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-
-<!-- Toast Container -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- Scroll To Top -->
-<button class="scroll-top" id="scrollTop" title="Kembali ke atas">↑</button>
-
-<!-- ===================== PROMO BAR ===================== -->
-<div class="promo-bar" id="promoBar">
-  🔥 Flash Sale! Diskon hingga 42% — Gunakan kode: <strong>ABIBO25</strong> saat pesan via WA &nbsp;⚡
-  <button class="promo-bar-close" id="promoBarClose">✕</button>
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="loading-logo">Abibo Studio</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-text">Memuat pengalaman terbaik untuk kamu…</div>
 </div>
 
-<!-- Ticker -->
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- ===================== NAV ===================== -->
-<nav>
-  <a class="nav-logo" href="#">
-    <img id="navLogoImg" src="https://drive.google.com/thumbnail?id=1xUsB8zQzV072vqsfi-DnNcojZW_eySaI&sz=h80" alt="Abibo Studio"
-      onerror="this.style.display='none';document.getElementById('navLogoFallback').style.display='flex'">
-    <div class="nav-logo-fallback" id="navLogoFallback" style="display:none">A</div>
-    <span class="nav-brand">Abibo Studio</span>
-  </a>
-  <nav class="nav-links">
-    <a href="#produk">Produk</a>
-    <a href="#faq">FAQ</a>
-    <a href="#kontak">Kontak</a>
-    <button class="theme-toggle" id="themeToggle" title="Ganti tema">
-      <div class="theme-toggle-knob" id="themeKnob">🌙</div>
-    </button>
-    <a href="https://wa.me/62895637290295" target="_blank" class="nav-cta">💬 Hubungi Kami</a>
-  </nav>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="https://drive.google.com/thumbnail?id=1xUsB8zQzV072vqsfi-DnNcojZW_eySaI&sz=w200" alt="Logo" onerror="this.style.display='none'">
+      <span class="nav-logo-text">Abibo Studio</span>
+    </a>
+    <div class="nav-actions">
+      <button class="nav-icon-btn wishlist-btn" id="wishlistNavBtn" title="Wishlist" onclick="openWishlist()">
+        🤍 <span class="wishlist-count" id="wishlistCount">0</span>
+      </button>
+      <button class="nav-icon-btn" id="themeToggle" title="Ganti tema" onclick="toggleTheme()">🌙</button>
+      <a href="https://wa.me/62895637290295" target="_blank" class="nav-wa-btn">💬 Hubungi</a>
+    </div>
+  </div>
 </nav>
 
-<!-- ===================== HERO ===================== -->
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><div class="hero-badge-dot"></div>Digital Products & IT Solutions</div>
-  <h1>Solusi Digital<br><span class="gradient">Kreatif & Inovatif</span></h1>
-  <p class="hero-sub">Kami menghadirkan produk digital berkualitas tinggi untuk kebutuhan bisnis dan personal Anda. Teknologi modern, desain terbaik.</p>
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-badge"><span></span> Produk Digital Premium · Abibo Studio</div>
+  <h1 class="hero-title">Solusi Digital<br><span class="gradient-text">Kreatif & Inovatif</span></h1>
+  <p class="hero-sub">Kami menghadirkan produk digital berkualitas tinggi di bidang IT, desain, dan otomasi — untuk mendorong produktivitas dan kreativitasmu.</p>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Produk Digital</div></div>
-    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Pelanggan Puas</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Support Aktif</div></div>
-  </div>
-  <div class="hero-divider"></div>
-</section>
-
-<!-- ===================== PRODUCTS ===================== -->
-<section class="section" id="produk">
-  <div class="section-header">
-    <div class="section-label">🛍 Katalog Produk</div>
-    <h2 class="section-title">Produk Digital Unggulan</h2>
-    <p class="section-desc">Klik card untuk memilih, centang beberapa, lalu pesan sekaligus via WhatsApp</p>
-  </div>
-  <div class="products-grid" id="productsGrid"></div>
-</section>
-
-<!-- ===================== FAQ ===================== -->
-<section class="faq-section fade-in" id="faq">
-  <div class="section-header">
-    <div class="section-label">❓ FAQ</div>
-    <h2 class="section-title">Pertanyaan Umum</h2>
-    <p class="section-desc">Jawaban untuk pertanyaan yang sering ditanyakan</p>
-  </div>
-  <div id="faqList"></div>
-</section>
-
-<!-- ===================== KONTAK ===================== -->
-<section class="contact-section fade-in" id="kontak">
-  <div class="contact-card">
-    <div class="section-label" style="margin-bottom:12px">🏢 Tentang & Kontak</div>
-    <h2 style="font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:14px">Abibo Studio</h2>
-    <p style="color:var(--text2);max-width:600px;margin:0 auto;line-height:1.75;font-size:.95rem">
-      Studio kreatif digital berfokus pada <strong style="color:var(--accent)">Digital Creator</strong>,
-      <strong style="color:var(--accent2)">Information Technology</strong>, dan
-      <strong style="color:var(--accent3)">Service</strong>.
-      Kami membantu individu dan bisnis berkembang di era digital.
-    </p>
-    <div class="socmed-grid" id="socmedGrid"></div>
+    <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Produk Digital</div></div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat"><div class="hero-stat-num">200+</div><div class="hero-stat-label">Pelanggan Puas</div></div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat"><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Rating Rata-rata</div></div>
   </div>
 </section>
 
-<!-- ===================== FOOTER ===================== -->
+<!-- SEARCH & FILTER -->
+<div class="search-bar-wrap reveal">
+  <div class="search-bar-inner">
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Cari produk..." oninput="filterProducts()">
+    </div>
+    <div class="filter-chips">
+      <!-- Edit kategori di sini -->
+      <button class="filter-chip active" data-cat="all" onclick="setFilter('all',this)">Semua</button>
+      <button class="filter-chip" data-cat="tools" onclick="setFilter('tools',this)">Tools</button>
+      <button class="filter-chip" data-cat="pro" onclick="setFilter('pro',this)">Pro</button>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="filterProducts()">
+      <option value="default">Urutan Default</option>
+      <option value="price-asc">Harga: Terendah</option>
+      <option value="price-desc">Harga: Tertinggi</option>
+      <option value="rating">Rating Tertinggi</option>
+    </select>
+    <button class="compare-btn" id="compareBtn" onclick="openCompare()">
+      ⚖ Bandingkan <span class="compare-count" id="compareCount">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">✦ Produk Kami</div>
+      <h2 class="section-title">Pilih Produk Digital Terbaik</h2>
+      <p class="section-desc">Klik kartu produk untuk menambah ke keranjang, lalu langsung pesan via WhatsApp!</p>
+    </div>
+
+    <!-- ======================================================
+         PRODUCTS GRID
+         Cara tambah produk: copy satu .product-card, increment id card-X,
+         update semua data-* sesuai produk baru.
+         ====================================================== -->
+    <div class="products-grid" id="productsGrid">
+
+      <!-- CARD 1 — Link Shortcut -->
+      <div class="product-card reveal" id="card-1"
+        data-id="1"
+        data-name="Link Shortcut"
+        data-category="tools"
+        data-price="29000"
+        data-original-price="50000"
+        data-desc="Tool canggih untuk mempersingkat URL panjang menjadi link yang rapi, mudah dibagikan, dan mudah diingat. Dilengkapi fitur tracking klik, QR code generator, dan dashboard analitik sederhana."
+        data-desc-full="Link Shortcut adalah solusi lengkap untuk manajemen URL Anda. Fitur utama: pemendek URL instan, QR Code otomatis, statistik klik real-time, custom alias URL, dan ekspor data. Dibangun dengan teknologi modern yang memastikan kecepatan dan keandalan tinggi."
+        data-rating="5"
+        data-youtube="qeIWJkN76e0"
+        data-flyer="14aV_BMzo0rT19YQV4ymf81tL_sveiWFw"
+        data-images="13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu,157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg"
+        data-features="Pemendek URL|QR Code Generator|Analitik Klik|Custom Alias|Ekspor Data">
+
+        <div class="card-gallery">
+          <div class="gallery-slides" id="slides-1"></div>
+          <button class="gallery-nav gallery-prev" onclick="changeSlide('1',-1)">‹</button>
+          <button class="gallery-nav gallery-next" onclick="changeSlide('1',1)">›</button>
+          <div class="gallery-dots" id="dots-1"></div>
+          <div class="gallery-badge">
+            <span class="badge badge-new">✦ New</span>
+            <span class="badge badge-sale">🔥 Sale</span>
+          </div>
+        </div>
+        <div class="card-select-indicator" onclick="toggleSelect('1')">✓</div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div class="card-name">Link Shortcut</div>
+            <div class="star-rating" id="stars-1"></div>
+          </div>
+          <p class="card-desc">Tool canggih untuk mempersingkat URL panjang menjadi link yang rapi, mudah dibagikan, dan mudah diingat. Dilengkapi fitur tracking klik, QR code generator, dan dashboard analitik sederhana.</p>
+          <div class="card-price-row">
+            <div class="price-current">Rp 29.000</div>
+            <div class="price-original">Rp 50.000</div>
+            <div class="price-discount">-42%</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-detail" onclick="openDetail('1')">Lihat Detail Produk <span class="btn-icon">→</span></button>
+            <div class="btn-row">
+              <button class="btn-select" id="btn-select-1" onclick="toggleSelect('1')">☐ Pilih Produk</button>
+              <button class="btn-wishlist" id="btn-wish-1" title="Wishlist" onclick="toggleWishlist('1')">🤍</button>
+              <button class="btn-compare-card" title="Bandingkan" onclick="toggleCompare('1')">⚖</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 — Link Shortcut Pro -->
+      <div class="product-card reveal" id="card-2"
+        data-id="2"
+        data-name="Link Shortcut Pro"
+        data-category="pro"
+        data-price="49000"
+        data-original-price="75000"
+        data-desc="Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar."
+        data-desc-full="Link Shortcut Pro menghadirkan semua fitur standar plus: custom branded domain, REST API, bulk URL shortener (CSV), team management, advanced analytics dengan heat map, dan dukungan teknis prioritas. Unlimited URL dan unlimited custom alias dalam satu akun."
+        data-rating="5"
+        data-youtube="qeIWJkN76e0"
+        data-flyer="14aV_BMzo0rT19YQV4ymf81tL_sveiWFw"
+        data-images="157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg,13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu"
+        data-features="Custom Domain|REST API|Bulk Shortener|Team Management|Heat Map Analytics">
+
+        <div class="card-gallery">
+          <div class="gallery-slides" id="slides-2"></div>
+          <button class="gallery-nav gallery-prev" onclick="changeSlide('2',-1)">‹</button>
+          <button class="gallery-nav gallery-next" onclick="changeSlide('2',1)">›</button>
+          <div class="gallery-dots" id="dots-2"></div>
+          <div class="gallery-badge">
+            <span class="badge badge-new">⚡ Pro</span>
+            <span class="badge badge-sale">🔥 Sale</span>
+          </div>
+        </div>
+        <div class="card-select-indicator" onclick="toggleSelect('2')">✓</div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div class="card-name">Link Shortcut Pro</div>
+            <div class="star-rating" id="stars-2"></div>
+          </div>
+          <p class="card-desc">Versi Pro dengan fitur lebih lengkap: custom domain, API access, bulk shortener, dan team collaboration. Ideal untuk tim marketing dan agensi digital skala besar.</p>
+          <div class="card-price-row">
+            <div class="price-current">Rp 49.000</div>
+            <div class="price-original">Rp 75.000</div>
+            <div class="price-discount">-35%</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-detail" onclick="openDetail('2')">Lihat Detail Produk <span class="btn-icon">→</span></button>
+            <div class="btn-row">
+              <button class="btn-select" id="btn-select-2" onclick="toggleSelect('2')">☐ Pilih Produk</button>
+              <button class="btn-wishlist" id="btn-wish-2" title="Wishlist" onclick="toggleWishlist('2')">🤍</button>
+              <button class="btn-compare-card" title="Bandingkan" onclick="toggleCompare('2')">⚖</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAMBAH PRODUK BARU DI SINI -->
+      <!-- Copy salah satu card di atas, ganti id="card-3", update data-* -->
+
+    </div>
+    <div class="no-results" id="noResults">😕 Produk tidak ditemukan. Coba kata kunci lain.</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">✦ FAQ</div>
+      <h2 class="section-title">Pertanyaan Umum</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Bagaimana cara memesan produk?<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">Pilih produk, klik "Pilih Produk", lalu "Pesan Sekarang". Isi nama kamu dan kami langsung merespons!</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Apakah ada garansi produk?<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">Ya! Semua produk digital dilengkapi garansi kepuasan 7 hari. Tim kami siap membantu via WhatsApp.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Metode pembayaran apa saja?<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">Transfer bank (BCA, Mandiri, BNI, BRI), e-wallet (GoPay, OVO, DANA, ShopeePay), dan QRIS.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Berapa lama pengiriman?<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">Produk digital dikirim instan via email/WhatsApp setelah pembayaran terkonfirmasi (5–15 menit).</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Bisa request produk custom?<span class="faq-chevron">▼</span></button>
+        <div class="faq-a">Tentu! Kami membuka layanan custom development untuk kebutuhan IT dan otomasi. Hubungi kami di WhatsApp.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-section" id="contact">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">✦ Kontak</div>
+      <h2 class="section-title">Temukan Kami Di</h2>
+      <p class="section-desc">Hubungi kami di platform favorit kamu</p>
+    </div>
+    <div class="social-grid reveal">
+      <a href="https://wa.me/62895637290295" target="_blank" class="social-link"><span class="social-icon">💬</span> WhatsApp</a>
+      <a href="https://instagram.com/abibostudio" target="_blank" class="social-link"><span class="social-icon">📷</span> Instagram</a>
+      <a href="https://tiktok.com/@abibostudio" target="_blank" class="social-link"><span class="social-icon">🎵</span> TikTok</a>
+      <a href="https://youtube.com/@abibostudio" target="_blank" class="social-link"><span class="social-icon">▶️</span> YouTube</a>
+      <a href="mailto:abibostudio@gmail.com" class="social-link"><span class="social-icon">✉️</span> Email</a>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-logo">Abibo Studio</div>
-  <p class="footer-sub">Digital Creator · Information Technology · Service</p>
-  <div class="footer-tags">
-    <span class="footer-tag">Digital Creator</span>
-    <span class="footer-tag">Information Technology</span>
-    <span class="footer-tag">Service</span>
-    <span class="footer-tag">Web Development</span>
-    <span class="footer-tag">Design</span>
+  <div class="footer-inner">
+    <div class="footer-logo">Abibo Studio</div>
+    <p class="footer-copy">© 2025 Abibo Studio · Digital Creator, IT & Services · All Rights Reserved</p>
   </div>
-  <p class="footer-copy">© 2025 Abibo Studio. All rights reserved.</p>
 </footer>
 
-<!-- ===================== ORDER PANEL ===================== -->
-<div class="order-panel" id="orderPanel">
-  <div class="order-panel-inner" id="orderPanelInner">
-    <div class="order-panel-title">📋 Pesanan Anda</div>
-    <div class="order-panel-items" id="orderPanelItems"></div>
-    <button class="btn-wa" id="btnWaOrder">💬 Pesan via WhatsApp</button>
-  </div>
-  <div class="wa-float-wrap">
-    <button class="wa-float" id="waFloat" title="Chat WhatsApp">💬</button>
-    <div class="selected-count" id="selectedCount"></div>
+<!-- DETAIL MODAL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetailOnBg(event)">
+  <div class="detail-box" id="detailBox">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-inner" id="detailInner"></div>
   </div>
 </div>
 
-<!-- ===================== PRODUCT MODAL ===================== -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-tag" id="modalTag"></div>
-        <div class="modal-name" id="modalName"></div>
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderModal" onclick="closeOrderOnBg(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeOrder()">✕</button>
+    <div class="modal-title">🛒 Form Pemesanan</div>
+    <div class="modal-subtitle">Lengkapi langkah berikut untuk memesan</div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-steps" id="progressSteps">
+      <div class="progress-step done" id="step1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Pilih Produk</div>
       </div>
-      <button class="modal-close" id="modalClose">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-gallery card-gallery" id="modalGallery">
-        <div class="gallery-slides" id="modalSlides"></div>
-        <button class="gallery-btn gallery-prev" id="modalPrev">‹</button>
-        <button class="gallery-btn gallery-next" id="modalNext">›</button>
-        <div class="gallery-dots" id="modalDots"></div>
+      <div class="progress-step active" id="step2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Isi Nama</div>
       </div>
-      <div id="modalBadges" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px"></div>
-      <div id="modalRating" style="margin-bottom:12px"></div>
-      <p class="modal-desc" id="modalDesc"></p>
-      <div class="modal-price" id="modalPrice" style="display:none"></div>
-      <div class="modal-flyer-section" id="modalFlyerSection">
-        <div class="modal-section-title">📄 Detail Flyer Produk</div>
-        <div id="modalFlyerContent"></div>
-      </div>
-      <div id="modalVideoSection" style="display:none">
-        <div class="modal-section-title">▶ Demo Produk</div>
-        <div class="yt-embed-wrap" id="modalVideoEmbed"></div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-wa-modal" id="modalBtnWa">💬 Pesan Sekarang</button>
-        <button class="btn-select-modal" id="modalBtnSelect">☑ Pilih Produk Ini</button>
+      <div class="progress-step" id="step3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Chat WA</div>
       </div>
     </div>
+
+    <div class="modal-order-list" id="modalOrderList"></div>
+    <label class="modal-label" for="buyerName">Nama Kamu</label>
+    <input class="modal-input" id="buyerName" type="text" placeholder="Contoh: Budi Santoso" autocomplete="name">
+    <button class="modal-wa-btn" onclick="submitOrder()">💬 Lanjut Pesan via WhatsApp</button>
   </div>
 </div>
 
-<!-- ===================== PHOTO ZOOM ===================== -->
-<div class="zoom-overlay" id="zoomOverlay">
-  <button class="zoom-close" id="zoomClose">✕</button>
-  <button class="zoom-nav zoom-nav-prev" id="zoomPrev">‹</button>
-  <img class="zoom-img" id="zoomImg" src="" alt="Zoom">
-  <button class="zoom-nav zoom-nav-next" id="zoomNext">›</button>
-  <div class="zoom-counter" id="zoomCounter"></div>
-</div>
-
-<!-- ===================== PROMO POPUP ===================== -->
-<div class="promo-popup-overlay" id="promoPopupOverlay">
-  <div class="promo-popup">
-    <button class="promo-popup-close" id="promoPopupClose">✕</button>
-    <div class="promo-popup-emoji">🎉</div>
-    <div class="promo-popup-title">Selamat Datang!</div>
-    <p class="promo-popup-desc">Dapatkan diskon spesial untuk pembelian pertama Anda hari ini. Gunakan kode berikut saat menghubungi kami via WhatsApp.</p>
-    <div class="promo-popup-code" id="promoCode" title="Klik untuk copy">ABIBO25</div>
-    <p class="promo-popup-hint">Klik kode untuk menyalin 👆</p>
-    <button class="btn-wa" onclick="window.open('https://wa.me/62895637290295?text=Halo!%20Saya%20mau%20pakai%20kode%20ABIBO25','_blank')">💬 Klaim Diskon via WA</button>
+<!-- WISHLIST MODAL -->
+<div class="wishlist-overlay" id="wishlistOverlay" onclick="closeWishlistOnBg(event)">
+  <div class="wishlist-box">
+    <button class="modal-close-top" onclick="closeWishlist()">✕</button>
+    <div class="modal-h2">🤍 Wishlist Kamu</div>
+    <div id="wishlistContent"></div>
   </div>
 </div>
 
-<!-- ===================== ORDER FORM ===================== -->
-<div class="order-form-overlay" id="orderFormOverlay">
-  <div class="order-form-box">
-    <div class="order-form-title">📝 Form Pemesanan</div>
-    <p class="order-form-sub">Isi nama Anda agar pesan WhatsApp lebih personal dan mudah diproses.</p>
-    <div class="form-group">
-      <label class="form-label">Nama Anda *</label>
-      <input class="form-input" id="formName" type="text" placeholder="Contoh: Budi Santoso">
-    </div>
-    <div class="form-group">
-      <label class="form-label">No. HP / WA (opsional)</label>
-      <input class="form-input" id="formPhone" type="text" placeholder="Contoh: 08123456789">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Catatan (opsional)</label>
-      <input class="form-input" id="formNote" type="text" placeholder="Ada pertanyaan atau request khusus?">
-    </div>
-    <label class="form-label">Produk yang dipesan:</label>
-    <div class="form-order-list" id="formOrderList"></div>
-    <button class="btn-form-wa" id="formSubmitWa">💬 Kirim via WhatsApp</button>
-    <button class="btn-form-cancel" id="formCancel">Batal</button>
+<!-- COMPARE MODAL -->
+<div class="compare-overlay" id="compareOverlay" onclick="closeCompareOnBg(event)">
+  <div class="compare-box">
+    <button class="modal-close-top" onclick="closeCompare()">✕</button>
+    <div class="modal-h2">⚖ Perbandingan Produk</div>
+    <div id="compareContent"></div>
   </div>
 </div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightboxImg" src="" alt="Zoom">
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- CART BAR -->
+<div class="cart-bar" id="cartBar">
+  <div class="cart-count" id="cartCount">0</div>
+  <div class="cart-label">produk dipilih</div>
+  <div class="cart-total" id="cartTotal">Rp 0</div>
+  <button class="cart-order-btn" onclick="openOrder()">💬 Pesan Sekarang</button>
+  <button class="cart-clear" title="Hapus semua" onclick="clearCart()">✕</button>
+</div>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// ╔══════════════════════════════════════════════════╗
-// ║   DATA — Edit bagian ini untuk kustomisasi       ║
-// ╚══════════════════════════════════════════════════╝
+/* ============================================================
+   CONFIG — edit sesuai kebutuhan
+   ============================================================ */
+const WA_NUMBER = '62895637290295';
 
-// ── NOMOR WHATSAPP ──────────────────────────────────
-const WA_NUMBER = "62895637290295";
+const TICKER_ITEMS = ['✦ Abibo Studio','💻 Digital Creator','🛠 IT Solutions','⚡ Otomasi & RPA','🎨 Desain Kreatif','🚀 Produk Digital Premium','💡 Inovasi Tanpa Batas','📦 Pengiriman Instan','✅ Garansi 7 Hari'];
 
-// ── PROMO BAR (ubah teks di HTML di atas) ──────────
-// Teks promo ada di elemen #promoBar dalam HTML
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    initParticles();
+    initGalleries();
+    revealOnScroll();
+  }, 2200);
+});
 
-// ── POPUP PROMO ─────────────────────────────────────
-const PROMO_DELAY_MS = 5000; // waktu muncul popup (ms)
-const PROMO_CODE = "ABIBO25"; // kode promo
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+const trailColors = ['rgba(124,58,237,0.6)','rgba(6,182,212,0.6)','rgba(245,158,11,0.5)'];
+let trailIdx = 0;
 
-// ── PRODUK ──────────────────────────────────────────
-// Tambah produk baru: copy satu objek {}, ubah isinya, tambahkan koma
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Link Shortcut",
-    tag: "Digital Tool",
-    badges: [{ label: "NEW", type: "badge-new" }, { label: "HOT", type: "badge-hot" }],
-    rating: 4.8,   // 1.0 – 5.0, tampil sebagai bintang
-    ratingCount: 128, // jumlah ulasan
-    desc: "Aplikasi pemendek link cerdas yang memudahkan Anda mengelola, berbagi, dan melacak tautan dengan tampilan yang bersih dan modern. Cocok untuk marketing digital, media sosial, dan personal branding.",
-    priceOriginal: 50000,  // harga coret (0 = tidak ada coret)
-    priceSale: 29000,      // harga jual
-    photos: [
-      "https://drive.google.com/thumbnail?id=13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu&sz=w800",
-      "https://drive.google.com/thumbnail?id=157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg&sz=w800"
-    ],
-    flyerLink: "https://drive.google.com/file/d/14aV_BMzo0rT19YQV4ymf81tL_sveiWFw/view?usp=sharing",
-    flyerId: "14aV_BMzo0rT19YQV4ymf81tL_sveiWFw",
-    youtubeId: "JxgyRo2u27g"
-  },
-  {
-    id: 2,
-    name: "Link Shortcut Pro",
-    tag: "Digital Tool",
-    badges: [{ label: "NEW", type: "badge-new" }],
-    rating: 4.5,
-    ratingCount: 74,
-    desc: "Versi Pro dari Link Shortcut dengan fitur analytics mendalam, custom domain, QR code generator, dan dashboard manajemen link canggih untuk kebutuhan bisnis profesional.",
-    priceOriginal: 75000,  // harga coret
-    priceSale: 49000,      // harga jual
-    photos: [
-      "https://drive.google.com/thumbnail?id=13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu&sz=w800",
-      "https://drive.google.com/thumbnail?id=157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg&sz=w800"
-    ],
-    flyerLink: "https://drive.google.com/file/d/14aV_BMzo0rT19YQV4ymf81tL_sveiWFw/view?usp=sharing",
-    flyerId: "14aV_BMzo0rT19YQV4ymf81tL_sveiWFw",
-    youtubeId: "zrF3_2pPLNM"
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+  // Trail particle
+  if (Math.random() > 0.65) {
+    const t = document.createElement('div');
+    t.className = 'cursor-trail';
+    const sz = Math.random() * 8 + 4;
+    t.style.cssText = `left:${mouseX}px;top:${mouseY}px;width:${sz}px;height:${sz}px;background:${trailColors[trailIdx % 3]}`;
+    trailIdx++;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 600);
   }
-  // ➕ TAMBAH PRODUK BARU DI SINI — salin format di atas
-];
-
-// ── FAQ ─────────────────────────────────────────────
-// Tambah/edit pertanyaan di sini
-const FAQ_ITEMS = [
-  { q: "Bagaimana cara memesan produk?", a: "Klik card produk yang Anda inginkan, centang produk, lalu klik tombol 'Pesan via WhatsApp'. Anda juga bisa langsung klik 'Pesan Sekarang' di card produk." },
-  { q: "Apa metode pembayaran yang tersedia?", a: "Kami menerima Transfer Bank (BCA, Mandiri, BNI, BRI), GoPay, OVO, Dana, ShopeePay, dan QRIS." },
-  { q: "Berapa lama proses pengiriman produk digital?", a: "Produk digital dikirim melalui email atau WhatsApp dalam 1×24 jam setelah pembayaran dikonfirmasi. Biasanya lebih cepat, antara 1–3 jam." },
-  { q: "Apakah ada garansi produk?", a: "Ya! Kami memberikan garansi refund 7 hari apabila produk tidak sesuai deskripsi. Hubungi kami melalui WhatsApp untuk proses klaim." },
-  { q: "Apakah ada dukungan teknis setelah pembelian?", a: "Tentu. Kami menyediakan support teknis gratis via WhatsApp selama 30 hari setelah pembelian untuk membantu instalasi dan penggunaan produk." },
-  { q: "Bisakah saya request fitur khusus?", a: "Bisa! Kami melayani kustomisasi produk sesuai kebutuhan Anda. Hubungi kami untuk diskusi dan estimasi biaya." }
-];
-
-// ── SOSIAL MEDIA ─────────────────────────────────────
-// Edit link sesuai akun Abibo Studio
-const SOCMED = [
-  { label: "WhatsApp",  icon: "💬", cls: "wa", url: `https://wa.me/${WA_NUMBER}` },
-  { label: "Instagram", icon: "📸", cls: "ig", url: "https://instagram.com/abibostudio" },
-  { label: "YouTube",   icon: "▶",  cls: "yt", url: "https://youtube.com/@abibostudio" },
-  { label: "TikTok",    icon: "🎵", cls: "tt", url: "https://tiktok.com/@abibostudio" },
-  { label: "Facebook",  icon: "👤", cls: "fb", url: "https://facebook.com/abibostudio" },
-  { label: "Twitter/X", icon: "✖",  cls: "tw", url: "https://twitter.com/abibostudio" }
-];
-
-// ╔══════════════════════════════════════════════════╗
-// ║   UTILITIES                                      ║
-// ╚══════════════════════════════════════════════════╝
-function formatRp(n){ return 'Rp\u00a0' + n.toLocaleString('id-ID'); }
-function discountPct(o,s){ return Math.round((1 - s/o)*100); }
-function priceHTML(p, modal){
-  if(!p.priceSale) return '';
-  const cls = modal ? 'modal-price' : 'card-price';
-  const hasD = p.priceOriginal && p.priceOriginal > p.priceSale;
-  const pct = hasD ? discountPct(p.priceOriginal, p.priceSale) : 0;
-  return `<div class="${cls}">
-    <span class="price-sale">${formatRp(p.priceSale)}</span>
-    ${hasD ? `<span class="price-original">${formatRp(p.priceOriginal)}</span>` : ''}
-    ${hasD ? `<span class="price-discount">Hemat ${pct}%</span>` : ''}
-  </div>`;
-}
-function starsHTML(rating, count){
-  let stars = '';
-  for(let i=1;i<=5;i++){
-    if(rating>=i) stars += '<span class="star filled">★</span>';
-    else if(rating>=i-0.5) stars += '<span class="star half">★</span>';
-    else stars += '<span class="star">★</span>';
-  }
-  return `<div class="card-rating"><div class="stars">${stars}</div><span class="rating-count">${rating} (${count} ulasan)</span></div>`;
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   CUSTOM CURSOR                                  ║
-// ╚══════════════════════════════════════════════════╝
-const curEl = document.getElementById('cursor');
-const curRing = document.getElementById('cursorRing');
-let mx=-100, my=-100, rx=-100, ry=-100;
-document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY});
-(function animC(){
-  rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
-  curEl.style.left=mx+'px'; curEl.style.top=my+'px';
-  curRing.style.left=rx+'px'; curRing.style.top=ry+'px';
-  requestAnimationFrame(animC);
+});
+(function animRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) *.12;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(animRing);
 })();
-function addCursorHover(els){
-  els.forEach(el=>{
-    el.addEventListener('mouseenter',()=>{curEl.classList.add('hover');curRing.classList.add('hover')});
-    el.addEventListener('mouseleave',()=>{curEl.classList.remove('hover');curRing.classList.remove('hover')});
-  });
-}
-addCursorHover(document.querySelectorAll('a,button'));
+document.addEventListener('mousedown', () => { cursorDot.style.transform = 'translate(-50%,-50%) scale(1.8)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
+document.addEventListener('mouseup', () => { cursorDot.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; });
 
-// ╔══════════════════════════════════════════════════╗
-// ║   PARTICLE BACKGROUND                            ║
-// ╚══════════════════════════════════════════════════╝
-(function initParticles(){
-  const canvas = document.getElementById('particleCanvas');
+/* ============================================================
+   PARTICLES
+   ============================================================ */
+function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H, particles=[];
-  const COUNT = 60;
-
-  function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function isDark(){ return document.documentElement.getAttribute('data-theme')!=='light'; }
-
-  for(let i=0;i<COUNT;i++){
-    particles.push({
-      x: Math.random()*window.innerWidth,
-      y: Math.random()*window.innerHeight,
-      r: Math.random()*2+0.5,
-      vx: (Math.random()-.5)*0.3,
-      vy: (Math.random()-.5)*0.3,
-      opacity: Math.random()*0.4+0.1
-    });
-  }
-
-  function draw(){
+  let W, H, particles = [];
+  const COLORS = ['rgba(124,58,237,','rgba(6,182,212,','rgba(245,158,11,'];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  function P() { this.x=Math.random()*W; this.y=Math.random()*H; this.r=Math.random()*2.5+0.5; this.dx=(Math.random()-.5)*.5; this.dy=(Math.random()-.5)*.5; this.color=COLORS[Math.floor(Math.random()*3)]; this.alpha=Math.random()*.5+.1; }
+  for(let i=0;i<80;i++) particles.push(new P());
+  function draw() {
     ctx.clearRect(0,0,W,H);
-    const dark = isDark();
-    const baseColor = dark ? '0,212,255' : '100,50,200';
-    const lineColor = dark ? 'rgba(0,212,255,' : 'rgba(100,50,200,';
-
-    particles.forEach((p,i)=>{
-      p.x += p.vx; p.y += p.vy;
-      if(p.x<0) p.x=W; if(p.x>W) p.x=0;
-      if(p.y<0) p.y=H; if(p.y>H) p.y=0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(${baseColor},${p.opacity})`;
-      ctx.fill();
-
-      for(let j=i+1;j<particles.length;j++){
-        const q=particles[j];
-        const d=Math.hypot(p.x-q.x, p.y-q.y);
-        if(d<120){
-          ctx.beginPath();
-          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
-          ctx.strokeStyle = lineColor + (0.15*(1-d/120)) + ')';
-          ctx.lineWidth=0.6;
-          ctx.stroke();
-        }
-      }
+    particles.forEach(p => {
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.x<0||p.x>W) p.dx*=-1;
+      if(p.y<0||p.y>H) p.dy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color+p.alpha+')'; ctx.fill();
+      particles.forEach(q => {
+        const d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<100){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.strokeStyle=p.color+(0.08*(1-d/100))+')'; ctx.lineWidth=.5; ctx.stroke(); }
+      });
     });
     requestAnimationFrame(draw);
   }
   draw();
+}
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+(function(){
+  const track = document.getElementById('tickerTrack');
+  const html = TICKER_ITEMS.map(t=>`<span class="ticker-item">${t}</span>`).join('');
+  track.innerHTML = html+html;
 })();
 
-// ╔══════════════════════════════════════════════════╗
-// ║   THEME TOGGLE                                   ║
-// ╚══════════════════════════════════════════════════╝
-const themeToggle = document.getElementById('themeToggle');
-const themeKnob = document.getElementById('themeKnob');
-let isDarkMode = true;
-themeToggle.addEventListener('click', ()=>{
-  isDarkMode = !isDarkMode;
-  document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-  themeKnob.textContent = isDarkMode ? '🌙' : '☀️';
-  showToast(isDarkMode ? '🌙 Dark Mode aktif' : '☀️ Light Mode aktif', 'info');
-});
-addCursorHover([themeToggle]);
+/* ============================================================
+   THEME
+   ============================================================ */
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark?'dark':'light');
+  document.getElementById('themeToggle').textContent = isDark?'🌙':'☀️';
+  showToast(isDark?'🌙 Mode gelap aktif':'☀️ Mode terang aktif','info');
+}
 
-// ╔══════════════════════════════════════════════════╗
-// ║   TICKER                                         ║
-// ╚══════════════════════════════════════════════════╝
-const tickerItems = ["Digital Creator","Information Technology","Service","Link Shortcut","Web Development","UI/UX Design","IT Consulting","Digital Marketing","App Development","Abibo Studio","Produk Digital Terbaik"];
-const track = document.getElementById('tickerTrack');
-[...tickerItems,...tickerItems].forEach(t=>{
-  const el=document.createElement('span');
-  el.className='ticker-item'; el.textContent=t;
-  track.appendChild(el);
-});
 
-// ╔══════════════════════════════════════════════════╗
-// ║   PROMO BAR                                      ║
-// ╚══════════════════════════════════════════════════╝
-document.getElementById('promoBarClose').addEventListener('click', ()=>{
-  document.getElementById('promoBar').classList.add('hidden');
-});
 
-// ╔══════════════════════════════════════════════════╗
-// ║   SCROLL TO TOP                                  ║
-// ╚══════════════════════════════════════════════════╝
+/* ============================================================
+   SCROLL
+   ============================================================ */
 const scrollTopBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', ()=>{
+window.addEventListener('scroll', () => {
   scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+  revealOnScroll();
 });
-scrollTopBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+function revealOnScroll() {
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('visible');
+  });
+}
 
-// ╔══════════════════════════════════════════════════╗
-// ║   TOAST NOTIFICATION                             ║
-// ╚══════════════════════════════════════════════════╝
-function showToast(msg, type='info'){
+/* ============================================================
+   GALLERY
+   ============================================================ */
+const galleryState = {};
+function gdId(id) { return `https://drive.google.com/thumbnail?id=${id.trim()}&sz=w600`; }
+
+function initGalleries() {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const id = card.dataset.id;
+    const imageIds = card.dataset.images ? card.dataset.images.split(',') : [];
+    const slidesEl = document.getElementById(`slides-${id}`);
+    const dotsEl = document.getElementById(`dots-${id}`);
+    if (!slidesEl || !dotsEl) return;
+    galleryState[id] = { current: 0, total: imageIds.length };
+    imageIds.forEach((imgId, idx) => {
+      const slide = document.createElement('div');
+      slide.className = 'gallery-slide';
+      const img = document.createElement('img');
+      img.src = gdId(imgId);
+      img.alt = `Foto ${idx+1}`;
+      img.addEventListener('click', () => openLightbox(img.src));
+      img.addEventListener('load', () => img.classList.add('loaded'));
+      const skel = document.createElement('div');
+      skel.className = 'skeleton-img';
+      slide.appendChild(skel);
+      slide.appendChild(img);
+      slidesEl.appendChild(slide);
+      const dot = document.createElement('div');
+      dot.className = 'gallery-dot'+(idx===0?' active':'');
+      dot.addEventListener('click', () => goToSlide(id, idx));
+      dotsEl.appendChild(dot);
+    });
+    // 3D tilt
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-0.5;
+      const y = (e.clientY-r.top)/r.height-0.5;
+      card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*6}deg) translateZ(4px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+  // Stars
+  document.querySelectorAll('.product-card').forEach(card => {
+    const id = card.dataset.id;
+    const rating = parseInt(card.dataset.rating)||4;
+    const el = document.getElementById(`stars-${id}`);
+    if (!el) return;
+    for(let i=1;i<=5;i++) { const s=document.createElement('span'); s.className='star '+(i<=rating?'filled':'empty'); s.textContent='★'; el.appendChild(s); }
+  });
+  // Load wishlist from storage
+  loadWishlistFromStorage();
+}
+
+function goToSlide(id, idx) {
+  const state = galleryState[id]; if (!state) return;
+  state.current = idx;
+  const slides = document.getElementById(`slides-${id}`);
+  if (slides) slides.style.transform = `translateX(-${idx*100}%)`;
+  document.querySelectorAll(`#dots-${id} .gallery-dot`).forEach((d,i) => d.classList.toggle('active',i===idx));
+}
+function changeSlide(id, dir) {
+  const state = galleryState[id]; if (!state) return;
+  let next = state.current + dir;
+  if (next<0) next=state.total-1;
+  if (next>=state.total) next=0;
+  goToSlide(id, next);
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function openLightbox(src) { document.getElementById('lightboxImg').src=src; document.getElementById('lightbox').classList.add('active'); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+
+/* ============================================================
+   SEARCH & FILTER
+   ============================================================ */
+let activeFilter = 'all';
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  filterProducts();
+}
+
+function filterProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+  const cards = Array.from(document.querySelectorAll('.product-card'));
+  let visible = [];
+  cards.forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const desc = card.dataset.desc.toLowerCase();
+    const cat  = card.dataset.category || 'all';
+    const matchSearch = !q || name.includes(q) || desc.includes(q);
+    const matchCat = activeFilter==='all' || cat===activeFilter;
+    if (matchSearch && matchCat) { card.classList.remove('hidden'); visible.push(card); }
+    else { card.classList.add('hidden'); }
+  });
+  // Sort
+  const grid = document.getElementById('productsGrid');
+  if (sort === 'price-asc') visible.sort((a,b) => parseInt(a.dataset.price)-parseInt(b.dataset.price));
+  else if (sort === 'price-desc') visible.sort((a,b) => parseInt(b.dataset.price)-parseInt(a.dataset.price));
+  else if (sort === 'rating') visible.sort((a,b) => parseInt(b.dataset.rating)-parseInt(a.dataset.rating));
+  visible.forEach(c => grid.appendChild(c));
+  document.getElementById('noResults').classList.toggle('show', visible.length===0);
+}
+
+/* ============================================================
+   CART / SELECT
+   ============================================================ */
+const cart = new Set();
+function toggleSelect(id) {
+  const card = document.getElementById(`card-${id}`); if (!card) return;
+  if (cart.has(id)) {
+    cart.delete(id);
+    card.classList.remove('selected');
+    showToast('Produk dihapus dari pilihan','error');
+  } else {
+    cart.add(id);
+    card.classList.add('selected');
+    showToast(`✅ "${card.dataset.name}" ditambahkan!`,'success');
+    fireConfetti();
+  }
+  updateSelectBtn(id);
+  updateCartBar();
+}
+function updateSelectBtn(id) {
+  const btn = document.getElementById(`btn-select-${id}`); if (!btn) return;
+  if (cart.has(id)) { btn.innerHTML='☑ Dipilih'; btn.style.borderColor='var(--brand-success)'; btn.style.color='var(--brand-success)'; }
+  else { btn.innerHTML='☐ Pilih Produk'; btn.style.borderColor=''; btn.style.color=''; }
+}
+function updateCartBar() {
+  let total=0;
+  cart.forEach(id => { const c=document.getElementById(`card-${id}`); if(c) total+=parseInt(c.dataset.price)||0; });
+  document.getElementById('cartCount').textContent=cart.size;
+  document.getElementById('cartTotal').textContent='Rp '+total.toLocaleString('id-ID');
+  document.getElementById('cartBar').classList.toggle('visible', cart.size>0);
+}
+function clearCart() {
+  cart.forEach(id => { const c=document.getElementById(`card-${id}`); if(c) c.classList.remove('selected'); updateSelectBtn(id); });
+  cart.clear(); updateCartBar(); showToast('Pilihan dikosongkan','info');
+}
+
+/* ============================================================
+   WISHLIST
+   ============================================================ */
+let wishlist = new Set();
+function loadWishlistFromStorage() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('abibo_wishlist') || '[]');
+    saved.forEach(id => {
+      wishlist.add(id);
+      const card = document.getElementById(`card-${id}`);
+      if (card) { card.classList.add('wishlisted'); const btn=document.getElementById(`btn-wish-${id}`); if(btn) btn.textContent='❤️'; }
+    });
+    updateWishlistCount();
+  } catch(e){}
+}
+function saveWishlistToStorage() {
+  try { localStorage.setItem('abibo_wishlist', JSON.stringify([...wishlist])); } catch(e){}
+}
+function updateWishlistCount() {
+  const el = document.getElementById('wishlistCount');
+  el.textContent = wishlist.size;
+  el.classList.toggle('show', wishlist.size > 0);
+}
+function toggleWishlist(id) {
+  const card = document.getElementById(`card-${id}`); if (!card) return;
+  const btn = document.getElementById(`btn-wish-${id}`);
+  if (wishlist.has(id)) {
+    wishlist.delete(id);
+    card.classList.remove('wishlisted');
+    if (btn) btn.textContent = '🤍';
+    showToast('Dihapus dari wishlist','info');
+  } else {
+    wishlist.add(id);
+    card.classList.add('wishlisted');
+    if (btn) btn.textContent = '❤️';
+    showToast(`❤️ "${card.dataset.name}" ke wishlist!`,'success');
+    fireConfetti(true);
+  }
+  updateWishlistCount();
+  saveWishlistToStorage();
+}
+function openWishlist() {
+  const content = document.getElementById('wishlistContent');
+  if (wishlist.size === 0) {
+    content.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:24px 0">Belum ada produk di wishlist kamu 😊</p>';
+  } else {
+    let html = '<div style="display:flex;flex-direction:column;gap:12px">';
+    wishlist.forEach(id => {
+      const card = document.getElementById(`card-${id}`); if (!card) return;
+      const price = parseInt(card.dataset.price).toLocaleString('id-ID');
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg-surface);border-radius:var(--radius-md);gap:12px">
+        <div>
+          <div style="font-weight:700;font-family:var(--font-display)">${card.dataset.name}</div>
+          <div style="color:var(--brand-primary);font-size:14px;margin-top:3px">Rp ${price}</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="closeWishlist();toggleSelect('${id}')" style="padding:9px 16px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer">+ Pilih</button>
+          <button onclick="toggleWishlist('${id}');openWishlist()" style="padding:9px 12px;background:rgba(239,68,68,0.1);color:var(--brand-danger);border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--brand-danger)">✕</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    content.innerHTML = html;
+  }
+  document.getElementById('wishlistOverlay').classList.add('active');
+}
+function closeWishlist() { document.getElementById('wishlistOverlay').classList.remove('active'); }
+function closeWishlistOnBg(e) { if (e.target===document.getElementById('wishlistOverlay')) closeWishlist(); }
+
+/* ============================================================
+   COMPARE
+   ============================================================ */
+const compareSet = new Set();
+function toggleCompare(id) {
+  const card = document.getElementById(`card-${id}`);
+  if (compareSet.has(id)) {
+    compareSet.delete(id);
+    if(card) card.classList.remove('compare-marked');
+    showToast('Dihapus dari perbandingan','info');
+  } else {
+    if (compareSet.size >= 2) { showToast('Maksimal 2 produk untuk dibandingkan','error'); return; }
+    compareSet.add(id);
+    if(card) card.classList.add('compare-marked');
+    showToast(`⚖ "${card.dataset.name}" ditandai untuk dibandingkan`,'info');
+  }
+  document.getElementById('compareCount').textContent = compareSet.size;
+  const btn = document.getElementById('compareBtn');
+  btn.classList.toggle('ready', compareSet.size>0);
+}
+function openCompare() {
+  if (compareSet.size < 2) { showToast('Pilih 2 produk dulu (klik ⚖ di kartu)','error'); return; }
+  const ids = [...compareSet];
+  const a = document.getElementById(`card-${ids[0]}`);
+  const b = document.getElementById(`card-${ids[1]}`);
+  if (!a||!b) return;
+
+  const rows = [
+    ['Nama Produk', a.dataset.name, b.dataset.name],
+    ['Kategori', a.dataset.category, b.dataset.category],
+    ['Harga Normal', 'Rp '+parseInt(a.dataset.originalPrice).toLocaleString('id-ID'), 'Rp '+parseInt(b.dataset.originalPrice).toLocaleString('id-ID')],
+    ['Harga Promo', 'Rp '+parseInt(a.dataset.price).toLocaleString('id-ID'), 'Rp '+parseInt(b.dataset.price).toLocaleString('id-ID')],
+    ['Rating', '⭐'.repeat(parseInt(a.dataset.rating)||4), '⭐'.repeat(parseInt(b.dataset.rating)||4)],
+    ['Fitur Utama',
+      (a.dataset.features||'').split('|').map(f=>`<div>✔ ${f}</div>`).join(''),
+      (b.dataset.features||'').split('|').map(f=>`<div>✔ ${f}</div>`).join('')
+    ],
+    ['Demo Video', a.dataset.youtube?'✅ Ada':'❌ Tidak', b.dataset.youtube?'✅ Ada':'❌ Tidak'],
+  ];
+
+  let html = `<table class="compare-table"><thead><tr><th></th><th><div class="compare-col-header">${a.dataset.name}</div></th><th><div class="compare-col-header">${b.dataset.name}</div></th></tr></thead><tbody>`;
+  rows.forEach(([label, va, vb]) => { html += `<tr><th>${label}</th><td>${va}</td><td>${vb}</td></tr>`; });
+  html += `</tbody></table>`;
+  html += `<div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
+    <button onclick="closeCompare();toggleSelect('${ids[0]}')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${a.dataset.name}</button>
+    <button onclick="closeCompare();toggleSelect('${ids[1]}')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-secondary),var(--brand-accent));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${b.dataset.name}</button>
+  </div>`;
+
+  document.getElementById('compareContent').innerHTML = html;
+  document.getElementById('compareOverlay').classList.add('active');
+}
+function closeCompare() { document.getElementById('compareOverlay').classList.remove('active'); }
+function closeCompareOnBg(e) { if(e.target===document.getElementById('compareOverlay')) closeCompare(); }
+
+/* ============================================================
+   ORDER MODAL
+   ============================================================ */
+function openOrder() {
+  if (cart.size===0) { showToast('Pilih produk terlebih dahulu!','error'); return; }
+  const listEl = document.getElementById('modalOrderList');
+  listEl.innerHTML = '';
+  cart.forEach(id => {
+    const card = document.getElementById(`card-${id}`); if (!card) return;
+    const item = document.createElement('div');
+    item.className = 'modal-order-item';
+    item.innerHTML = `<span>${card.dataset.name}</span><strong>Rp ${parseInt(card.dataset.price).toLocaleString('id-ID')}</strong>`;
+    listEl.appendChild(item);
+  });
+  document.getElementById('step1').className='progress-step done';
+  document.getElementById('step2').className='progress-step active';
+  document.getElementById('step3').className='progress-step';
+  document.getElementById('orderModal').classList.add('active');
+}
+function closeOrder() { document.getElementById('orderModal').classList.remove('active'); }
+function closeOrderOnBg(e) { if(e.target===document.getElementById('orderModal')) closeOrder(); }
+
+function submitOrder() {
+  const nameInput = document.getElementById('buyerName');
+  const name = nameInput.value.trim() || 'Pelanggan';
+  // Progress step 3
+  document.getElementById('step2').className='progress-step done';
+  document.getElementById('step3').className='progress-step active';
+  let products = [], total = 0;
+  cart.forEach(id => {
+    const card = document.getElementById(`card-${id}`); if (!card) return;
+    products.push(`• ${card.dataset.name} — Rp ${parseInt(card.dataset.price).toLocaleString('id-ID')}`);
+    total += parseInt(card.dataset.price)||0;
+  });
+  const msg = `Halo Abibo Studio! 👋\n\nSaya *${name}* ingin memesan produk berikut:\n\n${products.join('\n')}\n\n*Total: Rp ${total.toLocaleString('id-ID')}*\n\nMohon diproses ya, terima kasih! 🙏`;
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  fireConfetti();
+  setTimeout(() => { window.open(url,'_blank'); closeOrder(); }, 600);
+}
+
+/* ============================================================
+   DETAIL MODAL
+   ============================================================ */
+function openDetail(id) {
+  const card = document.getElementById(`card-${id}`); if (!card) return;
+  const { name, descFull, desc, price, originalPrice, youtube: ytId, flyer: flyerId, images, rating } = card.dataset;
+  const fullDesc = descFull || desc;
+  const p = parseInt(price), op = parseInt(originalPrice);
+  const discount = Math.round((1-p/op)*100);
+  const stars = Array.from({length:5},(_,i)=>`<span class="star ${i<(parseInt(rating)||4)?'filled':'empty'}">★</span>`).join('');
+  const imageIds = images ? images.split(',') : [];
+
+  let galleryHtml = '';
+  if (imageIds.length>0) {
+    galleryHtml = `<div class="detail-section-title">📸 Galeri Produk</div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:24px">
+        ${imageIds.map(img=>`<img src="${gdId(img)}" alt="Foto" onclick="openLightbox(this.src)" style="height:140px;min-width:200px;object-fit:cover;border-radius:12px;cursor:zoom-in;border:1px solid var(--border-color)">`).join('')}
+      </div>`;
+  }
+  let flyerHtml = flyerId ? `<div class="detail-section-title">📋 Flyer Detail</div><div class="detail-flyer"><img src="${gdId(flyerId)}" onclick="openLightbox(this.src)" style="cursor:zoom-in"></div>` : '';
+  let videoHtml = ytId ? `<div class="detail-section-title">▶ Demo Produk</div><div class="detail-video"><iframe src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen loading="lazy"></iframe></div>` : '';
+
+  document.getElementById('detailInner').innerHTML = `
+    <h2 class="detail-name">${name}</h2>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><div style="display:flex;gap:2px">${stars}</div><span style="font-size:13px;color:var(--text-muted)">· Produk Digital</span></div>
+    <p class="detail-desc">${fullDesc}</p>
+    ${galleryHtml}${flyerHtml}${videoHtml}
+    <div class="detail-footer">
+      <div class="detail-price-row">
+        <span class="price-current" style="font-size:28px">Rp ${p.toLocaleString('id-ID')}</span>
+        <span class="price-original">Rp ${op.toLocaleString('id-ID')}</span>
+        <span class="price-discount">-${discount}%</span>
+      </div>
+      <button class="detail-btn-order" onclick="orderSingle('${id}')">💬 Pesan Sekarang</button>
+    </div>`;
+  document.getElementById('detailOverlay').classList.add('active');
+}
+function closeDetail() { document.getElementById('detailOverlay').classList.remove('active'); }
+function closeDetailOnBg(e) { if(e.target===document.getElementById('detailOverlay')) closeDetail(); }
+function orderSingle(id) {
+  const card=document.getElementById(`card-${id}`); if(!card) return;
+  if (!cart.has(id)) { cart.add(id); card.classList.add('selected'); updateSelectBtn(id); updateCartBar(); }
+  closeDetail(); setTimeout(openOrder,300);
+}
+
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+function fireConfetti(small = false) {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.style.display = 'block';
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const pieces = [];
+  const COLORS = ['#7C3AED','#06B6D4','#F59E0B','#10B981','#EF4444','#EC4899'];
+  const count = small ? 60 : 150;
+  for(let i=0;i<count;i++) {
+    pieces.push({
+      x: Math.random()*canvas.width,
+      y: small ? Math.random()*canvas.height*0.5 : -10,
+      w: Math.random()*10+4,
+      h: Math.random()*5+3,
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      speed: Math.random()*4+2,
+      angle: Math.random()*360,
+      spin: (Math.random()-.5)*8,
+      drift: (Math.random()-.5)*3,
+      opacity: 1
+    });
+  }
+  let frame;
+  function animConf() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive = false;
+    pieces.forEach(p => {
+      p.y += p.speed; p.x += p.drift; p.angle += p.spin; p.opacity -= 0.012;
+      if(p.opacity>0) { alive=true; }
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.opacity); ctx.translate(p.x,p.y); ctx.rotate(p.angle*Math.PI/180);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    });
+    if(alive) frame=requestAnimationFrame(animConf);
+    else { canvas.style.display='none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
+  }
+  cancelAnimationFrame(frame);
+  animConf();
+}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function showToast(msg, type='info') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
-  const icons = {add:'✅', remove:'🗑', info:'ℹ️', success:'🎉'};
-  toast.className = `toast toast-${type}`;
-  toast.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-text">${msg}</span>`;
+  toast.className = `toast ${type}`;
+  const icons={success:'✅',error:'❌',info:'ℹ️'};
+  toast.innerHTML = `<span>${icons[type]||'ℹ️'}</span> ${msg}`;
   container.appendChild(toast);
-  setTimeout(()=>toast.classList.add('show'),10);
-  setTimeout(()=>{
-    toast.classList.remove('show');
-    setTimeout(()=>toast.remove(), 400);
-  }, 2800);
+  setTimeout(() => { toast.classList.add('out'); toast.addEventListener('animationend',()=>toast.remove()); }, 3000);
 }
 
-// ╔══════════════════════════════════════════════════╗
-// ║   PHOTO ZOOM                                     ║
-// ╚══════════════════════════════════════════════════╝
-let zoomPhotos=[], zoomIndex=0;
-const zoomOverlay = document.getElementById('zoomOverlay');
-const zoomImg = document.getElementById('zoomImg');
-const zoomCounter = document.getElementById('zoomCounter');
-
-function openZoom(photos, idx){
-  zoomPhotos=photos; zoomIndex=idx;
-  zoomImg.src=photos[idx];
-  zoomCounter.textContent=`${idx+1} / ${photos.length}`;
-  zoomOverlay.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function zoomGoTo(idx){
-  zoomIndex=(idx+zoomPhotos.length)%zoomPhotos.length;
-  zoomImg.src=zoomPhotos[zoomIndex];
-  zoomCounter.textContent=`${zoomIndex+1} / ${zoomPhotos.length}`;
-}
-document.getElementById('zoomClose').addEventListener('click',()=>{
-  zoomOverlay.classList.remove('open');
-  document.body.style.overflow='';
-});
-document.getElementById('zoomPrev').addEventListener('click',()=>zoomGoTo(zoomIndex-1));
-document.getElementById('zoomNext').addEventListener('click',()=>zoomGoTo(zoomIndex+1));
-zoomOverlay.addEventListener('click',e=>{if(e.target===zoomOverlay){zoomOverlay.classList.remove('open');document.body.style.overflow='';}});
-
-// ╔══════════════════════════════════════════════════╗
-// ║   SHARE PRODUCT                                  ║
-// ╚══════════════════════════════════════════════════╝
-function shareProduct(product){
-  const text = `🛍 ${product.name} — Abibo Studio\n💰 ${formatRp(product.priceSale)}\n\nCek di: ${window.location.href}`;
-  if(navigator.share){
-    navigator.share({title:product.name, text, url:window.location.href}).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(text).then(()=>{
-      showToast('🔗 Link produk disalin!', 'success');
-    });
-  }
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   GALLERY HELPER                                 ║
-// ╚══════════════════════════════════════════════════╝
-function createGallery(photos, galleryId, slidesId, prevId, nextId, dotsId, isCard){
-  const slides = document.getElementById(slidesId);
-  const dotsEl = document.getElementById(dotsId);
-  let cur = 0;
-
-  // Skeleton
-  const skeletonEl = document.createElement('div');
-  skeletonEl.className = 'skeleton-slide'; skeletonEl.style.minWidth='100%';
-  slides.appendChild(skeletonEl);
-
-  photos.forEach((src,i)=>{
-    const slide = document.createElement('div');
-    slide.className = 'gallery-slide';
-    const img = document.createElement('img');
-    img.alt = `Foto ${i+1}`; img.loading='lazy'; img.src=src;
-    img.addEventListener('load', ()=>{ if(i===0) skeletonEl.remove(); });
-    img.addEventListener('error', ()=>{ slide.innerHTML='<div class="img-fallback"><span style="font-size:2rem">🖼</span><span>Gambar</span></div>'; if(i===0) skeletonEl.remove(); });
-    img.addEventListener('click', e=>{ if(isCard){ e.stopPropagation(); openZoom(photos,cur); } else { openZoom(photos,cur); } });
-    slide.appendChild(img);
-    slides.appendChild(slide);
-
-    const dot = document.createElement('div');
-    dot.className = 'gallery-dot'+(i===0?' active':'');
-    dot.addEventListener('click', e=>{ e.stopPropagation(); goTo(i); });
-    dotsEl.appendChild(dot);
-  });
-
-  function goTo(idx){
-    cur=(idx+photos.length)%photos.length;
-    slides.style.transform=`translateX(-${(cur+1)*100}%)`; // +1 for skeleton offset removed after load
-    // recalculate after skeleton removed
-    slides.style.transform=`translateX(${-(cur)*100-(skeletonEl.parentNode?100:0)}%)`;
-    dotsEl.querySelectorAll('.gallery-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
-  }
-
-  // After skeleton is removed, recalibrate
-  function calibrate(){
-    slides.style.transform=`translateX(-${cur*100}%)`;
-  }
-  const observer2 = new MutationObserver(calibrate);
-  observer2.observe(slides,{childList:true});
-
-  const prevEl = document.getElementById(prevId);
-  const nextEl = document.getElementById(nextId);
-  if(prevEl) prevEl.addEventListener('click', e=>{ e.stopPropagation(); goTo(cur-1); });
-  if(nextEl) nextEl.addEventListener('click', e=>{ e.stopPropagation(); goTo(cur+1); });
-
-  let autoTimer = setInterval(()=>goTo(cur+1), 3500);
-  const galleryEl = document.getElementById(galleryId);
-  if(galleryEl){
-    galleryEl.addEventListener('mouseenter',()=>clearInterval(autoTimer));
-    galleryEl.addEventListener('mouseleave',()=>{autoTimer=setInterval(()=>goTo(cur+1),3500);});
-  }
-  return { goTo };
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   3D TILT EFFECT                                 ║
-// ╚══════════════════════════════════════════════════╝
-function initTilt(card){
-  const MAX = 12;
-  card.addEventListener('mousemove', e=>{
-    const r = card.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width/2;
-    const y = e.clientY - r.top - r.height/2;
-    const rotX = -(y/r.height)*MAX;
-    const rotY = (x/r.width)*MAX;
-    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px)`;
-  });
-  card.addEventListener('mouseleave', ()=>{
-    card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) translateZ(0)';
-    setTimeout(()=>card.style.transform='',300);
-  });
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   SELECTION STATE                                ║
-// ╚══════════════════════════════════════════════════╝
-const selected = new Set();
-
-function updateOrderPanel(){
-  const count = selected.size;
-  const countEl = document.getElementById('selectedCount');
-  const inner = document.getElementById('orderPanelInner');
-  const itemsEl = document.getElementById('orderPanelItems');
-
-  countEl.style.display = count>0 ? 'flex' : 'none';
-  countEl.textContent = count;
-
-  if(count>0){ inner.style.display='block'; setTimeout(()=>inner.classList.add('visible'),10); }
-  else { inner.classList.remove('visible'); setTimeout(()=>{ if(!selected.size) inner.style.display='none'; },300); }
-
-  itemsEl.innerHTML='';
-  selected.forEach(id=>{
-    const p=PRODUCTS.find(x=>x.id===id);
-    if(p){ const el=document.createElement('div'); el.className='order-panel-item'; el.textContent=p.name+(p.priceSale?' — '+formatRp(p.priceSale):''); itemsEl.appendChild(el); }
-  });
-}
-
-function toggleSelect(id){
-  const card = document.querySelector(`[data-id="${id}"]`);
-  if(selected.has(id)){
-    selected.delete(id);
-    card?.classList.remove('selected');
-    const p=PRODUCTS.find(x=>x.id===id);
-    showToast(`🗑 ${p?.name} dihapus dari pesanan`, 'remove');
-  } else {
-    selected.add(id);
-    card?.classList.add('selected');
-    const p=PRODUCTS.find(x=>x.id===id);
-    showToast(`✅ ${p?.name} ditambahkan ke pesanan`, 'add');
-  }
-  updateOrderPanel();
-}
-
-function buildWaMsg(name='', note=''){
-  const items = [...selected].map(id=>PRODUCTS.find(x=>x.id===id)).filter(Boolean);
-  const list = items.map((p,i)=>`${i+1}. ${p.name}${p.priceSale?' — '+formatRp(p.priceSale):''}`).join('\n');
-  const greeting = name ? `Halo Kak, saya ${name}! 👋` : 'Halo Abibo Studio! 👋';
-  const noteText = note ? `\n📝 Catatan: ${note}` : '';
-  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`${greeting}\n\nSaya ingin memesan:\n${list}${noteText}\n\nMohon info selanjutnya. Terima kasih! 🙏`)}`;
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   ORDER FORM                                     ║
-// ╚══════════════════════════════════════════════════╝
-const orderFormOverlay = document.getElementById('orderFormOverlay');
-
-function openOrderForm(){
-  const listEl = document.getElementById('formOrderList');
-  listEl.innerHTML = [...selected].map(id=>{
-    const p=PRODUCTS.find(x=>x.id===id);
-    return p ? `• ${p.name}${p.priceSale?' — '+formatRp(p.priceSale):''}` : '';
-  }).filter(Boolean).join('<br>');
-  orderFormOverlay.classList.add('open');
-  document.body.style.overflow='hidden';
-  document.getElementById('formName').focus();
-}
-function closeOrderForm(){
-  orderFormOverlay.classList.remove('open');
-  document.body.style.overflow='';
-}
-
-document.getElementById('formSubmitWa').addEventListener('click',()=>{
-  const name = document.getElementById('formName').value.trim();
-  const note = document.getElementById('formNote').value.trim();
-  if(!name){ document.getElementById('formName').style.borderColor='#ef4444'; document.getElementById('formName').focus(); return; }
-  window.open(buildWaMsg(name,note),'_blank');
-  closeOrderForm();
-});
-document.getElementById('formCancel').addEventListener('click', closeOrderForm);
-orderFormOverlay.addEventListener('click', e=>{ if(e.target===orderFormOverlay) closeOrderForm(); });
-
-// WA panel buttons
-document.getElementById('btnWaOrder').addEventListener('click',()=>{ if(selected.size>0) openOrderForm(); });
-document.getElementById('waFloat').addEventListener('click',()=>{
-  if(selected.size>0) openOrderForm();
-  else window.open(`https://wa.me/${WA_NUMBER}`,'_blank');
+/* ============================================================
+   KEYBOARD ESC
+   ============================================================ */
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') { closeDetail(); closeOrder(); closeLightbox(); closeWishlist(); closeCompare(); }
 });
 
-// ╔══════════════════════════════════════════════════╗
-// ║   PRODUCT MODAL                                  ║
-// ╚══════════════════════════════════════════════════╝
-function openModal(product){
-  document.getElementById('modalName').textContent = product.name;
-  document.getElementById('modalTag').textContent = product.tag;
-  document.getElementById('modalDesc').textContent = product.desc;
-  document.getElementById('modalBadges').innerHTML = product.badges.map(b=>`<span class="badge ${b.type}">${b.label}</span>`).join('');
-  document.getElementById('modalRating').innerHTML = starsHTML(product.rating, product.ratingCount);
-
-  const priceEl = document.getElementById('modalPrice');
-  if(product.priceSale){
-    priceEl.style.display='flex';
-    const hasD = product.priceOriginal && product.priceOriginal > product.priceSale;
-    const pct = hasD ? discountPct(product.priceOriginal, product.priceSale) : 0;
-    priceEl.innerHTML = `<span class="price-sale">${formatRp(product.priceSale)}</span>${hasD?`<span class="price-original">${formatRp(product.priceOriginal)}</span><span class="price-discount">Hemat ${pct}%</span>`:''}`;
-  } else { priceEl.style.display='none'; }
-
-  // Modal gallery
-  const slidesEl = document.getElementById('modalSlides');
-  const dotsEl = document.getElementById('modalDots');
-  slidesEl.innerHTML=''; dotsEl.innerHTML='';
-  let mCur=0;
-  product.photos.forEach((src,i)=>{
-    const slide=document.createElement('div'); slide.className='gallery-slide';
-    const img=document.createElement('img'); img.src=src; img.alt=`Foto ${i+1}`;
-    img.addEventListener('click',()=>openZoom(product.photos,mCur));
-    img.addEventListener('error',()=>{ slide.innerHTML='<div class="img-fallback"><span style="font-size:2.5rem">🖼</span></div>'; });
-    slide.appendChild(img); slidesEl.appendChild(slide);
-    const dot=document.createElement('div');
-    dot.className='gallery-dot'+(i===0?' active':'');
-    dot.addEventListener('click',()=>mGoTo(i));
-    dotsEl.appendChild(dot);
-  });
-  function mGoTo(idx){
-    mCur=(idx+product.photos.length)%product.photos.length;
-    slidesEl.style.transform=`translateX(-${mCur*100}%)`;
-    dotsEl.querySelectorAll('.gallery-dot').forEach((d,i)=>d.classList.toggle('active',i===mCur));
-  }
-  document.getElementById('modalPrev').onclick=()=>mGoTo(mCur-1);
-  document.getElementById('modalNext').onclick=()=>mGoTo(mCur+1);
-
-  // Flyer
-  const flyerSec = document.getElementById('modalFlyerSection');
-  const flyerContent = document.getElementById('modalFlyerContent');
-  if(product.flyerId){
-    flyerSec.style.display='block';
-    flyerContent.innerHTML=`<div class="flyer-img"><img src="https://drive.google.com/thumbnail?id=${product.flyerId}&sz=w800" alt="Flyer" onerror="this.parentElement.innerHTML='<div class=\\'flyer-img-placeholder\\'><span style=\\'font-size:2rem\\'>📄</span><span>Preview Flyer</span></div>'"></div><a href="${product.flyerLink}" target="_blank" class="flyer-link">🔗 Lihat Detail di Google Drive</a>`;
-  } else { flyerSec.style.display='none'; }
-
-  // YouTube
-  const vidSec = document.getElementById('modalVideoSection');
-  const vidEmbed = document.getElementById('modalVideoEmbed');
-  if(product.youtubeId){
-    vidSec.style.display='block';
-    vidEmbed.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${product.youtubeId}?rel=0&modestbranding=1" title="Demo ${product.name}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-  } else { vidSec.style.display='none'; }
-
-  document.getElementById('modalBtnWa').onclick=()=>{
-    const msg=`Halo Abibo Studio! 👋\n\nSaya tertarik dengan: *${product.name}*\n💰 ${formatRp(product.priceSale)}\n\nMohon info lebih lanjut. Terima kasih! 🙏`;
-    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
-  };
-  const selBtn = document.getElementById('modalBtnSelect');
-  selBtn.textContent = selected.has(product.id) ? '✓ Produk Dipilih' : '☑ Pilih Produk Ini';
-  selBtn.onclick=()=>{ toggleSelect(product.id); selBtn.textContent=selected.has(product.id)?'✓ Produk Dipilih':'☑ Pilih Produk Ini'; };
-
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+/* ============================================================
+   SHARE (kept from original)
+   ============================================================ */
+function shareProduct(id) {
+  const card = document.getElementById(`card-${id}`);
+  const url = window.location.href;
+  if(navigator.share) navigator.share({title:`${card?.dataset.name} — Abibo Studio`,url});
+  else navigator.clipboard.writeText(url).then(()=>showToast('🔗 Link disalin!','success'));
 }
 
-function closeModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow='';
-  setTimeout(()=>{ document.getElementById('modalVideoEmbed').innerHTML=''; },300);
-}
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalOverlay').addEventListener('click', e=>{ if(e.target===document.getElementById('modalOverlay')) closeModal(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); zoomOverlay.classList.remove('open'); closeOrderForm(); } });
-
-// ╔══════════════════════════════════════════════════╗
-// ║   RENDER PRODUCTS                                ║
-// ╚══════════════════════════════════════════════════╝
-function renderProducts(){
-  const grid = document.getElementById('productsGrid');
-  grid.innerHTML='';
-  PRODUCTS.forEach((product,idx)=>{
-    const card = document.createElement('div');
-    card.className='product-card fade-in';
-    card.dataset.id=product.id;
-    card.style.transitionDelay=`${idx*0.08}s`;
-
-    const gId=`g-${product.id}`, sId=`s-${product.id}`, pId=`p-${product.id}`, nId=`n-${product.id}`, dId=`d-${product.id}`;
-
-    card.innerHTML=`
-      <div class="card-checkbox"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="#080c14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="card-gallery" id="${gId}">
-        <div class="gallery-slides" id="${sId}" style="display:flex;height:100%;transition:transform .4s cubic-bezier(.25,.46,.45,.94)"></div>
-        <button class="gallery-btn gallery-prev" id="${pId}">‹</button>
-        <button class="gallery-btn gallery-next" id="${nId}">›</button>
-        <div class="gallery-dots" id="${dId}"></div>
-        <div class="card-badges">${product.badges.map(b=>`<span class="badge ${b.type}">${b.label}</span>`).join('')}</div>
-      </div>
-      <div class="card-body">
-        <div class="card-tag">${product.tag}</div>
-        <div class="card-name">${product.name}</div>
-        ${starsHTML(product.rating, product.ratingCount)}
-        <p class="card-desc">${product.desc.substring(0,115)}...</p>
-        ${priceHTML(product,false)}
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-outline btn-detail" data-id="${product.id}">🔍 Detail</button>
-        <button class="btn btn-primary btn-order" data-id="${product.id}">💬 Pesan</button>
-        <button class="btn btn-share" data-id="${product.id}" title="Bagikan">🔗</button>
-      </div>`;
-
-    grid.appendChild(card);
-    createGallery(product.photos, gId, sId, pId, nId, dId, true);
-    initTilt(card);
-
-    card.addEventListener('click', e=>{
-      if(e.target.closest('.btn-detail')||e.target.closest('.btn-order')||e.target.closest('.btn-share')||e.target.closest('.gallery-btn')||e.target.closest('.gallery-dot')) return;
-      toggleSelect(product.id);
-    });
-    card.querySelector('.btn-detail').addEventListener('click', e=>{ e.stopPropagation(); openModal(product); });
-    card.querySelector('.btn-order').addEventListener('click', e=>{
-      e.stopPropagation();
-      const msg=`Halo Abibo Studio! 👋\n\nSaya ingin memesan: *${product.name}*${product.priceSale?'\n💰 '+formatRp(product.priceSale):''}\n\nMohon info cara pembelian. Terima kasih! 🙏`;
-      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-    card.querySelector('.btn-share').addEventListener('click', e=>{ e.stopPropagation(); shareProduct(product); });
-  });
-  addCursorHover(document.querySelectorAll('.product-card,.btn'));
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   RENDER FAQ                                     ║
-// ╚══════════════════════════════════════════════════╝
-function renderFAQ(){
-  const list = document.getElementById('faqList');
-  FAQ_ITEMS.forEach((item,i)=>{
-    const el=document.createElement('div');
-    el.className='faq-item';
-    el.innerHTML=`<div class="faq-question">${item.q}<span class="faq-icon">+</span></div><div class="faq-answer"><div class="faq-answer-inner">${item.a}</div></div>`;
-    el.querySelector('.faq-question').addEventListener('click',()=>{
-      const isOpen=el.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(f=>f.classList.remove('open'));
-      if(!isOpen) el.classList.add('open');
-    });
-    list.appendChild(el);
-  });
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   RENDER SOCMED                                  ║
-// ╚══════════════════════════════════════════════════╝
-function renderSocmed(){
-  const grid = document.getElementById('socmedGrid');
-  SOCMED.forEach(s=>{
-    const a=document.createElement('a');
-    a.href=s.url; a.target='_blank'; a.rel='noopener';
-    a.className=`socmed-btn ${s.cls}`;
-    a.innerHTML=`<span class="socmed-icon">${s.icon}</span>${s.label}`;
-    grid.appendChild(a);
-  });
-  addCursorHover(document.querySelectorAll('.socmed-btn'));
-}
-
-// ╔══════════════════════════════════════════════════╗
-// ║   PROMO POPUP                                    ║
-// ╚══════════════════════════════════════════════════╝
-setTimeout(()=>{
-  document.getElementById('promoPopupOverlay').classList.add('open');
-},PROMO_DELAY_MS);
-
-document.getElementById('promoPopupClose').addEventListener('click',()=>{
-  document.getElementById('promoPopupOverlay').classList.remove('open');
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  revealOnScroll();
 });
-document.getElementById('promoPopupOverlay').addEventListener('click',e=>{
-  if(e.target===document.getElementById('promoPopupOverlay')) document.getElementById('promoPopupOverlay').classList.remove('open');
-});
-document.getElementById('promoCode').addEventListener('click',()=>{
-  navigator.clipboard.writeText(PROMO_CODE).then(()=>showToast('🎉 Kode '+PROMO_CODE+' disalin!','success'));
-});
-
-// ╔══════════════════════════════════════════════════╗
-// ║   INTERSECTION OBSERVER                          ║
-// ╚══════════════════════════════════════════════════╝
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
-},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
-
-// ╔══════════════════════════════════════════════════╗
-// ║   INIT                                           ║
-// ╚══════════════════════════════════════════════════╝
-renderProducts();
-renderFAQ();
-renderSocmed();
-setTimeout(()=>{ document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el)); }, 100);
 </script>
 </body>
 </html>
