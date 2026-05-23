@@ -330,6 +330,219 @@ body:not([data-theme]) .cursor-dot,.cursor-dot{display:block}
 .detail-flyer img{width:100%}
 .detail-video{width:100%;aspect-ratio:16/9;border-radius:var(--radius-md);overflow:hidden;margin-bottom:28px;border:1px solid var(--border-color)}
 .detail-video iframe{width:100%;height:100%;border:none}
+
+/* ── Slider untuk Flyer & Video ── */
+.media-slider-wrap {
+  position: relative;
+  margin-bottom: 28px;
+}
+.media-slider {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  width: 100%;
+}
+.media-slides-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+.media-slide {
+  min-width: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.media-slide img {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+/* YouTube thumbnail card */
+.yt-thumb-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+  display: block;
+}
+.yt-thumb-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+.yt-thumb-card:hover img { opacity: 1; }
+.yt-play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px; height: 48px;
+  background: #FF0000;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+  pointer-events: none;
+}
+.yt-thumb-card:hover .yt-play-btn {
+  background: #cc0000;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.yt-play-btn svg { width: 28px; height: 28px; fill: #fff; }
+.yt-video-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 16px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+}
+/* Nav arrows */
+.media-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  z-index: 5;
+  transition: var(--transition);
+  backdrop-filter: blur(4px);
+}
+.media-nav:hover { background: var(--brand-primary); }
+.media-nav-prev { left: 10px; }
+.media-nav-next { right: 10px; }
+/* Dots */
+.media-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.media-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border-color);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+.media-dot.active {
+  background: var(--brand-primary);
+  width: 18px;
+  border-radius: 3px;
+}
+/* Counter badge */
+.media-counter {
+  position: absolute;
+  bottom: 10px; right: 10px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ── Video Slider ── */
+.video-slider-wrap { margin-bottom: 28px; }
+
+.video-slider-viewport {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  position: relative;
+}
+.video-slider-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.video-slider-track > div {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+.video-slider-track iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+  display: block;
+}
+
+/* Toolbar bawah video: prev · counter/dots · next */
+.video-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 0 2px;
+}
+.video-toolbar-nav {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.video-toolbar-nav:hover {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+  transform: scale(1.1);
+}
+.video-toolbar-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.video-counter {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.video-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.video-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border-color);
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+.video-dot.active {
+  background: var(--brand-primary);
+  width: 18px;
+  border-radius: 3px;
+}
 .detail-footer{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .detail-price-row{display:flex;align-items:center;gap:10px}
 .detail-btn-order{flex:1;padding:14px 24px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:var(--radius-md);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--transition);min-width:180px}
@@ -980,14 +1193,24 @@ const PRODUCTS = [
       /* Tambah foto: 'FILE_ID_FOTO_3',       */
     ],
 
-    /* FLYER detail produk — 1 gambar, File ID Google Drive
-       Kosongkan string '' jika tidak ada flyer             */
-    flyerId: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',
+    /* FLYER detail produk — bisa beberapa, pisahkan dengan koma di dalam array
+       Kosongkan array [] jika tidak ada flyer
+       Format: 'FILE_ID_GOOGLE_DRIVE'                                            */
+    flyerIds: [
+      '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',   /* Flyer 1 */
+      '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',   /* Flyer 2 — ganti dengan ID berbeda */
+      /* Tambah: 'FILE_ID_FLYER_3',           */
+    ],
 
-    /* VIDEO demo — ID YouTube saja (bukan full URL)
-       Contoh: dari https://youtube.com/watch?v=qeIWJkN76e0 → ambil 'qeIWJkN76e0'
-       Kosongkan string '' jika tidak ada video             */
-    youtubeId: 'qeIWJkN76e0',
+    /* VIDEO demo — bisa beberapa video YouTube
+       Format: 'VIDEO_ID' (bukan full URL)
+       Contoh: dari https://youtube.com/watch?v=qeIWJkN76e0 → 'qeIWJkN76e0'
+       Kosongkan array [] jika tidak ada video                                   */
+    youtubeIds: [
+      'qeIWJkN76e0',   /* Video 1 */
+      'qeIWJkN76e0',   /* Video 2 — ganti dengan ID berbeda */
+      /* Tambah: 'VIDEO_ID_3',                */
+    ],
   },
 
   /* ── PRODUK 2 ───────────────────────────────────────────── */
@@ -1007,8 +1230,8 @@ const PRODUCTS = [
       '157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg',
       '13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu',
     ],
-    flyerId: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',
-    youtubeId: 'qeIWJkN76e0',
+    flyerIds: ['14aV_BMzo0rT19YQV4ymf81tL_sveiWFw','14aV_BMzo0rT19YQV4ymf81tL_sveiWFw'],
+    youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
   /* ── TAMBAH PRODUK BARU DI BAWAH INI ───────────────────────
@@ -1032,8 +1255,8 @@ const PRODUCTS = [
       '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
       '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
     ],
-    flyerId: '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
-    youtubeId: 'qeIWJkN76e0',
+    flyerIds: ['1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8','1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8'],
+    youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
   /* ── PRODUK 4 ───────────────────────────────────────────── */
@@ -1053,8 +1276,8 @@ const PRODUCTS = [
       '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
       '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
     ],
-    flyerId: '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
-    youtubeId: 'qeIWJkN76e0',
+    flyerIds: ['1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t','1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t'],
+    youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
   /* ── PRODUK 5 ───────────────────────────────────────────── */
@@ -1074,8 +1297,8 @@ const PRODUCTS = [
       '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
       '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
     ],
-    flyerId: '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
-    youtubeId: 'qeIWJkN76e0',
+    flyerIds: ['1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi','1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi'],
+    youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
   /* ── PRODUK 6 ───────────────────────────────────────────── */
@@ -1095,8 +1318,8 @@ const PRODUCTS = [
       '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
       '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
     ],
-    flyerId: '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
-    youtubeId: 'qeIWJkN76e0',
+    flyerIds: ['1EprjhRupQeHpGX9GKreiVoD-ES-_i09l','1EprjhRupQeHpGX9GKreiVoD-ES-_i09l'],
+    youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
 ];
@@ -1261,8 +1484,8 @@ function renderPage() {
         data-desc="${p.descShort}"
         data-desc-full="${p.descFull}"
         data-rating="${p.rating}"
-        data-youtube="${p.youtubeId || ''}"
-        data-flyer="${p.flyerId || ''}"
+        data-youtube="${encodeURIComponent(JSON.stringify(p.youtubeIds || []))}"
+        data-flyer="${encodeURIComponent(JSON.stringify(p.flyerIds || []))}"
         data-images="${(p.imageIds||[]).join(',')}"
         data-features="${p.features || ''}">
 
@@ -1760,38 +1983,168 @@ function submitOrder() {
 }
 
 /* ============================================================
-   DETAIL MODAL
+   DETAIL MODAL — dengan slider flyer & video
    ============================================================ */
+function makeMediaSlider(items, renderFn, idPrefix) {
+  if (!items || items.length === 0) return '';
+  const showNav  = items.length > 1;
+  const showDots = items.length > 1;
+  return `
+    <div class="media-slider-wrap" id="${idPrefix}-wrap">
+      <div class="media-slider">
+        <div class="media-slides-track" id="${idPrefix}-track">
+          ${items.map((item, i) => `<div class="media-slide">${renderFn(item, i)}</div>`).join('')}
+        </div>
+      </div>
+      ${showNav ? `
+        <button class="media-nav media-nav-prev" onclick="slideMedia('${idPrefix}',-1)">‹</button>
+        <button class="media-nav media-nav-next" onclick="slideMedia('${idPrefix}',1)">›</button>
+        <div class="media-counter" id="${idPrefix}-counter">1 / ${items.length}</div>` : ''}
+      ${showDots ? `<div class="media-dots" id="${idPrefix}-dots">
+        ${items.map((_,i) => `<button class="media-dot${i===0?' active':''}" onclick="goMediaSlide('${idPrefix}',${i})"></button>`).join('')}
+      </div>` : ''}
+    </div>`;
+}
+
+const mediaSliderState = {};
+
+function slideMedia(prefix, dir) {
+  const state = mediaSliderState[prefix];
+  if (!state) return;
+  let next = state.cur + dir;
+  if (next < 0) next = state.total - 1;
+  if (next >= state.total) next = 0;
+  goMediaSlide(prefix, next);
+}
+
+function goMediaSlide(prefix, idx) {
+  const state = mediaSliderState[prefix];
+  if (!state) return;
+  const track = document.getElementById(`${prefix}-track`);
+  if (track) track.style.transform = `translateX(-${idx * 100}%)`;
+  state.cur = idx;
+  const counter = document.getElementById(`${prefix}-counter`);
+  if (counter) counter.textContent = `${idx+1} / ${state.total}`;
+  const dots = document.querySelectorAll(`#${prefix}-dots .media-dot`);
+  dots.forEach((d,i) => d.classList.toggle('active', i===idx));
+}
+
+/* ── Video slider navigasi ── */
+function slideVideo(id, dir) {
+  const state = mediaSliderState[`video-${id}`];
+  if (!state) return;
+  let next = state.cur + dir;
+  if (next < 0) next = state.total - 1;
+  if (next >= state.total) next = 0;
+  gotoVideo(id, next);
+}
+
+function gotoVideo(id, idx) {
+  const state = mediaSliderState[`video-${id}`];
+  if (!state) return;
+  /* Stop iframe yang sedang aktif */
+  const prevFrame = document.getElementById(`yt-frame-${id}-${state.cur}`);
+  if (prevFrame) { const s = prevFrame.src; prevFrame.src = ''; prevFrame.src = s; }
+  /* Geser track */
+  const track = document.getElementById(`vslider-track-${id}`);
+  if (track) track.style.transform = `translateX(-${idx * 100}%)`;
+  state.cur = idx;
+  /* Update counter */
+  const counter = document.getElementById(`vcounter-${id}`);
+  if (counter) counter.textContent = `${idx+1} / ${state.total}`;
+  /* Update dots */
+  document.querySelectorAll(`#vdots-${id} .video-dot`).forEach((d,i) => d.classList.toggle('active', i===idx));
+}
+
 function openDetail(id) {
   const card = document.getElementById(`card-${id}`); if (!card) return;
   history.pushState({modal:'detail'},'');
-  const { name, descFull, desc, price, originalPrice, youtube: ytId, flyer: flyerId, images, rating } = card.dataset;
-  const fullDesc = descFull || desc;
-  const p = parseInt(price), op = parseInt(originalPrice);
-  const discount = Math.round((1-p/op)*100);
+
+  const { name, descFull, desc, price, originalPrice, images, rating } = card.dataset;
+  const fullDesc  = descFull || desc;
+  const p  = parseInt(price), op = parseInt(originalPrice);
+  const discount = op > p ? Math.round((1-p/op)*100) : 0;
   const stars = Array.from({length:5},(_,i)=>`<span class="star ${i<(parseInt(rating)||4)?'filled':'empty'}">★</span>`).join('');
   const imageIds = images ? images.split(',') : [];
 
-  let videoHtml = ytId ? `<div class="detail-section-title">▶ Demo Produk</div><div class="detail-video"><iframe src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen loading="lazy"></iframe></div>` : '';
+  /* ── Video slider — iframe YouTube dengan nav bawah ──
+     Edit video: ubah youtubeIds[] di array PRODUCTS
+     Format ID: ambil dari youtube.com/watch?v=ID_INI      */
+
+  /* Ambil langsung dari PRODUCTS array — tidak perlu parse data attribute */
+  const productData = PRODUCTS.find(p => p.id === id) || {};
+  const ytIds  = productData.youtubeIds || [];
+  const flrIds = productData.flyerIds   || [];
+
+  const videoSlider = ytIds.length > 0
+    ? `<div class="detail-section-title">▶ Demo Produk</div>
+       <div class="video-slider-wrap" id="vslider-${id}">
+         <div class="video-slider-viewport">
+           <div class="video-slider-track" id="vslider-track-${id}">
+             ${ytIds.map((ytId, i) => `
+               <div>
+                 <iframe
+                   src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1"
+                   allow="autoplay; encrypted-media; picture-in-picture"
+                   allowfullscreen
+                   loading="lazy"
+                   id="yt-frame-${id}-${i}">
+                 </iframe>
+               </div>`).join('')}
+           </div>
+         </div>
+         ${ytIds.length > 1 ? `
+         <div class="video-toolbar">
+           <button class="video-toolbar-nav" onclick="slideVideo('${id}',-1)" title="Video sebelumnya">&#8249;</button>
+           <div class="video-toolbar-center">
+             <div class="video-counter" id="vcounter-${id}">Video 1 dari ${ytIds.length}</div>
+             <div class="video-dots" id="vdots-${id}">
+               ${ytIds.map((_,i)=>`<button class="video-dot${i===0?' active':''}" onclick="gotoVideo('${id}',${i})" title="Video ${i+1}"></button>`).join('')}
+             </div>
+           </div>
+           <button class="video-toolbar-nav" onclick="slideVideo('${id}',1)" title="Video berikutnya">&#8250;</button>
+         </div>` : ''}
+       </div>`
+    : '';
+
+  /* Flyer — juga dari PRODUCTS langsung */
+  const flyerIdsReal = flrIds;
+
+  /* Flyer slider HTML */
+  const flyerSlider = flyerIdsReal.length > 0
+    ? `<div class="detail-section-title">📋 Flyer Detail</div>
+       ${makeMediaSlider(flyerIdsReal, (fid, i) =>
+         `<img src="" id="flyer-img-${id}-${i}" onclick="openLightbox(this.src)" style="width:100%;display:block;cursor:zoom-in;" alt="Flyer ${i+1}">`
+       , `flyer-${id}`)}`
+    : '';
 
   document.getElementById('detailInner').innerHTML = `
     <h2 class="detail-name">${name}</h2>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><div style="display:flex;gap:2px">${stars}</div><span style="font-size:13px;color:var(--text-muted)">· Produk Digital</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <div style="display:flex;gap:2px">${stars}</div>
+      <span style="font-size:13px;color:var(--text-muted)">· Produk Digital</span>
+    </div>
     <p class="detail-desc">${fullDesc}</p>
     ${imageIds.length>0 ? `<div class="detail-section-title">📸 Galeri Produk</div><div id="detail-gallery-${id}" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:24px"></div>` : ''}
-    ${flyerId ? `<div class="detail-section-title">📋 Flyer Detail</div><div class="detail-flyer"><img id="detail-flyer-${id}" style="cursor:zoom-in;width:100%"></div>` : ''}
-    ${videoHtml}
+    ${flyerSlider}
+    ${videoSlider}
     <div class="detail-footer">
       <div class="detail-price-row">
         <span class="price-current" style="font-size:28px">Rp ${p.toLocaleString('id-ID')}</span>
-        <span class="price-original">Rp ${op.toLocaleString('id-ID')}</span>
-        <span class="price-discount">-${discount}%</span>
+        ${op>p?`<span class="price-original">Rp ${op.toLocaleString('id-ID')}</span>`:''}
+        ${op>p?`<span class="price-discount">-${discount}%</span>`:''}
       </div>
       <button class="detail-btn-order" onclick="orderSingle('${id}')">💬 Pesan Sekarang</button>
     </div>`;
+
   document.getElementById('detailOverlay').classList.add('active');
 
-  // Load galeri detail dengan fallback
+  /* Init slider state — flyer */
+  mediaSliderState[`flyer-${id}`] = { cur: 0, total: flyerIdsReal.length };
+  /* Init video slider state */
+  mediaSliderState[`video-${id}`] = { cur: 0, total: ytIds.length };
+
+  /* Load gambar galeri */
   if (imageIds.length > 0) {
     const galleryEl = document.getElementById(`detail-gallery-${id}`);
     if (galleryEl) {
@@ -1805,19 +2158,16 @@ function openDetail(id) {
       });
     }
   }
-  // Load flyer dengan fallback
-  if (flyerId) {
-    const flyerImg = document.getElementById(`detail-flyer-${id}`);
-    if (flyerImg) {
-      flyerImg.addEventListener('click', () => openLightbox(flyerImg.src));
-      loadImgWithFallback(flyerImg, flyerId);
-    }
-  }
+
+  /* Load flyer images dengan fallback */
+  flyerIdsReal.forEach((fid, i) => {
+    const img = document.getElementById(`flyer-img-${id}-${i}`);
+    if (img) loadImgWithFallback(img, fid);
+  });
 }
 function closeDetail() {
-  // Stop YouTube video saat modal ditutup
-  const iframe = document.querySelector('#detailBox iframe');
-  if (iframe) { const src = iframe.src; iframe.src = ''; iframe.src = src; }
+  /* Stop semua iframe YouTube saat modal ditutup */
+  document.querySelectorAll('#detailBox iframe').forEach(f => { const s=f.src; f.src=''; f.src=s; });
   document.getElementById('detailOverlay').classList.remove('active');
 }
 function closeDetailOnBg(e) { if(e.target===document.getElementById('detailOverlay')) history.back(); }
