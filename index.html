@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#7C3AED">
 <title>Abibo Studio — Digital Creator & IT Solutions</title>
 <style>
+html{scroll-behavior:smooth}
 /* ============================================================
    CSS VARIABLES — EASY TO CUSTOMIZE
    ============================================================ */
@@ -796,7 +798,48 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
   .detail-inner{padding:16px}
   .compare-table th,.compare-table td{padding:10px 12px}
   .search-bar-inner{gap:8px}
+
+  /* ── MOBILE PERFORMANCE ── */
+
+  /* 1. Matikan cursor kustom */
   .cursor-dot,.cursor-ring{display:none}
+
+  /* 2. Matikan semua backdrop-filter (paling berat di mobile GPU) */
+  .nav,.hero-badge,.gallery-nav,.badge,
+  .wishlist-overlay,.compare-overlay,.modal-overlay,.detail-overlay,
+  .cart-bar,.toast,.lightbox-close,
+  .side-nav-btn,.side-nav-toggle,
+  .media-nav,.video-toolbar-nav{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+
+  /* 3. Matikan blob animasi */
+  .blob-wrap{display:none}
+
+  /* 4. Matikan partikel canvas */
+  #particle-canvas{display:none}
+
+  /* 5. Hentikan gradient-text animation — pakai warna solid */
+  .gradient-text{animation:none}
+
+  /* 6. Hentikan bounceRight — animasi di semua card sekaligus */
+  .btn-detail .btn-icon{animation:none}
+
+  /* 7. Percepat/sederhanakan skeleton */
+  .skeleton-img{animation-duration:2.5s}
+
+  /* 8. Kurangi box-shadow berat */
+  .product-card:hover{box-shadow:0 8px 24px var(--shadow-color)}
+  .side-nav-toggle{box-shadow:none}
+
+  /* 9. Sederhanakan transisi */
+  .product-card,.side-nav,.side-nav-wrap,.cart-bar{
+    transition-duration:0.2s !important;
+  }
+
+  /* 10. Matikan 3D tilt (transform perspective) */
+  .product-card{transform:none !important}
 }
 </style>
 </head>
@@ -1404,7 +1447,9 @@ function initParticles() {
   }
 
   // ↓ Kurangi partikel dari 80 → 35 (drastis kurangi beban render)
-  const COUNT = window.innerWidth < 768 ? 15 : 35;
+  // Mobile: skip partikel sepenuhnya untuk performa
+  if (window.innerWidth < 768) return;
+  const COUNT = 35;
   for(let i=0;i<COUNT;i++) particles.push(new P());
 
   // Precompute neighbor pairs sekali, update posisi saja setiap frame
@@ -1751,14 +1796,16 @@ function initGalleries() {
       dot.addEventListener('click', () => goToSlide(id, idx));
       dotsEl.appendChild(dot);
     });
-    // 3D tilt
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX-r.left)/r.width-0.5;
-      const y = (e.clientY-r.top)/r.height-0.5;
-      card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*6}deg) translateZ(4px)`;
-    });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    // 3D tilt — desktop only
+    if (window.innerWidth >= 768) {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width-0.5;
+        const y = (e.clientY-r.top)/r.height-0.5;
+        card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*6}deg) translateZ(4px)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    }
   });
   // Stars
   document.querySelectorAll('.product-card').forEach(card => {
