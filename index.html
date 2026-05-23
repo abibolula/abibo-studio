@@ -707,7 +707,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 <!-- DETAIL MODAL -->
 <div class="detail-overlay" id="detailOverlay" onclick="closeDetailOnBg(event)">
   <div class="detail-box" id="detailBox">
-    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <button class="detail-close" onclick="history.back()">✕</button>
     <div class="detail-inner" id="detailInner"></div>
   </div>
 </div>
@@ -715,7 +715,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 <!-- ORDER MODAL -->
 <div class="modal-overlay" id="orderModal" onclick="closeOrderOnBg(event)">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeOrder()">✕</button>
+    <button class="modal-close" onclick="history.back()">✕</button>
     <div class="modal-title">🛒 Form Pemesanan</div>
     <div class="modal-subtitle">Lengkapi langkah berikut untuk memesan</div>
 
@@ -745,7 +745,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 <!-- WISHLIST MODAL -->
 <div class="wishlist-overlay" id="wishlistOverlay" onclick="closeWishlistOnBg(event)">
   <div class="wishlist-box">
-    <button class="modal-close-top" onclick="closeWishlist()">✕</button>
+    <button class="modal-close-top" onclick="history.back()">✕</button>
     <div class="modal-h2">🤍 Wishlist Kamu</div>
     <div id="wishlistContent"></div>
   </div>
@@ -754,15 +754,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 <!-- COMPARE MODAL -->
 <div class="compare-overlay" id="compareOverlay" onclick="closeCompareOnBg(event)">
   <div class="compare-box">
-    <button class="modal-close-top" onclick="closeCompare()">✕</button>
+    <button class="modal-close-top" onclick="history.back()">✕</button>
     <div class="modal-h2">⚖ Perbandingan Produk</div>
     <div id="compareContent"></div>
   </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close">✕</button>
+<div class="lightbox" id="lightbox" onclick="history.back()">
+  <button class="lightbox-close" onclick="history.back()">✕</button>
   <img id="lightboxImg" src="" alt="Zoom">
 </div>
 
@@ -1007,7 +1007,7 @@ function changeSlide(id, dir) {
 /* ============================================================
    LIGHTBOX
    ============================================================ */
-function openLightbox(src) { document.getElementById('lightboxImg').src=src; document.getElementById('lightbox').classList.add('active'); }
+function openLightbox(src) { document.getElementById('lightboxImg').src=src; document.getElementById('lightbox').classList.add('active'); history.pushState({modal:'lightbox'},''); }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
 
 /* ============================================================
@@ -1122,6 +1122,7 @@ function toggleWishlist(id) {
   saveWishlistToStorage();
 }
 function openWishlist() {
+  history.pushState({modal:'wishlist'},'');
   const content = document.getElementById('wishlistContent');
   if (wishlist.size === 0) {
     content.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:24px 0">Belum ada produk di wishlist kamu 😊</p>';
@@ -1136,7 +1137,7 @@ function openWishlist() {
           <div style="color:var(--brand-primary);font-size:14px;margin-top:3px">Rp ${price}</div>
         </div>
         <div style="display:flex;gap:8px">
-          <button onclick="closeWishlist();toggleSelect('${id}')" style="padding:9px 16px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer">+ Pilih</button>
+          <button onclick="history.back();setTimeout(()=>toggleSelect('${id}'),150)" style="padding:9px 16px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer">+ Pilih</button>
           <button onclick="toggleWishlist('${id}');openWishlist()" style="padding:9px 12px;background:rgba(239,68,68,0.1);color:var(--brand-danger);border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--brand-danger)">✕</button>
         </div>
       </div>`;
@@ -1147,7 +1148,7 @@ function openWishlist() {
   document.getElementById('wishlistOverlay').classList.add('active');
 }
 function closeWishlist() { document.getElementById('wishlistOverlay').classList.remove('active'); }
-function closeWishlistOnBg(e) { if (e.target===document.getElementById('wishlistOverlay')) closeWishlist(); }
+function closeWishlistOnBg(e) { if (e.target===document.getElementById('wishlistOverlay')) history.back(); }
 
 /* ============================================================
    COMPARE
@@ -1171,6 +1172,7 @@ function toggleCompare(id) {
 }
 function openCompare() {
   if (compareSet.size < 2) { showToast('Pilih 2 produk dulu (klik ⚖ di kartu)','error'); return; }
+  history.pushState({modal:'compare'},'');
   const ids = [...compareSet];
   const a = document.getElementById(`card-${ids[0]}`);
   const b = document.getElementById(`card-${ids[1]}`);
@@ -1193,21 +1195,22 @@ function openCompare() {
   rows.forEach(([label, va, vb]) => { html += `<tr><th>${label}</th><td>${va}</td><td>${vb}</td></tr>`; });
   html += `</tbody></table>`;
   html += `<div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
-    <button onclick="closeCompare();toggleSelect('${ids[0]}')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${a.dataset.name}</button>
-    <button onclick="closeCompare();toggleSelect('${ids[1]}')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-secondary),var(--brand-accent));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${b.dataset.name}</button>
+    <button onclick="history.back();setTimeout(()=>toggleSelect('${ids[0]}'),150)" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${a.dataset.name}</button>
+    <button onclick="history.back();setTimeout(()=>toggleSelect('${ids[1]}'),150)" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--brand-secondary),var(--brand-accent));color:#fff;border-radius:var(--radius-md);font-weight:700;cursor:pointer;font-size:14px">Pilih ${b.dataset.name}</button>
   </div>`;
 
   document.getElementById('compareContent').innerHTML = html;
   document.getElementById('compareOverlay').classList.add('active');
 }
 function closeCompare() { document.getElementById('compareOverlay').classList.remove('active'); }
-function closeCompareOnBg(e) { if(e.target===document.getElementById('compareOverlay')) closeCompare(); }
+function closeCompareOnBg(e) { if(e.target===document.getElementById('compareOverlay')) history.back(); }
 
 /* ============================================================
    ORDER MODAL
    ============================================================ */
 function openOrder() {
   if (cart.size===0) { showToast('Pilih produk terlebih dahulu!','error'); return; }
+  history.pushState({modal:'order'},'');
   const listEl = document.getElementById('modalOrderList');
   listEl.innerHTML = '';
   cart.forEach(id => {
@@ -1223,7 +1226,7 @@ function openOrder() {
   document.getElementById('orderModal').classList.add('active');
 }
 function closeOrder() { document.getElementById('orderModal').classList.remove('active'); }
-function closeOrderOnBg(e) { if(e.target===document.getElementById('orderModal')) closeOrder(); }
+function closeOrderOnBg(e) { if(e.target===document.getElementById('orderModal')) history.back(); }
 
 function submitOrder() {
   const nameInput = document.getElementById('buyerName');
@@ -1248,6 +1251,7 @@ function submitOrder() {
    ============================================================ */
 function openDetail(id) {
   const card = document.getElementById(`card-${id}`); if (!card) return;
+  history.pushState({modal:'detail'},'');
   const { name, descFull, desc, price, originalPrice, youtube: ytId, flyer: flyerId, images, rating } = card.dataset;
   const fullDesc = descFull || desc;
   const p = parseInt(price), op = parseInt(originalPrice);
@@ -1303,7 +1307,7 @@ function closeDetail() {
   if (iframe) { const src = iframe.src; iframe.src = ''; iframe.src = src; }
   document.getElementById('detailOverlay').classList.remove('active');
 }
-function closeDetailOnBg(e) { if(e.target===document.getElementById('detailOverlay')) closeDetail(); }
+function closeDetailOnBg(e) { if(e.target===document.getElementById('detailOverlay')) history.back(); }
 function orderSingle(id) {
   const card=document.getElementById(`card-${id}`); if(!card) return;
   if (!cart.has(id)) { cart.add(id); card.classList.add('selected'); updateSelectBtn(id); updateCartBar(); }
@@ -1377,10 +1381,28 @@ function showToast(msg, type='info') {
 }
 
 /* ============================================================
+   BACK BUTTON — tutup modal aktif, jangan keluar halaman
+   ============================================================ */
+window.addEventListener('popstate', () => {
+  // Cek modal mana yang aktif, close dari yang paling atas
+  if (document.getElementById('lightbox').classList.contains('active')) { closeLightbox(); return; }
+  if (document.getElementById('detailOverlay').classList.contains('active')) { closeDetail(); return; }
+  if (document.getElementById('orderModal').classList.contains('active')) { closeOrder(); return; }
+  if (document.getElementById('wishlistOverlay').classList.contains('active')) { closeWishlist(); return; }
+  if (document.getElementById('compareOverlay').classList.contains('active')) { closeCompare(); return; }
+});
+
+/* ============================================================
    KEYBOARD ESC
    ============================================================ */
 document.addEventListener('keydown', e => {
-  if(e.key==='Escape') { closeDetail(); closeOrder(); closeLightbox(); closeWishlist(); closeCompare(); }
+  if(e.key==='Escape') {
+    if (document.getElementById('lightbox').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('detailOverlay').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('orderModal').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('wishlistOverlay').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('compareOverlay').classList.contains('active')) { history.back(); return; }
+  }
 });
 
 /* ============================================================
