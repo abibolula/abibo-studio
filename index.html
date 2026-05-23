@@ -1297,7 +1297,12 @@ function openDetail(id) {
     }
   }
 }
-function closeDetail() { document.getElementById('detailOverlay').classList.remove('active'); }
+function closeDetail() {
+  // Stop YouTube video saat modal ditutup
+  const iframe = document.querySelector('#detailBox iframe');
+  if (iframe) { const src = iframe.src; iframe.src = ''; iframe.src = src; }
+  document.getElementById('detailOverlay').classList.remove('active');
+}
 function closeDetailOnBg(e) { if(e.target===document.getElementById('detailOverlay')) closeDetail(); }
 function orderSingle(id) {
   const card=document.getElementById(`card-${id}`); if(!card) return;
