@@ -777,6 +777,162 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
 }
 
 
+/* ============================================================
+   TYPE PICKER MODAL — popup pilih type/flyer produk
+   ============================================================ */
+.typepicker-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--overlay);
+  z-index: 1100;
+  align-items: center; justify-content: center;
+  padding: 24px;
+}
+.typepicker-overlay.active { display: flex; }
+
+.typepicker-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  width: 100%; max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  position: relative;
+}
+.typepicker-box::-webkit-scrollbar { width: 4px; }
+.typepicker-box::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 2px; }
+
+.typepicker-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: 8px;
+}
+.typepicker-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700;
+  line-height: 1.3;
+}
+.typepicker-subtitle {
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.typepicker-close {
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: var(--transition);
+}
+.typepicker-close:hover { background: var(--brand-danger); color: #fff; }
+
+/* Grid kartu type */
+.typepicker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.type-card {
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  background: var(--bg-surface);
+}
+.type-card:hover {
+  border-color: var(--brand-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow-color);
+}
+.type-card.selected {
+  border-color: var(--brand-success);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+}
+
+/* Checkmark saat terpilih */
+.type-card-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--brand-success); color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.type-card.selected .type-card-check { display: flex; }
+
+.type-card-img-wrap {
+  width: 100%; aspect-ratio: 3/4;
+  background: var(--bg-card);
+  position: relative; overflow: hidden;
+}
+.type-card-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.type-card:hover .type-card-img-wrap img { transform: scale(1.04); }
+
+/* Skeleton saat gambar loading */
+.type-card-skel {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-card-hover) 50%, var(--bg-surface) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease infinite;
+}
+.type-card-img-wrap img.loaded ~ .type-card-skel { display: none; }
+
+.type-card-footer {
+  padding: 10px 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.type-card-label {
+  font-size: 13px; font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.type-card-price {
+  font-size: 12px; font-weight: 700;
+  color: var(--brand-primary);
+  white-space: nowrap;
+}
+
+/* Footer modal — tombol konfirmasi */
+.typepicker-footer {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.typepicker-confirm {
+  flex: 1;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: #fff; border-radius: var(--radius-md);
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: var(--transition); min-width: 160px;
+  opacity: 0.4; pointer-events: none;
+}
+.typepicker-confirm.ready {
+  opacity: 1; pointer-events: auto;
+}
+.typepicker-confirm.ready:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px var(--shadow-color);
+}
+.typepicker-skip {
+  padding: 14px 20px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.typepicker-skip:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+
 /* Performance hints — GPU compositor layers */
 #particle-canvas{will-change:contents}
 .product-card{will-change:transform,box-shadow}
@@ -1059,6 +1215,28 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border-color);padd
   </div>
 </div>
 
+<!-- TYPE PICKER MODAL — popup pilih type produk -->
+<div class="typepicker-overlay" id="typePickerOverlay" onclick="closeTypePickerOnBg(event)">
+  <div class="typepicker-box" id="typePickerBox">
+    <div class="typepicker-header">
+      <div>
+        <div class="typepicker-title" id="typePickerTitle">Pilih Type Produk</div>
+      </div>
+      <button class="typepicker-close" onclick="closeTypePicker()">✕</button>
+    </div>
+    <div class="typepicker-subtitle" id="typePickerSubtitle">Tap flyer untuk memilih type yang kamu inginkan</div>
+    <div class="typepicker-grid" id="typePickerGrid">
+      <!-- diisi oleh JS -->
+    </div>
+    <div class="typepicker-footer">
+      <button class="typepicker-skip" onclick="skipTypePicker()">Lewati → Tanpa Pilih Type</button>
+      <button class="typepicker-confirm" id="typePickerConfirm" onclick="confirmTypePicker()">
+        ✅ Pilih Type Ini
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- SCROLL TOP -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
@@ -1239,13 +1417,16 @@ const PRODUCTS = [
       /* Tambah foto: 'FILE_ID_FOTO_3',       */
     ],
 
-    /* FLYER detail produk — bisa beberapa, pisahkan dengan koma di dalam array
-       Kosongkan array [] jika tidak ada flyer
-       Format: 'FILE_ID_GOOGLE_DRIVE'                                            */
+    /* FLYER / TYPE PRODUK ─────────────────────────────────────
+       Setiap flyer = satu "type" yang bisa dipilih pembeli.
+       - id    : File ID Google Drive gambar flyer
+       - label : Nama type yang muncul di popup & pesan WA
+       - price : (opsional) harga khusus type ini, kosongkan jika sama dengan priceSale
+       Urutan di sini = urutan tampil di popup pilih type.          */
     flyerIds: [
-      '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',   /* Flyer 1 */
-      '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw',   /* Flyer 2 — ganti dengan ID berbeda */
-      /* Tambah: 'FILE_ID_FLYER_3',           */
+      { id: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw', label: 'Type 1',   price: null  },
+      { id: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw', label: 'Type 2', price: null  },
+      /* Tambah type baru: { id: 'FILE_ID', label: 'Type VIP', price: 50000 } */
     ],
 
     /* VIDEO demo — bisa beberapa video YouTube
@@ -1276,7 +1457,10 @@ const PRODUCTS = [
       '157gE0yHJ3kT7bos1VqEkc4fV5TekdkAg',
       '13DhG_nbrlSNZfL584f_KNjLMwlh4eWdu',
     ],
-    flyerIds: ['14aV_BMzo0rT19YQV4ymf81tL_sveiWFw','14aV_BMzo0rT19YQV4ymf81tL_sveiWFw'],
+    flyerIds: [
+      { id: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw', label: 'Type 1',   price: null },
+      { id: '14aV_BMzo0rT19YQV4ymf81tL_sveiWFw', label: 'Type 2', price: null },
+    ],
     youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
@@ -1301,7 +1485,10 @@ const PRODUCTS = [
       '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
       '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8',
     ],
-    flyerIds: ['1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8','1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8'],
+    flyerIds: [
+      { id: '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8', label: 'Type 1',   price: null },
+      { id: '1xz5lLLE3bJt_SDFCDF1HR6HwmdDSAbT8', label: 'Type 2', price: null },
+    ],
     youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
@@ -1322,7 +1509,10 @@ const PRODUCTS = [
       '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
       '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t',
     ],
-    flyerIds: ['1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t','1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t'],
+    flyerIds: [
+      { id: '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t', label: 'Type 1',   price: null },
+      { id: '1K_Uw_G5EqMs9hEp4pgmi_OxizHdzPY-t', label: 'Type 2', price: null },
+    ],
     youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
@@ -1343,7 +1533,10 @@ const PRODUCTS = [
       '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
       '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi',
     ],
-    flyerIds: ['1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi','1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi'],
+    flyerIds: [
+      { id: '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi', label: 'Type 1',   price: null },
+      { id: '1nVg_0MAqeFk9b43Vq2TPKfgIZSxBg3Vi', label: 'Type 2', price: null },
+    ],
     youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
@@ -1364,7 +1557,10 @@ const PRODUCTS = [
       '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
       '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l',
     ],
-    flyerIds: ['1EprjhRupQeHpGX9GKreiVoD-ES-_i09l','1EprjhRupQeHpGX9GKreiVoD-ES-_i09l'],
+    flyerIds: [
+      { id: '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l', label: 'Type 1',   price: null },
+      { id: '1EprjhRupQeHpGX9GKreiVoD-ES-_i09l', label: 'Type 2', price: null },
+    ],
     youtubeIds: ['qeIWJkN76e0','qeIWJkN76e0'],
   },
 
@@ -1877,37 +2073,196 @@ function filterProducts() {
 /* ============================================================
    CART / SELECT
    ============================================================ */
-const cart = new Set();
-function toggleSelect(id) {
-  const card = document.getElementById(`card-${id}`); if (!card) return;
-  if (cart.has(id)) {
-    cart.delete(id);
-    card.classList.remove('selected');
-    showToast('Produk dihapus dari pilihan','error');
-  } else {
-    cart.add(id);
-    card.classList.add('selected');
-    showToast(`✅ "${card.dataset.name}" ditambahkan!`,'success');
-    fireConfetti();
+/* ============================================================
+   CART STATE — menyimpan produk + type yang dipilih
+   ============================================================ */
+const cart    = new Set();                 // Set of product ids
+const cartTypes = {};                      // { productId: { label, price } | null }
+
+/* ============================================================
+   TYPE PICKER
+   ============================================================ */
+let typePickerCurrentId  = null;   // id produk yang sedang dipilih typenya
+let typePickerSelected   = null;   // { label, price } type yang dipilih user
+
+function openTypePicker(id) {
+  const product = PRODUCTS.find(p => p.id === id);
+  if (!product) return;
+
+  const flyers = product.flyerIds || [];
+
+  // Tidak ada flyer → langsung tambah ke cart tanpa popup
+  if (flyers.length === 0) {
+    addToCart(id, null);
+    return;
   }
+
+  typePickerCurrentId = id;
+  typePickerSelected  = null;
+
+  document.getElementById('typePickerTitle').textContent    = `Pilih Type — ${product.name}`;
+  document.getElementById('typePickerSubtitle').textContent = `${flyers.length} type tersedia. Tap flyer untuk memilih.`;
+
+  const confirmBtn = document.getElementById('typePickerConfirm');
+  confirmBtn.classList.remove('ready');
+  confirmBtn.innerHTML = '✅ Pilih Type Ini';
+
+  const grid = document.getElementById('typePickerGrid');
+  grid.innerHTML = flyers.map((f, i) => {
+    /* ── Label otomatis: "Type 1", "Type 2", dst ──
+       Jika f.label diisi di PRODUCTS, label itu dipakai.
+       Jika kosong / tidak ada, fallback ke "Type N".       */
+    const label = (f.label && f.label.trim()) ? f.label : `Type ${i + 1}`;
+    const price = f.price || product.priceSale;
+    const priceLabel = `Rp ${price.toLocaleString('id-ID')}`;
+
+    return `
+      <div class="type-card" id="type-card-${id}-${i}" onclick="selectType('${id}',${i})">
+        <div class="type-card-check">✓</div>
+        <div class="type-card-img-wrap">
+          <img id="type-img-${id}-${i}" src="" alt="${label}" style="opacity:0;transition:opacity 0.3s">
+          <div class="type-card-skel"></div>
+        </div>
+        <div class="type-card-footer">
+          <div class="type-card-label">${label}</div>
+          <div class="type-card-price">${priceLabel}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Load gambar flyer dengan fallback
+  flyers.forEach((f, i) => {
+    const img = document.getElementById(`type-img-${id}-${i}`);
+    if (!img) return;
+    const fileId = typeof f === 'object' ? f.id : f;
+    img.addEventListener('load',  () => { img.style.opacity = '1'; img.classList.add('loaded'); });
+    img.addEventListener('error', () => { img.style.opacity = '1'; });
+    loadImgWithFallback(img, fileId);
+  });
+
+  document.getElementById('typePickerOverlay').classList.add('active');
+  history.pushState({ modal: 'typepicker' }, '');
+}
+
+function selectType(productId, idx) {
+  const product = PRODUCTS.find(p => p.id === productId);
+  if (!product) return;
+  const f = product.flyerIds[idx];
+  const label = (f.label && f.label.trim()) ? f.label : `Type ${idx + 1}`;
+  const price = f.price || product.priceSale;
+
+  // Highlight card yang dipilih
+  document.querySelectorAll(`[id^="type-card-${productId}-"]`)
+    .forEach(c => c.classList.remove('selected'));
+  const chosen = document.getElementById(`type-card-${productId}-${idx}`);
+  if (chosen) chosen.classList.add('selected');
+
+  typePickerSelected = { label, price, idx };
+
+  // Aktifkan & update tombol konfirmasi
+  const confirmBtn = document.getElementById('typePickerConfirm');
+  confirmBtn.classList.add('ready');
+  confirmBtn.innerHTML = `✅ Pilih "${label}"`;
+}
+
+function confirmTypePicker() {
+  // Simpan dulu sebelum closeTypePicker() reset variabelnya
+  const id      = typePickerCurrentId;
+  const typeObj = typePickerSelected;
+  if (!id || !typeObj) return;
+
+  closeTypePicker();       // tutup modal (reset typePickerCurrentId)
+  addToCart(id, typeObj);  // tambah ke cart dengan data yang sudah disimpan
+}
+
+function skipTypePicker() {
+  const id = typePickerCurrentId;
+  closeTypePicker();
+  addToCart(id, null);
+}
+
+function closeTypePicker() {
+  document.getElementById('typePickerOverlay').classList.remove('active');
+  typePickerCurrentId = null;
+  typePickerSelected  = null;
+}
+function closeTypePickerOnBg(e) {
+  if (e.target === document.getElementById('typePickerOverlay')) history.back();
+}
+
+/* ── Tambah ke cart setelah type dipilih ── */
+function addToCart(id, typeObj) {
+  const card = document.getElementById(`card-${id}`);
+  if (!card) return;
+
+  cart.add(id);
+  cartTypes[id] = typeObj;
+  card.classList.add('selected');
+
+  const typeName = typeObj ? ` — ${typeObj.label}` : '';
+  showToast(`✅ "${card.dataset.name}"${typeName} ditambahkan!`, 'success');
+  fireConfetti();
   updateSelectBtn(id);
   updateCartBar();
 }
+
+/* ── toggleSelect: buka type picker saat pilih, langsung hapus saat sudah dipilih ── */
+function toggleSelect(id) {
+  const card = document.getElementById(`card-${id}`); if (!card) return;
+  if (cart.has(id)) {
+    // Sudah ada → hapus
+    cart.delete(id);
+    delete cartTypes[id];
+    card.classList.remove('selected');
+    showToast('Produk dihapus dari pilihan', 'error');
+    updateSelectBtn(id);
+    updateCartBar();
+  } else {
+    // Belum ada → buka type picker dulu
+    openTypePicker(id);
+  }
+}
+
 function updateSelectBtn(id) {
   const btn = document.getElementById(`btn-select-${id}`); if (!btn) return;
-  if (cart.has(id)) { btn.innerHTML='☑ Dipilih'; btn.style.borderColor='var(--brand-success)'; btn.style.color='var(--brand-success)'; }
-  else { btn.innerHTML='☐ Pilih Produk'; btn.style.borderColor=''; btn.style.color=''; }
+  if (cart.has(id)) {
+    const t = cartTypes[id];
+    btn.innerHTML = t ? `☑ ${t.label}` : '☑ Dipilih';
+    btn.style.borderColor = 'var(--brand-success)';
+    btn.style.color = 'var(--brand-success)';
+  } else {
+    btn.innerHTML = '☐ Pilih Produk';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  }
 }
+
 function updateCartBar() {
-  let total=0;
-  cart.forEach(id => { const c=document.getElementById(`card-${id}`); if(c) total+=parseInt(c.dataset.price)||0; });
-  document.getElementById('cartCount').textContent=cart.size;
-  document.getElementById('cartTotal').textContent='Rp '+total.toLocaleString('id-ID');
-  document.getElementById('cartBar').classList.toggle('visible', cart.size>0);
+  let total = 0;
+  cart.forEach(id => {
+    const t = cartTypes[id];
+    if (t && t.price) {
+      total += t.price;
+    } else {
+      const c = document.getElementById(`card-${id}`);
+      if (c) total += parseInt(c.dataset.price) || 0;
+    }
+  });
+  document.getElementById('cartCount').textContent = cart.size;
+  document.getElementById('cartTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+  document.getElementById('cartBar').classList.toggle('visible', cart.size > 0);
 }
+
 function clearCart() {
-  cart.forEach(id => { const c=document.getElementById(`card-${id}`); if(c) c.classList.remove('selected'); updateSelectBtn(id); });
-  cart.clear(); updateCartBar(); showToast('Pilihan dikosongkan','info');
+  cart.forEach(id => {
+    const c = document.getElementById(`card-${id}`);
+    if (c) c.classList.remove('selected');
+    updateSelectBtn(id);
+  });
+  cart.clear();
+  Object.keys(cartTypes).forEach(k => delete cartTypes[k]);
+  updateCartBar();
+  showToast('Pilihan dikosongkan', 'info');
 }
 
 /* ============================================================
@@ -2045,9 +2400,20 @@ function openOrder() {
   listEl.innerHTML = '';
   cart.forEach(id => {
     const card = document.getElementById(`card-${id}`); if (!card) return;
+    const typeObj = cartTypes[id];
+    const price   = typeObj?.price || parseInt(card.dataset.price);
+    const typeBadge = typeObj
+      ? `<span style="font-size:11px;background:rgba(124,58,237,0.12);color:var(--brand-primary);padding:2px 8px;border-radius:6px;font-weight:700">${typeObj.label}</span>`
+      : '';
     const item = document.createElement('div');
     item.className = 'modal-order-item';
-    item.innerHTML = `<span>${card.dataset.name}</span><strong>Rp ${parseInt(card.dataset.price).toLocaleString('id-ID')}</strong>`;
+    item.style.flexWrap = 'wrap';
+    item.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-weight:600">${card.dataset.name}</span>
+        ${typeBadge}
+      </div>
+      <strong>Rp ${price.toLocaleString('id-ID')}</strong>`;
     listEl.appendChild(item);
   });
   document.getElementById('step1').className='progress-step done';
@@ -2061,16 +2427,26 @@ function closeOrderOnBg(e) { if(e.target===document.getElementById('orderModal')
 function submitOrder() {
   const nameInput = document.getElementById('buyerName');
   const name = nameInput.value.trim() || 'Pelanggan';
-  // Progress step 3
   document.getElementById('step2').className='progress-step done';
   document.getElementById('step3').className='progress-step active';
-  let products = [], total = 0;
+
+  let lines = [], total = 0;
   cart.forEach(id => {
     const card = document.getElementById(`card-${id}`); if (!card) return;
-    products.push(`• ${card.dataset.name} — Rp ${parseInt(card.dataset.price).toLocaleString('id-ID')}`);
-    total += parseInt(card.dataset.price)||0;
+    const typeObj = cartTypes[id];
+    const price   = typeObj?.price || parseInt(card.dataset.price);
+    const typeInfo = typeObj ? `\n   Type: *${typeObj.label}*` : '';
+    lines.push(`• *${card.dataset.name}*${typeInfo}\n   Harga: Rp ${price.toLocaleString('id-ID')}`);
+    total += price;
   });
-  const msg = `Halo Abibo Studio! 👋\n\nSaya *${name}* ingin memesan produk berikut:\n\n${products.join('\n')}\n\n*Total: Rp ${total.toLocaleString('id-ID')}*\n\nMohon diproses ya, terima kasih! 🙏`;
+
+  const msg =
+    `Halo Abibo Studio! 👋\n\n` +
+    `Saya *${name}* ingin memesan produk berikut:\n\n` +
+    `${lines.join('\n\n')}\n\n` +
+    `*Total: Rp ${total.toLocaleString('id-ID')}*\n\n` +
+    `Mohon diproses ya, terima kasih! 🙏`;
+
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   fireConfetti();
   setTimeout(() => { window.open(url,'_blank'); closeOrder(); }, 600);
@@ -2204,12 +2580,17 @@ function openDetail(id) {
   /* Flyer — juga dari PRODUCTS langsung */
   const flyerIdsReal = flrIds;
 
-  /* Flyer slider HTML */
+  /* Flyer slider HTML — extract .id dari format objek baru */
   const flyerSlider = flyerIdsReal.length > 0
     ? `<div class="detail-section-title">📋 Flyer Detail</div>
-       ${makeMediaSlider(flyerIdsReal, (fid, i) =>
-         `<img src="" id="flyer-img-${id}-${i}" onclick="openLightbox(this.src)" style="width:100%;display:block;cursor:zoom-in;" alt="Flyer ${i+1}">`
-       , `flyer-${id}`)}`
+       ${makeMediaSlider(flyerIdsReal, (f, i) => {
+         const fileId = typeof f === 'object' ? f.id : f;
+         const label  = typeof f === 'object' ? f.label : `Flyer ${i+1}`;
+         return `<div style="position:relative">
+           <img src="" id="flyer-img-${id}-${i}" onclick="openLightbox(this.src)" style="width:100%;display:block;cursor:zoom-in;" alt="${label}">
+           <div style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,0.6));color:#fff;font-size:12px;font-weight:700">${label}</div>
+         </div>`;
+       }, `flyer-${id}`)}`
     : '';
 
   document.getElementById('detailInner').innerHTML = `
@@ -2254,9 +2635,10 @@ function openDetail(id) {
   }
 
   /* Load flyer images dengan fallback */
-  flyerIdsReal.forEach((fid, i) => {
+  flyerIdsReal.forEach((f, i) => {
+    const fileId = typeof f === 'object' ? f.id : f;
     const img = document.getElementById(`flyer-img-${id}-${i}`);
-    if (img) loadImgWithFallback(img, fid);
+    if (img) loadImgWithFallback(img, fileId);
   });
 }
 function closeDetail() {
@@ -2341,12 +2723,12 @@ function showToast(msg, type='info') {
    BACK BUTTON — tutup modal aktif, jangan keluar halaman
    ============================================================ */
 window.addEventListener('popstate', () => {
-  // Cek modal mana yang aktif, close dari yang paling atas
-  if (document.getElementById('lightbox').classList.contains('active')) { closeLightbox(); return; }
-  if (document.getElementById('detailOverlay').classList.contains('active')) { closeDetail(); return; }
-  if (document.getElementById('orderModal').classList.contains('active')) { closeOrder(); return; }
-  if (document.getElementById('wishlistOverlay').classList.contains('active')) { closeWishlist(); return; }
-  if (document.getElementById('compareOverlay').classList.contains('active')) { closeCompare(); return; }
+  if (document.getElementById('lightbox').classList.contains('active'))          { closeLightbox();   return; }
+  if (document.getElementById('typePickerOverlay').classList.contains('active')) { closeTypePicker(); return; }
+  if (document.getElementById('detailOverlay').classList.contains('active'))     { closeDetail();     return; }
+  if (document.getElementById('orderModal').classList.contains('active'))        { closeOrder();      return; }
+  if (document.getElementById('wishlistOverlay').classList.contains('active'))   { closeWishlist();   return; }
+  if (document.getElementById('compareOverlay').classList.contains('active'))    { closeCompare();    return; }
 });
 
 /* ============================================================
@@ -2354,11 +2736,12 @@ window.addEventListener('popstate', () => {
    ============================================================ */
 document.addEventListener('keydown', e => {
   if(e.key==='Escape') {
-    if (document.getElementById('lightbox').classList.contains('active')) { history.back(); return; }
-    if (document.getElementById('detailOverlay').classList.contains('active')) { history.back(); return; }
-    if (document.getElementById('orderModal').classList.contains('active')) { history.back(); return; }
-    if (document.getElementById('wishlistOverlay').classList.contains('active')) { history.back(); return; }
-    if (document.getElementById('compareOverlay').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('lightbox').classList.contains('active'))          { history.back(); return; }
+    if (document.getElementById('typePickerOverlay').classList.contains('active')) { history.back(); return; }
+    if (document.getElementById('detailOverlay').classList.contains('active'))     { history.back(); return; }
+    if (document.getElementById('orderModal').classList.contains('active'))        { history.back(); return; }
+    if (document.getElementById('wishlistOverlay').classList.contains('active'))   { history.back(); return; }
+    if (document.getElementById('compareOverlay').classList.contains('active'))    { history.back(); return; }
   }
 });
 
